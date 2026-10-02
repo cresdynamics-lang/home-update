@@ -7,15 +7,15 @@ import {
   RulerIcon,
   TruckIcon,
 } from "./icons";
-import { CallButton, Em, GoldButton, OutlineButton, SectionLabel, SectionTitle, WaButton } from "./ui";
+import { Em, GoldButton, OutlineButton, SectionLabel, SectionTitle, WaButton } from "./ui";
 import {
   colours,
   fabrics,
-  formatKes,
   journal,
   products,
   rooms,
   site,
+  siteConfig,
   waLink,
 } from "@/lib/site";
 
@@ -219,23 +219,23 @@ export function Bestsellers() {
             >
               <div className="relative aspect-[4/5]">
                 <Image
-                  src={product.image}
+                  src={product.images[0]}
                   alt={product.name}
                   fill
                   className="object-cover"
                   sizes="(max-width:1024px) 50vw, 33vw"
                 />
                 <span className="absolute top-3 left-3 rounded-full bg-champagne px-2.5 py-1 text-[10px] font-semibold tracking-wide text-onyx uppercase">
-                  {product.badge}
+                  {product.bestseller ? "Bestseller" : product.sale ? "Sale" : "Featured"}
                 </span>
               </div>
               <div className="p-5">
                 <h3 className="font-serif text-2xl text-ivory">{product.name}</h3>
                 <p className="mt-1 text-[11px] tracking-[0.16em] text-muted uppercase">
-                  {product.category}
+                  {product.subtype}
                 </p>
                 <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted">
-                  <span>{product.size}</span>
+                  <span>{product.dimensions.w} × {product.dimensions.d} cm</span>
                   <span>·</span>
                   <span>Best for {product.bestFor}</span>
                 </div>
@@ -260,7 +260,7 @@ export function Bestsellers() {
                   ))}
                 </div>
                 <p className="mt-4 text-sm tracking-wide text-champagne">
-                  {formatKes(product.fromKes)}
+                  {product.priceFrom ? `KES ${product.priceFrom.toLocaleString("en-KE")}` : "Ask for today’s price"}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <WaButton
@@ -496,6 +496,11 @@ export function CustomDesign() {
 }
 
 export function SaleBanner() {
+  // No urgency is faked: nothing renders unless the owner has set a real end
+  // date in siteConfig. The date is printed statically (deterministic, and
+  // visible to crawlers) rather than ticking on the client.
+  const saleEndIso = siteConfig.saleEnd;
+
   return (
     <section className="bg-onyx py-8">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
@@ -505,27 +510,29 @@ export function SaleBanner() {
               SALE
             </span>
             <h2 className="font-serif text-3xl text-ivory md:text-4xl">The Home Update Sale.</h2>
-          </div>
-          <div className="flex items-center gap-3 sale-tick">
-            {[
-              ["04", "Days"],
-              ["12", "Hrs"],
-              ["33", "Min"],
-            ].map(([n, l]) => (
-              <div
-                key={l}
-                className="min-w-[4.2rem] rounded-xl bg-onyx/70 px-3 py-2 text-center"
-              >
-                <p className="font-serif text-2xl text-champagne">{n}</p>
-                <p className="text-[10px] tracking-wide text-muted uppercase">{l}</p>
-              </div>
-            ))}
+            {saleEndIso ? (
+              <p className="mt-2 text-sm text-champagne">Ends {formatDate(saleEndIso)}</p>
+            ) : null}
           </div>
           <GoldButton href="/sale">Shop the sale</GoldButton>
         </div>
       </div>
     </section>
   );
+}
+
+/** Deterministic date format: fixed locale and timezone, no client/server drift. */
+function formatDate(iso: string) {
+  try {
+    return new Date(iso).toLocaleDateString("en-KE", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      timeZone: "Africa/Nairobi",
+    });
+  } catch {
+    return iso;
+  }
 }
 
 export function JournalTeaser() {
