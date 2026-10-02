@@ -1,3 +1,15 @@
+export { CLEARANCE, getProductById, getProductBySlug, ownerTodo, products } from "@/data/products";
+export type { Product } from "@/data/products";
+
+export const STORAGE_KEYS = {
+  compare: "home-update-compare",
+  shortlist: "home-update-shortlist",
+  room: "home-update-room",
+  combos: "home-update-combos",
+  promo: "home-update-promo-seen",
+  cookie: "home-update-cookie-ack",
+} as const;
+
 export const site = {
   name: "Home Update Furniture",
   shortName: "Home Update",
@@ -8,7 +20,106 @@ export const site = {
   address: "Nairobi, Kenya",
   hours: "Mon–Sat · 9am–6pm",
   tagline: "Dining sets and sofas designed for the way you live, host and relax.",
+  url: "https://homeupdate.co.ke",
 } as const;
+
+export const siteConfig = {
+  /**
+   * Real sale end date (ISO 8601). The countdown is hidden entirely while this
+   * is null, so no urgency is ever faked. Set it only when the owner confirms
+   * a genuine end date.
+   */
+  saleEnd: null as string | null,
+  analytics: {
+    enabled: false,
+    endpoint: "",
+  },
+  ar: {
+    enabled: true,
+  },
+  promo: {
+    /** Delay before the one-per-session fit-finder prompt, in ms. */
+    fitFinderDelayMs: 12000,
+  },
+} as const;
+
+function readJson<T>(key: string, fallback: T): T {
+  try {
+    const raw = window.localStorage.getItem(key);
+    if (!raw) return fallback;
+    return JSON.parse(raw) as T;
+  } catch {
+    return fallback;
+  }
+}
+
+export function readStoredIds(key: string): string[] {
+  if (typeof window === "undefined") return [];
+  const parsed = readJson<unknown>(key, []);
+  return Array.isArray(parsed) ? parsed.filter((v): v is string => typeof v === "string") : [];
+}
+
+export function writeStoredIds(key: string, value: string[]) {
+  if (typeof window === "undefined") return false;
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value));
+    window.dispatchEvent(new Event("home-update-storage"));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export type RoomSize = { lengthM: number; widthM: number };
+
+export function readRoom(): RoomSize | null {
+  if (typeof window === "undefined") return null;
+  const parsed = readJson<Partial<RoomSize> | null>(STORAGE_KEYS.room, null);
+  if (!parsed) return null;
+  const { lengthM, widthM } = parsed;
+  if (typeof lengthM !== "number" || typeof widthM !== "number") return null;
+  if (lengthM <= 0 || widthM <= 0) return null;
+  return { lengthM, widthM };
+}
+
+export function writeRoom(room: RoomSize | null) {
+  if (typeof window === "undefined") return false;
+  try {
+    if (room) window.localStorage.setItem(STORAGE_KEYS.room, JSON.stringify(room));
+    else window.localStorage.removeItem(STORAGE_KEYS.room);
+    window.dispatchEvent(new Event("home-update-storage"));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export type ProductCombo = {
+  fabric?: string;
+  colour?: string;
+  wood?: string;
+  layout?: string;
+};
+
+export function readCombos(): Record<string, ProductCombo> {
+  if (typeof window === "undefined") return {};
+  const parsed = readJson<unknown>(STORAGE_KEYS.combos, {});
+  return parsed && typeof parsed === "object" && !Array.isArray(parsed)
+    ? (parsed as Record<string, ProductCombo>)
+    : {};
+}
+
+export function writeCombo(productId: string, combo: ProductCombo) {
+  if (typeof window === "undefined") return;
+  try {
+    const all = readCombos();
+    all[productId] = combo;
+    window.localStorage.setItem(STORAGE_KEYS.combos, JSON.stringify(all));
+    window.dispatchEvent(new Event("home-update-storage"));
+  } catch {
+    /* storage unavailable: combo simply will not persist */
+  }
+}
 
 export function waLink(message?: string) {
   const text = encodeURIComponent(
@@ -16,6 +127,11 @@ export function waLink(message?: string) {
       "Hi Home Update — I’d like today’s price and fabric options for a piece on your site.",
   );
   return `https://wa.me/${site.whatsapp}?text=${text}`;
+}
+
+export function currentPageUrl() {
+  if (typeof window === "undefined") return site.url;
+  return window.location.href;
 }
 
 export const colours = [
@@ -29,73 +145,103 @@ export const colours = [
   { name: "Charcoal", hex: "#2B2B2B" },
 ] as const;
 
-export const products = [
-  {
-    slug: "the-fluted",
-    name: "The Fluted",
-    category: "8-seater dining set",
-    image: "/images/6-seats-dinning.jpeg",
-    bestFor: "Hosting dinners",
-    size: "220 × 100 cm",
-    tags: ["Water-resistant fabric", "Custom size"],
-    fromKes: 185000,
-    badge: "Bestseller",
+export const colourHex: Record<string, string> = Object.fromEntries(
+  colours.map((c) => [c.name, c.hex]),
+);
+
+/** Shared fabric reference used by the finish matcher and fabric comparison. */
+export type FabricInfo = {
+  name: string;
+  feel: string;
+  kids: "excellent" | "good" | "caution";
+  pets: "excellent" | "good" | "caution";
+  water: "excellent" | "good" | "caution";
+  care: string;
+  priceTier: 1 | 2 | 3;
+};
+
+export const fabricInfo: Record<string, FabricInfo> = {
+  "Oat Bouclé": {
+    name: "Oat Bouclé",
+    feel: "Soft, nubby, warm",
+    kids: "caution",
+    pets: "caution",
+    water: "caution",
+    care: "Vacuum weekly, blot spills",
+    priceTier: 3,
   },
-  {
-    slug: "the-cloud",
-    name: "The Cloud",
-    category: "Curved sectional sofa",
-    image: "/images/curved-sofas.jpeg",
-    bestFor: "Open living rooms",
-    size: "Custom modular",
-    tags: ["Performance velvet", "Pet friendly"],
-    fromKes: 210000,
-    badge: "Bestseller",
+  Bouclé: {
+    name: "Bouclé",
+    feel: "Soft, nubby, warm",
+    kids: "caution",
+    pets: "caution",
+    water: "caution",
+    care: "Vacuum weekly, blot spills",
+    priceTier: 3,
   },
-  {
-    slug: "the-truffle",
-    name: "The Truffle",
-    category: "L-shaped sectional",
-    image: "/images/long-l-sofa.jpeg",
-    bestFor: "Family lounging",
-    size: "Made to measure",
-    tags: ["Custom depth", "Matched to room"],
-    fromKes: 195000,
-    badge: "Featured",
+  "Performance Velvet": {
+    name: "Performance Velvet",
+    feel: "Plush, deep, luminous",
+    kids: "excellent",
+    pets: "excellent",
+    water: "excellent",
+    care: "Wipe clean with a damp cloth",
+    priceTier: 2,
   },
-  {
-    slug: "round-four",
-    name: "The Round Four",
-    category: "4-seater dining set",
-    image: "/images/4-seats-dinning.jpeg",
-    bestFor: "Apartments & nooks",
-    size: "Ø 110 cm",
-    tags: ["Compact footprint", "Custom fabric"],
-    fromKes: 98000,
-    badge: "Bestseller",
+  Chenille: {
+    name: "Chenille",
+    feel: "Cozy, durable, brushed",
+    kids: "excellent",
+    pets: "excellent",
+    water: "good",
+    care: "Vacuum, spot clean as needed",
+    priceTier: 1,
   },
-  {
-    slug: "marble-lounge",
-    name: "The Quiet Sunday",
-    category: "Living set mood",
-    image: "/images/living-marble.jpeg",
-    bestFor: "Bright rooms",
-    size: "Room-matched",
-    tags: ["Soft neutrals", "Easy care"],
-    fromKes: 175000,
-    badge: "New",
+  "Linen Blend": {
+    name: "Linen Blend",
+    feel: "Airy, relaxed, natural",
+    kids: "good",
+    pets: "caution",
+    water: "caution",
+    care: "Wash covers, air dry",
+    priceTier: 1,
   },
-  {
-    slug: "luxe-l",
-    name: "The Stay Longer",
-    category: "Tufted L-sofa",
-    image: "/images/living-l-sofa.jpeg",
-    bestFor: "Corner living",
-    size: "Custom L-shape",
-    tags: ["Water-resistant", "Deep seat"],
-    fromKes: 205000,
-    badge: "Bestseller",
-  },
+};
+
+export const fabricCompareOrder = [
+  "Oat Bouclé",
+  "Bouclé",
+  "Performance Velvet",
+  "Chenille",
+  "Linen Blend",
+];
+
+export const woodFinishes = [
+  { name: "Mahogany", hex: "#6B3A22" },
+  { name: "Walnut", hex: "#4E342E" },
+  { name: "Natural Oak", hex: "#C9A97A" },
+  { name: "Ebony", hex: "#2A2320" },
+] as const;
+
+export const floorOptions = [
+  { name: "Grey porcelain", hex: "#9AA0A3" },
+  { name: "Warm cream marble", hex: "#E7DCC9" },
+  { name: "Cool white marble", hex: "#F2F3F0" },
+  { name: "Walnut parquet", hex: "#8A5A36" },
+] as const;
+
+export const curtainOptions = [
+  { name: "Beige", hex: "#D6C7AE" },
+  { name: "Oat linen", hex: "#D8C3A5" },
+  { name: "Silver-grey", hex: "#B9BEC2" },
+  { name: "Ivory", hex: "#F1E8D6" },
+] as const;
+
+export const wallOptions = [
+  { name: "Soft ivory", hex: "#EFE7DA" },
+  { name: "Stone", hex: "#B6ABA0" },
+  { name: "Warm white", hex: "#F4EFE7" },
+  { name: "Cool grey", hex: "#AFB4B8" },
 ] as const;
 
 export const rooms = [
@@ -165,6 +311,24 @@ export const journal = [
     minutes: 6,
     image: "/images/curved-sofas.jpeg",
   },
+  {
+    slug: "small-space-sofa-ideas",
+    title: "Small-space sofa ideas for Nairobi apartments",
+    minutes: 6,
+    image: "/images/living-l-sofa.jpeg",
+  },
+  {
+    slug: "how-to-choose-dining-table-size",
+    title: "How to choose a dining table size for your room",
+    minutes: 7,
+    image: "/images/6-seats-dinning.jpeg",
+  },
+  {
+    slug: "fabrics-for-kids-and-pets",
+    title: "Best sofa fabrics for homes with kids and pets",
+    minutes: 5,
+    image: "/images/sofa-detail.jpeg",
+  },
 ] as const;
 
 export const nav = [
@@ -212,4 +376,15 @@ export const mega = {
 
 export function formatKes(amount: number) {
   return `FROM KES ${amount.toLocaleString("en-KE")}`;
+}
+
+/** Human label for a price, or the "ask" note when no price is confirmed. */
+export function priceLabel(product: { priceFrom: number | null; priceNote: string }) {
+  return product.priceFrom ? `KES ${product.priceFrom.toLocaleString("en-KE")}` : product.priceNote;
+}
+
+export function leadTimeLabel(leadTime: { min: number; max: number } | "made to order") {
+  return typeof leadTime === "string"
+    ? "Made to order"
+    : `Ready in ${leadTime.min}-${leadTime.max} days`;
 }

@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --onyx: #0a0808;
-  --espresso: #1a110d;
-  --timber: #855a3d;
-  --antique-gold: #c79a5c;
-  --champagne: #e5ce9c;
-  --ivory: #f1e5d6;
+  --onyx: #080808;
+  --espresso: #14110e;
+  --timber: #8a5a36;
+  --antique-gold: #c9a45c;
+  --champagne: #e8cb8c;
+  --ivory: #f1e8d6;
   --muted: #a89a8c;
   --wa: #25d366;
   --wa-dark: #1ebe57;
@@ -28,8 +28,6 @@
   --color-hot: var(--hot);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-serif: var(--font-cormorant);
-  --font-sans: var(--font-jost);
 }
 
 * {
@@ -40,15 +38,33 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Body copy: 16px minimum, ivory on onyx = 15.1:1 contrast (WCAG AAA) */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-jost), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 ::selection {
   background: color-mix(in srgb, var(--antique-gold) 45%, transparent);
   color: var(--ivory);
+}
+
+/* Visible focus states for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--champagne);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Minimum 44px tap targets */
+button,
+a[role="button"],
+label:has(> input[type="checkbox"]),
+label:has(> input[type="radio"]) {
+  min-height: 44px;
 }
 
 @keyframes fade-up {
@@ -72,12 +88,53 @@ body {
   }
 }
 
-@keyframes sale-tick {
+@keyframes crossfade {
   from {
-    opacity: 0.55;
+    opacity: 0;
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: -180% 0;
+  }
+  to {
+    background-position: 180% 0;
+  }
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -97,8 +154,28 @@ body {
   animation: soft-pulse 2.4s ease-out infinite;
 }
 
-.sale-tick {
-  animation: sale-tick 1s ease-in-out infinite alternate;
+/* 150-200ms crossfade for reactive material swapping */
+.crossfade {
+  animation: crossfade 0.18s ease-out both;
+}
+
+.slide-up {
+  animation: slide-up 0.28s ease-out both;
+}
+
+.pop {
+  animation: pop 0.22s ease-out both;
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--antique-gold) 14%, transparent),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
 }
 
 .glass {
@@ -131,4 +208,27 @@ body {
     color-mix(in srgb, var(--antique-gold) 55%, transparent),
     transparent
   );
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--antique-gold) 35%, transparent) transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--antique-gold) 35%, transparent);
+  border-radius: 999px;
 }
