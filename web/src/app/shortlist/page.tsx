@@ -8,6 +8,7 @@ import { track } from "@/lib/analytics";
 import { products, leadTimeLabel, priceLabel, STORAGE_KEYS, writeStoredIds } from "@/lib/site";
 import { useStoredIds, useStoredRoom } from "@/lib/use-storage";
 import { buildWhatsAppMessage, whatsappHref } from "@/lib/whatsapp";
+import { productPath } from "@/lib/seo";
 
 export default function ShortlistPage() {
   const ids = useStoredIds(STORAGE_KEYS.shortlist);
@@ -41,13 +42,13 @@ export default function ShortlistPage() {
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Link
-              href="/dining-sets"
+              href="/dining-sets/"
               className="inline-flex min-h-11 items-center rounded-full bg-champagne px-5 text-sm font-medium text-onyx"
             >
               Browse dining sets
             </Link>
             <Link
-              href="/sofas"
+              href="/sofas/"
               className="inline-flex min-h-11 items-center rounded-full border border-antique-gold/60 px-5 text-sm text-ivory"
             >
               Browse sofas
@@ -59,7 +60,7 @@ export default function ShortlistPage() {
           {room && (
             <p className="mt-6 rounded-xl border border-white/10 bg-espresso px-4 py-3 text-sm text-muted">
               Room size on file: <span className="text-champagne">{room.lengthM} × {room.widthM} m</span>.{" "}
-              <Link href="/size-guide" className="underline">
+              <Link href="/size-guide/" className="underline">
                 Change it
               </Link>
             </p>
@@ -88,7 +89,7 @@ export default function ShortlistPage() {
                   </button>
                 </div>
                 <Link
-                  href={`/products/${product.slug}`}
+                  href={productPath(product)}
                   className="mt-3 inline-block text-sm text-champagne hover:underline"
                 >
                   View {product.name} →
@@ -102,13 +103,16 @@ export default function ShortlistPage() {
               href={whatsappHref(message)}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => track("shortlist_send", { value: String(selected.length) })}
+              onClick={() => {
+                track("shortlist_send", { value: String(selected.length), ctaLocation: "shortlist" });
+                track("whatsapp_click", { value: "shortlist", ctaLocation: "shortlist", linkUrl: whatsappHref(message) });
+              }}
               className="inline-flex min-h-12 items-center rounded-full bg-wa px-5 text-sm font-medium text-white"
             >
               Send my shortlist to WhatsApp
             </a>
             <Link
-              href="/compare"
+              href="/compare/"
               className="inline-flex min-h-12 items-center rounded-full border border-antique-gold/60 px-5 text-sm text-ivory"
             >
               Compare saved items

@@ -9,6 +9,7 @@ import type { Product } from "@/data/products";
 import { leadTimeLabel, priceLabel, readStoredIds, STORAGE_KEYS, writeStoredIds } from "@/lib/site";
 import { useStoredIds } from "@/lib/use-storage";
 import { buildWhatsAppMessage, whatsappHref } from "@/lib/whatsapp";
+import { productPath } from "@/lib/seo";
 
 export function ProductCard({
   product,
@@ -38,7 +39,7 @@ export function ProductCard({
     writeStoredIds(key, next);
     if (key === STORAGE_KEYS.compare) {
       setMessage("");
-      track("compare_add", { product: product.name, value: product.slug });
+      track("compare_add", { product: product.name, itemId: product.id, value: product.slug, ctaLocation: "product-card" });
     }
   };
 
@@ -53,7 +54,7 @@ export function ProductCard({
         }`}
       >
         <Link
-          href={`/products/${product.slug}`}
+          href={productPath(product)}
           className={`relative block overflow-hidden ${listView ? "sm:w-56 sm:shrink-0" : "aspect-[4/5]"}`}
         >
           <Image
@@ -80,7 +81,7 @@ export function ProductCard({
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <h2 className="font-serif text-2xl text-ivory">
-                <Link href={`/products/${product.slug}`} className="hover:text-champagne">
+                <Link href={productPath(product)} className="hover:text-champagne">
                   {product.name}
                 </Link>
               </h2>
@@ -132,7 +133,7 @@ export function ProductCard({
               href={waHref}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => track("whatsapp_click", { product: product.name })}
+              onClick={() => track("whatsapp_click", { product: product.name, itemId: product.id, ctaLocation: "product-card", linkUrl: waHref })}
               className="inline-flex min-h-11 items-center justify-center rounded-full bg-wa px-4 py-2.5 text-sm font-medium text-white transition hover:bg-wa-dark"
             >
               Enquire
@@ -145,7 +146,7 @@ export function ProductCard({
               Quick view
             </button>
             <Link
-              href={`/products/${product.slug}`}
+              href={productPath(product)}
               className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/12 px-4 py-2.5 text-sm text-ivory/85 transition hover:border-champagne"
             >
               Details

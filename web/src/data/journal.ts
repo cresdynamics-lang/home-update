@@ -12,7 +12,7 @@ export type JournalPost = {
 
 export const journalPosts: JournalPost[] = [
   {
-    slug: "small-space-sofa-ideas",
+    slug: "small-living-room-sofa-ideas-nairobi",
     title: "Small-space sofa ideas for Nairobi apartments",
     minutes: 6,
     image: "/images/living-l-sofa.jpeg",
@@ -98,54 +98,54 @@ export const journalPosts: JournalPost[] = [
     relatedProducts: ["the-fluted", "the-orbit", "the-ivory"],
   },
   {
-    slug: "fabrics-for-kids-and-pets",
+    slug: "best-sofa-fabric-for-kids-and-pets",
     title: "Best sofa fabrics for homes with kids and pets",
     minutes: 5,
     image: "/images/sofa-detail.jpeg",
     excerpt:
-      "Performance velvet, chenille and linen blend compared for spills, claws, hair and everyday life.",
+      "Questions to ask about upholstery composition, care instructions and tested performance before choosing a sofa.",
     intro:
-      "Fabric is the only part of a sofa you will choose in daylight and regret at 7pm with a juice box in your hand. Here is an honest comparison of what actually survives a busy home.",
+      "Fabric names alone do not tell you how an upholstery will respond to spills, claws, cleaning or daily use. Ask for composition, supplier care instructions and test evidence for the exact fabric and finish before you decide.",
     sections: [
       {
-        heading: "Performance velvet is the workhorse",
+        heading: "Ask what performance means",
         body: [
-          "Performance velvet is the easiest of these to live with. Liquids bead on the surface instead of soaking in, hair lifts off with a cloth, and it wipes clean in seconds. It is the safe answer for a family room.",
+          "A product name does not prove spill resistance, abrasion strength or cleanability. Ask for the fabric composition, the test method and result, and the cleaning instructions that apply to the exact upholstery being offered.",
         ],
       },
       {
-        heading: "Chenille is the durable middle ground",
+        heading: "Check care instructions",
         body: [
-          "Chenille is hard-wearing and soft, and it hides everyday marks well. It is not fully waterproof, so it wants blotting rather than scrubbing, but it takes far more punishment than linen.",
+          "Ask the supplier for written care steps, including which cleaner is allowed, how to handle a spill and whether professional cleaning is recommended. Do not test a cleaner on the visible part of a finished sofa.",
         ],
       },
       {
-        heading: "Bouclé is beautiful and fussy",
+        heading: "Consider how the room is used",
         body: [
-          "Bouclé has the texture people fall for, but the loops trap debris and show spills. In a house with pets or small children, bouclé needs a strict vacuum schedule and prompt blotting.",
+          "Think about pets, children, food and the amount of daily use the sofa will get. Ask how the specific weave behaves with hair, snagging and routine vacuuming, and confirm any limits in the maker's care information.",
         ],
       },
       {
-        heading: "Linen blend is for calm rooms",
+        heading: "Compare evidence, not labels",
         body: [
-          "Linen blend looks relaxed and breathable, which is why it suits small, light-filled spaces. It wrinkles, absorbs and is unforgiving with grease stains. Choose it for the bedroom or the calm corner, not the family sofa.",
+          "Compare composition, colour options, care requirements and documented test results side by side. If the details are not available, treat performance as unconfirmed and choose based on appearance only after seeing a real sample.",
         ],
       },
     ],
     faq: [
       {
         q: "Which fabric is best with pets?",
-        a: "Performance velvet and chenille. Both lift hair easily and performance velvet will not absorb a spill.",
+        a: "There is no answer based on the fabric name alone. Confirm the exact composition, cleaning instructions and relevant test evidence for each upholstery option.",
       },
       {
         q: "Is linen blend hard to clean?",
-        a: "Yes, more than the others. It is best in low-traffic rooms or on removable covers you can wash.",
+        a: "Check the supplier's care instructions for the exact fabric and whether covers are removable and washable before ordering.",
       },
     ],
     relatedProducts: ["the-truffle", "the-linen", "the-cloud"],
   },
   {
-    slug: "measure-before-you-fall",
+    slug: "how-to-measure-your-room-for-a-sofa",
     title: "Measure twice. Fall in love once.",
     minutes: 4,
     image: "/images/4-seats-dinning.jpeg",
@@ -187,7 +187,7 @@ export const journalPosts: JournalPost[] = [
       {
         heading: "Covered means you have options",
         body: [
-          "A covered balcony in Nairobi gets far less rain and sun than an open one, which means performance fabrics and wipe-clean finishes are viable. That is why we qualify every water-resistant claim as applying to covered balconies specifically.",
+          "A roof does not establish that furniture is suitable for outdoor use. Ask the supplier whether the selected frame, upholstery and finish are rated for sunlight, humidity and occasional moisture, and follow their care instructions.",
         ],
       },
       {
@@ -200,7 +200,7 @@ export const journalPosts: JournalPost[] = [
     faq: [
       {
         q: "Can a sofa go on a balcony?",
-        a: "On a covered balcony, yes — with a wipe-clean fabric. We only claim water resistance for covered spaces, and we will confirm the specifics on WhatsApp before you order.",
+        a: "Only if the maker confirms that the specific frame, upholstery and finish are suitable for those conditions. Ask about sun exposure, humidity, rain and care before choosing.",
       },
     ],
     relatedProducts: ["the-orbit", "the-cloud"],
@@ -215,31 +215,69 @@ export const journalPosts: JournalPost[] = [
       "Fabric swatches feel different under showroom light than they do in your own home. Here is how to test them honestly before you spend on a sofa you will live with for years.",
     sections: [
       {
-        heading: "The coffee test",
+        heading: "Ask about documented testing",
         body: [
-          "Put a cup of hot black coffee on the swatch and leave it for a minute. If the ring stays, the fabric will disappoint you. Performance velvet and chenille both pass.",
+          "Do not pour drinks onto a sample unless the supplier explicitly recommends that test. Ask what spills or abrasion tests were run, on which exact fabric, and what the results do and do not show.",
         ],
       },
       {
-        heading: "The daylight test",
+        heading: "View a sample in your room",
         body: [
-          "Hold the swatch against your window at midday. Colours shift dramatically between showroom and home light — an oat that reads warm in a shop can look grey by a bright window.",
+          "If a sample is available, view it near the room's windows and under its evening lights. Screen and showroom colours can differ from the upholstery delivered, so ask what sample service is currently available.",
         ],
       },
       {
-        heading: "The hand test",
+        heading: "Ask before comparing handfeel",
         body: [
-          "Run your palm across it both ways. Bouclé is lovely but you will feel every crumb in it. Choose the texture you will still want to touch on a tired evening.",
+          "Touch the actual sample and compare the texture, pile and weave. Ask whether the sample represents the current production fabric and whether the colour or texture can vary between batches.",
         ],
       },
     ],
     faq: [
       {
         q: "Can I get fabric samples before ordering?",
-        a: "Yes. Message us on WhatsApp and we will arrange samples for the fabrics you are considering.",
+        a: "Contact Home Update to ask whether samples are currently available and whether collection or delivery fees apply.",
       },
     ],
     relatedProducts: ["the-cloud", "the-truffle"],
+  },
+  {
+    slug: "how-many-people-does-a-6-seater-table-seat",
+    title: "How many people does a 6-seater dining table seat?",
+    minutes: 5,
+    image: "/images/6-seats-dinning.jpeg",
+    excerpt: "What six seats means in everyday use, and what to check before choosing a dining set.",
+    intro: "A six-seater label is a useful starting point, not a promise that every six people will have the same amount of space. Chair width, table shape, place settings and the way people use the room all affect how comfortable a table feels. Check the exact product dimensions and seating arrangement before you decide.",
+    sections: [
+      { heading: "Start with the table shape and edge", body: ["A rectangular table usually places seats along its long sides, with some designs adding a seat at each end. A round table arranges chairs around the perimeter. The number of seats a maker lists depends on the actual top, base and chair design, so use the product's stated capacity and confirm it for the model you want.", "A wider chair or one with arms can take more room than a slim side chair. The table base matters too: a pedestal and four legs create different usable seating positions. Look at the chair and table together rather than counting places from the tabletop alone."] },
+      { heading: "Think about the way you will use it", body: ["For a quick weekday meal, six places may feel different from a long dinner with serving dishes in the middle. Consider how much elbow room you want, whether you use placemats, and if someone needs to sit at the ends. If the table will double as a work surface, think through that arrangement separately.", "Ask how many people the exact product is designed to seat, whether all chairs are included and whether alternate chair sizes change the arrangement. Request a photo of the table set with its listed chairs if you need to judge the spacing."] },
+      { heading: "Check room size and access", body: ["Measure the room's clear floor area, then allow space for chairs to move and for people to pass. Treat the 60 cm chair pull-out and 90 cm walkway used in our planning guide as estimates, not rules that guarantee a comfortable fit. Door swings, cupboards and nearby furniture can change the usable space.", "Measure the path into the room as well, including the narrowest corridor, lift or stair turn. Send the room and access measurements on WhatsApp and ask us to confirm the current product dimensions, seating details and delivery requirements before ordering."] },
+      { heading: "Questions to ask before buying", body: ["Confirm the table's full dimensions, the included chair count, seat width, material and finish options, current price and lead time. Ask about care instructions, delivery and setup for your area, and warranty terms. These details can vary by configuration, so get the answers for the exact set you are considering."] },
+    ],
+    faq: [
+      { q: "Does a 6-seater always fit six adults comfortably?", a: "Not necessarily. Chair width, table shape and the space each person prefers all matter. Ask for the capacity and chair dimensions of the exact set." },
+      { q: "How much room should I leave around it?", a: "Use the room-fit guide as a planning estimate, then check the table, chairs, doors and walkways in your own layout." },
+    ],
+    relatedProducts: ["the-fluted", "the-regent", "the-orbit"],
+  },
+  {
+    slug: "boucle-vs-velvet-vs-chenille",
+    title: "Bouclé vs velvet vs chenille: how to compare upholstery",
+    minutes: 6,
+    image: "/images/sofa-detail.jpeg",
+    excerpt: "Compare upholstery using the actual fabric composition, sample, care label and verified performance information.",
+    intro: "Bouclé, velvet and chenille describe different upholstery looks and constructions, but a name alone does not tell you how a particular fabric will wear, clean or respond to a spill. Composition, weave, backing, finishing treatment and supplier care instructions all matter. Compare the specific fabric swatches being offered, and ask for documentation before relying on a performance claim.",
+    sections: [
+      { heading: "Compare the feel and surface", body: ["Look closely at the yarn, pile and texture, then handle a real sample if one is available. Consider whether you prefer a smooth surface, a visible texture or a plush appearance. The exact feel varies between suppliers and fabric blends, so the material name should not replace seeing the actual swatch.", "Check the sample in the room where the furniture will be used. Daylight and evening lighting can change how a colour appears. Ask whether the sample matches the current production fabric and whether shade or texture can vary between batches."] },
+      { heading: "Check care and composition", body: ["Ask for the fiber composition and written cleaning instructions for the exact upholstery. Confirm which cleaners are permitted, how to handle a spill, whether vacuum attachments or professional cleaning are recommended and whether the covers can be removed. Do not assume that a fabric is machine washable or wipe-clean from its name.", "If a seller describes a fabric as suitable for children, pets or high-use rooms, ask what the claim means and what evidence supports it. Useful evidence identifies the tested fabric, the test method, the result and any limits. A test on one colour or finish may not apply to another."] },
+      { heading: "Compare performance evidence", body: ["For water or stain resistance, ask what liquid was used, how long it remained on the sample, how it was cleaned and whether the result was independently tested. Ask about abrasion, pilling, fading and snagging only where relevant to how your household uses the furniture. Treat unsupported descriptions as unconfirmed.", "Never pour a drink or apply a household cleaner to a showroom sample unless its supplier recommends the test. A demonstration can be useful when it is filmed or described honestly, but one short clip does not establish performance in every home or over the full life of a sofa."] },
+      { heading: "Make a like-for-like choice", body: ["Compare the exact swatches side by side for colour, handfeel, composition, care steps, available evidence and price. Ask whether switching fabric changes the lead time or price, and confirm availability before ordering. If a detail is missing, ask the seller to check rather than treating a general fabric description as a guarantee.", "Send Home Update the sofa model, room use and the fabric names you are considering. We can confirm which options and care details are currently available for that product and whether samples can be provided."] },
+    ],
+    faq: [
+      { q: "Which of these fabrics is easiest to clean?", a: "The name alone is not enough to answer. Ask for the care instructions and tested performance details for the exact fabric option." },
+      { q: "Can I compare a sample at home?", a: "Ask Home Update whether samples are currently available and whether collection or delivery fees apply." },
+    ],
+    relatedProducts: ["the-cloud", "the-truffle", "the-linen"],
   },
 ];
 

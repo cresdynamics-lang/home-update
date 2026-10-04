@@ -39,7 +39,12 @@ export function useIsClient() {
  * extra render pass on mount and every mounted component stays in sync.
  */
 export function useStoredValue(key: string) {
-  return useSyncExternalStore(subscribe, () => readRaw(key), serverSnapshot);
+  const isClient = useIsClient();
+  return useSyncExternalStore(
+    subscribe,
+    () => (isClient ? readRaw(key) : ""),
+    serverSnapshot,
+  );
 }
 
 export function useStoredIds(key: string): string[] {

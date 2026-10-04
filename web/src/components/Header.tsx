@@ -12,6 +12,7 @@ import {
 } from "./icons";
 import { WaButton } from "./ui";
 import { mega, nav, site } from "@/lib/site";
+import { track } from "@/lib/analytics";
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -38,17 +39,18 @@ export function Header() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-2 lg:px-8">
           <div className="flex items-center gap-5">
             <a href={`https://wa.me/${site.whatsapp}`} className="hover:text-champagne">
-              Free design help on WhatsApp
+              Room-fit help on WhatsApp
             </a>
-            <Link href="/about" className="hover:text-champagne">
-              Delivery &amp; setup
+            <Link href="/about/" className="hover:text-champagne">
+              Ask about delivery &amp; setup
             </Link>
-            <Link href="/custom-design" className="hover:text-champagne">
-              Custom sizes &amp; fabrics
+            <Link href="/custom-design/" className="hover:text-champagne">
+              Ask about custom options
             </Link>
           </div>
           <a
             href={`tel:${site.phoneTel}`}
+            onClick={() => track("call_click", { linkUrl: `tel:${site.phoneTel}`, ctaLocation: "header" })}
             className="inline-flex items-center gap-2 text-champagne hover:text-ivory"
           >
             <PhoneIcon className="h-3.5 w-3.5" />
@@ -163,27 +165,6 @@ export function Header() {
                   </ul>
                 </div>
               ))}
-              <Link
-                href="/sale"
-                className="group relative overflow-hidden rounded-2xl"
-                onClick={() => setMegaOpen(false)}
-              >
-                <Image
-                  src="/images/living-l-sofa.jpeg"
-                  alt="Sale featured sofa"
-                  fill
-                  className="object-cover transition duration-700 group-hover:scale-105"
-                  sizes="240px"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-onyx via-onyx/20 to-transparent" />
-                <span className="absolute top-3 left-3 rounded-full bg-champagne px-2.5 py-1 text-[10px] font-semibold tracking-wide text-onyx">
-                  SALE
-                </span>
-                <span className="absolute inset-x-0 bottom-0 p-4 font-serif text-lg text-ivory">
-                  The Cloud, redefined.
-                  <span className="mt-1 block text-sm text-champagne">Shop the sale →</span>
-                </span>
-              </Link>
             </div>
           </div>
         ) : null}
@@ -213,6 +194,7 @@ export function Header() {
             <WaButton className="w-full" />
             <a
               href={`tel:${site.phoneTel}`}
+              onClick={() => track("call_click", { linkUrl: `tel:${site.phoneTel}`, ctaLocation: "mobile-header" })}
               className="flex items-center justify-center gap-2 rounded-full border border-antique-gold/50 py-3 text-sm text-ivory"
             >
               <PhoneIcon className="h-4 w-4 text-antique-gold" />

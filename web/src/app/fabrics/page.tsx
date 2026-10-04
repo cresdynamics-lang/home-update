@@ -15,7 +15,7 @@ export default function FabricsPage() {
           From performance velvet to bouclé — pick a handfeel, then a shade that belongs with your
           tiles and curtains.
         </p>
-        <GoldButton href="/contact" className="mt-8">
+        <GoldButton href="/contact/" className="mt-8">
           Request fabric samples
         </GoldButton>
       </div>

@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { WaButton } from "@/components/ui";
 import { journalPosts, getPost } from "@/data/journal";
 import { products, site } from "@/lib/site";
+import { productPath } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -17,11 +18,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getPost(slug);
   if (!post) return { title: "Journal" };
 
-  const url = `${site.url}/journal/${post.slug}`;
+  const url = `${site.url}/journal/${post.slug}/`;
   return {
     title: `${post.title} | Home Update`,
     description: post.excerpt,
-    alternates: { canonical: url },
+    alternates: { canonical: url, languages: { "en-KE": url } },
     openGraph: {
       type: "article",
       title: post.title,
@@ -39,19 +40,27 @@ export default async function JournalArticlePage({ params }: Props) {
   if (!post) notFound();
 
   const related = products.filter((p) => post.relatedProducts.includes(p.id));
-  const url = `${site.url}/journal/${post.slug}`;
+  const url = `${site.url}/journal/${post.slug}/`;
 
   const jsonLd = [
     {
       "@context": "https://schema.org",
-      "@type": "BlogPosting",
+      "@type": "Article",
       headline: post.title,
       description: post.excerpt,
       image: [`${site.url}${post.image}`],
-      datePublished: "2026-09-25",
       author: { "@type": "Organization", name: site.name },
-      publisher: { "@type": "Organization", name: site.name },
+      publisher: { "@id": `${site.url}/#organization` },
       mainEntityOfPage: url,
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${site.url}/` },
+        { "@type": "ListItem", position: 2, name: "Journal", item: `${site.url}/journal/` },
+        { "@type": "ListItem", position: 3, name: post.title, item: url },
+      ],
     },
     {
       "@context": "https://schema.org",
@@ -108,7 +117,7 @@ export default async function JournalArticlePage({ params }: Props) {
             {related.map((product) => (
               <Link
                 key={product.id}
-                href={`/products/${product.slug}`}
+                href={productPath(product)}
                 className="inline-flex min-h-11 items-center rounded-full border border-antique-gold/60 px-4 text-sm text-ivory transition hover:border-champagne"
               >
                 {product.name} →

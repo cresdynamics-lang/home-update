@@ -1,50 +1,51 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PhoneIcon, WhatsAppIcon } from "./icons";
-import { CallButton, WaButton } from "./ui";
+import { WaButton } from "./ui";
+import { CallButton } from "./CallButton";
 import { site, waLink } from "@/lib/site";
 
 const columns = [
   {
     title: "Shop",
     links: [
-      ["Dining Sets", "/dining-sets"],
-      ["4-Seater Round Tables", "/dining-sets"],
-      ["6-Seater Tables", "/dining-sets"],
-      ["Sofas & Sectionals", "/sofas"],
-      ["L-Shaped Sofas", "/sofas"],
-      ["Bestsellers", "/#bestsellers"],
-      ["Sale", "/sale"],
+      ["Dining Sets", "/dining-sets/"],
+      ["4-Seater Round Tables", "/dining-sets/4-seater-round-dining-tables/"],
+      ["6-Seater Tables", "/dining-sets/6-seater-dining-tables/"],
+      ["Sofas & Sectionals", "/sofas/"],
+      ["L-Shaped Sofas", "/sofas/l-shaped-sofas/"],
+      ["Furniture collection", "/#bestsellers"],
+      ["Current prices", "/sale/"],
     ],
   },
   {
     title: "Design",
     links: [
-      ["Fabrics & Colours", "/fabrics"],
-      ["Match My Room", "/custom-design"],
-      ["Size Guide", "/size-guide"],
-      ["Custom Design", "/custom-design"],
-      ["Request Fabric Samples", "/contact"],
+      ["Fabrics & Colours", "/fabrics-and-colours/"],
+      ["Match My Room", "/match-my-room/"],
+      ["Size Guide", "/size-guide/"],
+      ["Custom Design", "/custom-design/"],
+      ["Ask about fabric samples", "/contact/"],
     ],
   },
   {
     title: "Learn",
     links: [
-      ["The Journal", "/journal"],
-      ["Buying Guides", "/journal"],
-      ["Small-Space Ideas", "/journal"],
-      ["Fabric Care", "/fabrics"],
-      ["FAQs", "/about"],
+      ["The Journal", "/journal/"],
+      ["Buying Guides", "/journal/"],
+      ["Small-Space Ideas", "/journal/small-living-room-sofa-ideas-nairobi/"],
+      ["Fabric Care", "/fabrics-and-colours/"],
+      ["FAQs", "/faqs/"],
     ],
   },
   {
     title: "Company",
     links: [
-      ["About Home Update", "/about"],
-      ["Delivery & Setup", "/about"],
-      ["Warranty & Returns", "/about"],
-      ["Visit the Showroom", "/contact"],
-      ["Contact", "/contact"],
+      ["About Home Update", "/about/"],
+      ["Ask about Delivery & Setup", "/contact/"],
+      ["Ask about Warranty & Returns", "/contact/"],
+      ["Ask about an in-person visit", "/contact/"],
+      ["Contact", "/contact/"],
     ],
   },
 ] as const;
@@ -78,12 +79,12 @@ export function Footer() {
               Stay inspired
             </p>
             <p className="mt-1 font-serif text-2xl text-ivory">
-              Get our free Fabric &amp; Size Guide on WhatsApp.
+              Request our Fabric &amp; Size Guide on WhatsApp.
             </p>
           </div>
           <form
             className="flex flex-col gap-3 sm:flex-row"
-            action={waLink("Please send me the free Fabric & Size Guide.")}
+            action={waLink("Please send me the Fabric & Size Guide.")}
           >
             <input
               type="tel"
@@ -171,19 +172,17 @@ export function Footer() {
                   WhatsApp: fastest reply
                 </a>
               </li>
-              <li className="text-muted">{site.email}</li>
-              <li className="text-muted">{site.address}</li>
-              <li className="text-muted">{site.hours}</li>
+              <li className="text-muted">Nairobi, Kenya</li>
             </ul>
           </div>
         </div>
 
         <div className="mt-12 flex flex-col gap-4 border-t border-white/8 pt-6 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-wrap gap-4 text-xs text-muted">
-            <Link href="/about">Privacy Policy</Link>
-            <Link href="/about">Terms of Sale</Link>
-            <Link href="/about">Cookie Settings</Link>
-            <Link href="/">Sitemap</Link>
+            <Link href="/about/">About Home Update</Link>
+            <Link href="/sale/">Current prices</Link>
+            <Link href="/contact/">Contact</Link>
+            <a href="/sitemap.xml">XML sitemap</a>
           </div>
           <div className="flex items-center gap-2 text-xs text-muted">
             <span>We accept</span>

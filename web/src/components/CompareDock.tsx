@@ -2,12 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { buildWhatsAppMessage, whatsappHref } from "@/lib/whatsapp";
 import { products, readStoredIds, STORAGE_KEYS, writeStoredIds } from "@/lib/site";
+import { useStoredRoom } from "@/lib/use-storage";
+import { track } from "@/lib/analytics";
 
 export function CompareDock() {
   const [compared, setCompared] = useState<string[]>([]);
   const [savedCount, setSavedCount] = useState(0);
+  const room = useStoredRoom();
 
   useEffect(() => {
     const sync = () => {
@@ -23,9 +27,14 @@ export function CompareDock() {
     };
   }, []);
 
-  if (compared.length === 0) return null;
+  const chosen = useMemo(
+    () => products.filter((product) => compared.includes(product.id)),
+    [compared],
+  );
 
-  const chosen = products.filter((product) => compared.includes(product.id));
+  const compareMessage = useMemo(() => buildWhatsAppMessage({ compare: chosen, room }), [chosen, room]);
+
+  if (compared.length === 0) return null;
 
   return (
     <div
@@ -48,12 +57,21 @@ export function CompareDock() {
         <div className="flex items-center gap-2">
           {savedCount > 0 && (
             <Link
-              href="/shortlist"
+              href="/shortlist/"
               className="hidden min-h-11 items-center rounded-full border border-white/12 px-3 text-sm text-ivory/80 md:inline-flex"
             >
               Shortlist ({savedCount})
             </Link>
           )}
+          <a
+            href={whatsappHref(compareMessage)}
+            target="_blank"
+            rel="noreferrer noopener"
+            onClick={() => track("whatsapp_click", { value: "compare-dock", ctaLocation: "compare-dock", linkUrl: whatsappHref(compareMessage) })}
+            className="inline-flex min-h-11 items-center rounded-full bg-wa px-3 text-sm font-medium text-white"
+          >
+            Ask on WhatsApp
+          </a>
           <button
             type="button"
             onClick={() => {
@@ -65,7 +83,7 @@ export function CompareDock() {
             Clear
           </button>
           <Link
-            href="/compare"
+            href="/compare/"
             className="inline-flex min-h-11 items-center rounded-full bg-champagne px-4 text-sm font-medium text-onyx"
           >
             Compare ({chosen.length})

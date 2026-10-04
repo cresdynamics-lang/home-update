@@ -9,6 +9,7 @@ import type { Product } from "@/data/products";
 import { leadTimeLabel, priceLabel, readStoredIds, STORAGE_KEYS, writeStoredIds } from "@/lib/site";
 import { useStoredIds } from "@/lib/use-storage";
 import { buildWhatsAppMessage, whatsappHref } from "@/lib/whatsapp";
+import { productPath } from "@/lib/seo";
 
 /** Quick-view modal opened from a product card without leaving the listing. */
 export function QuickViewModal({
@@ -49,7 +50,7 @@ export function QuickViewModal({
       : [...raw, product.id];
     writeStoredIds(key, next);
     if (key === STORAGE_KEYS.compare) {
-      track("compare_add", { product: product.name, value: product.slug });
+      track("compare_add", { product: product.name, itemId: product.id, value: product.slug, ctaLocation: "quick-view" });
     }
   };
 
@@ -106,13 +107,14 @@ export function QuickViewModal({
             href={waHref}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => track("whatsapp_click", { product: product.name })}
+            onClick={() => track("whatsapp_click", { product: product.name, itemId: product.id, ctaLocation: "quick-view", linkUrl: waHref })}
             className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full bg-wa px-5 py-3 text-sm font-medium text-white transition hover:bg-wa-dark"
           >
             Ask for today’s price
           </a>
           <Link
-            href={`/products/${product.slug}`}
+            href={productPath(product)}
+            onClick={onClose}
             className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full border border-antique-gold/60 px-5 py-3 text-sm text-ivory transition hover:border-champagne"
           >
             Full details

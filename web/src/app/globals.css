@@ -35,6 +35,10 @@
 }
 
 html {
+  scroll-behavior: auto;
+}
+
+html[data-scroll-behavior="smooth"] {
   scroll-behavior: smooth;
 }
 
@@ -200,6 +204,62 @@ label:has(> input[type="radio"]) {
       transparent 48%
     );
 }
+
+  .hero-scene {
+    perspective: 1200px;
+    transform-style: preserve-3d;
+    background: var(--espresso);
+  }
+
+  .hero-scene-image {
+    transform-origin: 56% 62%;
+    animation: hero-camera-drift 24s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
+  .hero-scene-light {
+    position: absolute;
+    inset: -20%;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 72% 34%, rgb(232 203 140 / 11%), transparent 42%);
+    mix-blend-mode: screen;
+    animation: hero-light-drift 18s ease-in-out infinite alternate;
+  }
+
+  @keyframes hero-camera-drift {
+    0% {
+      transform: translate3d(0, 0, 0) rotateX(0.4deg) rotateY(-0.55deg) scale(1.09);
+    }
+    50% {
+      transform: translate3d(-0.35%, -0.45%, 18px) rotateX(-0.25deg) rotateY(0.35deg) scale(1.13);
+    }
+    100% {
+      transform: translate3d(0.25%, -0.1%, 34px) rotateX(0.2deg) rotateY(0.7deg) scale(1.16);
+    }
+  }
+
+  @keyframes hero-light-drift {
+    from {
+      transform: translate3d(-1.5%, 0, 12px) scale(0.98);
+      opacity: 0.55;
+    }
+    to {
+      transform: translate3d(1.5%, 1%, 12px) scale(1.04);
+      opacity: 0.9;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-scene-image,
+    .hero-scene-light {
+      animation: none;
+      will-change: auto;
+    }
+
+    .hero-scene-image {
+      transform: scale(1.08);
+    }
+  }
 
 .section-rule {
   background: linear-gradient(

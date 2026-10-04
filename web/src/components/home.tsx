@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useMemo, useState } from "react";
 import {
   DropIcon,
   LayersIcon,
@@ -15,21 +18,25 @@ import {
   products,
   rooms,
   site,
-  siteConfig,
   waLink,
 } from "@/lib/site";
+import { productPath } from "@/lib/seo";
+import { track } from "@/lib/analytics";
 
 export function Hero() {
   return (
     <section className="relative min-h-[78vh] overflow-hidden sm:min-h-[85vh] lg:min-h-[92vh]">
-      <Image
-        src="/images/living-l-sofa.jpeg"
-        alt="L-shaped sofa in a bright modern living room"
-        fill
-        priority
-        className="object-cover object-center"
-        sizes="100vw"
-      />
+      <div className="hero-scene absolute inset-0" aria-hidden="true">
+        <Image
+          src="/images/living-l-sofa.jpeg"
+          alt=""
+          fill
+          priority
+          className="hero-scene-image object-cover object-center"
+          sizes="100vw"
+        />
+        <div className="hero-scene-light" />
+      </div>
       <div className="hero-scrim absolute inset-0" />
 
       <div className="relative mx-auto flex min-h-[78vh] max-w-7xl flex-col justify-start px-5 pt-8 pb-36 sm:min-h-[85vh] sm:pt-14 md:justify-center md:pt-20 md:pb-36 lg:min-h-[92vh] lg:px-8 lg:pb-36">
@@ -50,6 +57,7 @@ export function Hero() {
             <p className="mt-1 font-serif text-base text-ivory">The Truffle Sectional</p>
             <a
               href={waLink("Hi — I’d like today’s price for The Truffle Sectional.")}
+              onClick={() => track("whatsapp_click", { product: "The Truffle", itemId: "truffle", ctaLocation: "featured-card" })}
               className="mt-2 inline-block text-sm text-champagne hover:text-ivory"
               target="_blank"
               rel="noopener noreferrer"
@@ -61,7 +69,7 @@ export function Hero() {
 
         <div className="max-w-2xl">
           <p className="animate-fade-up mb-4 text-[11px] tracking-[0.22em] text-champagne uppercase">
-            Dining sets · Sofas · Made to fit your home
+            Dining sets · Sofas · Room-fit guidance
           </p>
           <h1 className="animate-fade-up-delay font-serif text-4xl leading-[1.08] text-champagne sm:text-5xl lg:text-6xl">
             Look around your living room.{" "}
@@ -75,6 +83,7 @@ export function Hero() {
             <WaButton pulse>Chat on WhatsApp for today’s price</WaButton>
             <a
               href={`tel:${site.phoneTel}`}
+              onClick={() => track("call_click", { linkUrl: `tel:${site.phoneTel}`, ctaLocation: "home-hero" })}
               className="inline-flex items-center gap-2 text-sm text-ivory/90 hover:text-champagne"
             >
               <PhoneIcon className="h-4 w-4 text-antique-gold" />
@@ -99,9 +108,21 @@ export function Hero() {
 }
 
 function FitFinder() {
+  const [room, setRoom] = useState("Dining room");
+  const [seats, setSeats] = useState("4 seats");
+  const [fabric, setFabric] = useState("Ask about fabric options");
+  const [colour, setColour] = useState("Oat");
+
+  const message = useMemo(
+    () =>
+      `Hi Home Update — I’m looking for a ${room.toLowerCase()} piece for ${seats.toLowerCase()} with a ${fabric.toLowerCase()} finish in ${colour} colour. Please suggest the best option and current price.`,
+    [room, seats, fabric, colour],
+  );
+
   return (
     <form
-      action={waLink("Hi Home Update — please help me find my fit.")}
+      action={waLink(message)}
+      method="get"
       className="mx-auto flex max-w-7xl flex-col gap-4 rounded-[1.35rem] border border-white/10 bg-espresso/95 p-4 shadow-2xl backdrop-blur md:flex-row md:items-end md:gap-3 md:p-5"
     >
       <div className="md:min-w-[9rem]">
@@ -110,34 +131,45 @@ function FitFinder() {
       </div>
       {(
         [
-          ["Room", ["Dining room", "Living room", "Both"]],
-          ["Seats / Size", ["4 seats", "6 seats", "8 seats", "Custom"]],
-          ["Fabric", ["Water-resistant", "Velvet", "Bouclé", "Linen blend"]],
-          ["Colour", ["Oat", "Cream", "Truffle", "Charcoal"]],
+          ["Room", ["Dining room", "Living room", "Both"], room, setRoom],
+          ["Seats / Size", ["4 seats", "6 seats", "8 seats", "Custom"], seats, setSeats],
+          ["Fabric", ["Ask about fabric options", "Velvet", "Bouclé", "Linen blend"], fabric, setFabric],
+          ["Colour", ["Oat", "Cream", "Truffle", "Charcoal"], colour, setColour],
         ] as const
-      ).map(([label, options]) => (
+      ).map(([label, options, value, setter]) => (
         <label key={label} className="min-w-0 flex-1">
           <span className="mb-1.5 block text-[10px] tracking-[0.16em] text-muted uppercase">
             {label}
           </span>
-          <select className="w-full appearance-none rounded-xl border border-white/10 bg-onyx px-3 py-3 text-sm text-ivory outline-none focus:border-antique-gold/50">
+          <select
+            value={value}
+            onChange={(event) => setter(event.target.value)}
+            className="w-full appearance-none rounded-xl border border-white/10 bg-onyx px-3 py-3 text-sm text-ivory outline-none focus:border-antique-gold/50"
+          >
             {options.map((o) => (
-              <option key={o}>{o}</option>
+              <option key={o} value={o}>
+                {o}
+              </option>
             ))}
           </select>
         </label>
       ))}
-      <GoldButton className="md:mb-0.5 md:!px-4">Find my fit</GoldButton>
+      <button
+        type="submit"
+        className="inline-flex items-center justify-center gap-2 rounded-full bg-champagne px-5 py-3 text-sm font-medium text-onyx transition hover:bg-antique-gold md:mb-0.5 md:px-4"
+      >
+        Find my fit
+      </button>
     </form>
   );
 }
 
 export function ValueBar() {
   const items = [
-    { icon: DropIcon, title: "Water-resistant fabrics", note: "Built for spills and real life" },
-    { icon: RulerIcon, title: "Made to your size", note: "Custom lengths and depths" },
-    { icon: LayersIcon, title: "Matched to your room", note: "Tiles, curtains, timber" },
-    { icon: TruckIcon, title: "Delivered & set up", note: "Placed where you want it" },
+    { icon: RulerIcon, title: "Check the room fit", note: "Compare room and product dimensions" },
+    { icon: LayersIcon, title: "Explore finishes", note: "Review listed colours and upholstery" },
+    { icon: DropIcon, title: "Ask about fabric care", note: "Confirm details for your chosen finish" },
+    { icon: TruckIcon, title: "Ask about delivery", note: "Confirm area, timing and setup" },
   ];
   return (
     <section className="border-b border-white/5 bg-onyx pt-24 pb-10 md:pt-28">
@@ -204,12 +236,12 @@ export function Bestsellers() {
   return (
     <section id="bestsellers" className="bg-onyx py-8 lg:py-12">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <SectionLabel>Bestsellers</SectionLabel>
+        <SectionLabel>Furniture collection</SectionLabel>
         <SectionTitle>
-          Pieces people <Em>keep choosing.</Em>
+          Dining and lounge pieces to <Em>explore.</Em>
         </SectionTitle>
         <p className="mt-3 max-w-2xl text-muted">
-          Real photos, real sizes, real fabrics. Tap WhatsApp and we send today’s price.
+          Review listed product details and ask us to confirm current options and today's price on WhatsApp.
         </p>
         <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-6">
           {products.map((product) => (
@@ -226,7 +258,7 @@ export function Bestsellers() {
                   sizes="(max-width:1024px) 50vw, 33vw"
                 />
                 <span className="absolute top-3 left-3 rounded-full bg-champagne px-2.5 py-1 text-[10px] font-semibold tracking-wide text-onyx uppercase">
-                  {product.bestseller ? "Bestseller" : product.sale ? "Sale" : "Featured"}
+                  Featured
                 </span>
               </div>
               <div className="p-5">
@@ -269,7 +301,7 @@ export function Bestsellers() {
                   >
                     Get price
                   </WaButton>
-                  <OutlineButton href={`/products/${product.slug}`} className="!px-4 !py-2.5 text-xs">
+                  <OutlineButton href={productPath(product)} className="!px-4 !py-2.5 text-xs">
                     View details
                   </OutlineButton>
                 </div>
@@ -278,7 +310,7 @@ export function Bestsellers() {
           ))}
         </div>
         <div className="mt-10 flex justify-center">
-          <OutlineButton href="/dining-sets">Shop all pieces</OutlineButton>
+          <OutlineButton href="/dining-sets/">Shop all pieces</OutlineButton>
         </div>
       </div>
     </section>
@@ -291,10 +323,10 @@ export function FabricsSection() {
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <SectionLabel>Fabrics</SectionLabel>
         <SectionTitle>
-          Fabrics that <Em>forgive.</Em>
+          Fabrics and colours to <Em>explore.</Em>
         </SectionTitle>
         <p className="mt-3 max-w-xl text-muted">
-          Life happens on furniture. Choose a fabric built for spills, pets, kids and long Sundays.
+          Explore the options shown here. Ask us to confirm composition, care guidance and performance for the selected upholstery.
         </p>
         <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-5">
           {fabrics.map((fabric) => (
@@ -444,7 +476,7 @@ export function SizeGuideTeaser() {
           ))}
         </div>
         <div className="mt-8">
-          <OutlineButton href="/size-guide">Open the full size guide</OutlineButton>
+          <OutlineButton href="/size-guide/">Open the full size guide</OutlineButton>
         </div>
       </div>
     </section>
@@ -467,18 +499,17 @@ export function CustomDesign() {
         <div className="bg-espresso p-8 md:p-12">
           <SectionLabel>Custom design</SectionLabel>
           <SectionTitle>
-            Not quite right? <Em>Make it yours.</Em>
+            Need a different size? <Em>Ask what is possible.</Em>
           </SectionTitle>
           <p className="mt-4 text-sm leading-relaxed text-muted">
-            Length, depth, timber tone, fabric and seat count — we build around the room you already
-            live in.
+            Share your room measurements and the changes you have in mind. We&apos;ll confirm whether the selected piece can be made to those specifications and provide the current price and lead time.
           </p>
           <ul className="mt-6 space-y-3 text-sm text-ivory/90">
             {[
-              "Any length, width or seat count",
-              "Timber tone and finish",
-              "Fabric and colour matched to your room",
-              "Delivery and professional setup",
+              "Ask which dimensions can be changed",
+              "Confirm available timber tones and finishes",
+              "Ask about fabric and colour options",
+              "Confirm delivery and setup for your location",
             ].map((item) => (
               <li key={item} className="flex gap-3">
                 <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-antique-gold" />
@@ -486,53 +517,13 @@ export function CustomDesign() {
               </li>
             ))}
           </ul>
-          <GoldButton href="/custom-design" className="mt-8">
+          <GoldButton href="/custom-design/" className="mt-8">
             Start your design
           </GoldButton>
         </div>
       </div>
     </section>
   );
-}
-
-export function SaleBanner() {
-  // No urgency is faked: nothing renders unless the owner has set a real end
-  // date in siteConfig. The date is printed statically (deterministic, and
-  // visible to crawlers) rather than ticking on the client.
-  const saleEndIso = siteConfig.saleEnd;
-
-  return (
-    <section className="bg-onyx py-8">
-      <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <div className="flex flex-col gap-6 rounded-[1.35rem] border border-antique-gold/25 bg-[linear-gradient(120deg,#2a1c14,#1a110d_45%,#3a2818)] p-6 md:flex-row md:items-center md:justify-between md:p-8">
-          <div>
-            <span className="mb-2 inline-flex rounded-full bg-champagne px-2.5 py-1 text-[10px] font-semibold tracking-wide text-onyx">
-              SALE
-            </span>
-            <h2 className="font-serif text-3xl text-ivory md:text-4xl">The Home Update Sale.</h2>
-            {saleEndIso ? (
-              <p className="mt-2 text-sm text-champagne">Ends {formatDate(saleEndIso)}</p>
-            ) : null}
-          </div>
-          <GoldButton href="/sale">Shop the sale</GoldButton>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/** Deterministic date format: fixed locale and timezone, no client/server drift. */
-function formatDate(iso: string) {
-  try {
-    return new Date(iso).toLocaleDateString("en-KE", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-      timeZone: "Africa/Nairobi",
-    });
-  } catch {
-    return iso;
-  }
 }
 
 export function JournalTeaser() {
@@ -547,7 +538,7 @@ export function JournalTeaser() {
           {journal.map((post) => (
             <Link
               key={post.slug}
-              href={`/journal/${post.slug}`}
+              href={`/journal/${post.slug}/`}
               className="group overflow-hidden rounded-[1.25rem] border border-white/8 bg-espresso"
             >
               <div className="relative aspect-[16/10]">
@@ -578,10 +569,10 @@ export function JournalTeaser() {
 
 export function WhyUs() {
   const reasons = [
-    "You see exactly what you are getting — real room photos.",
-    "Sizes are made for Kenyan rooms, not foreign showrooms.",
-    "Fabrics chosen for spills, pets and everyday living.",
-    "One WhatsApp message gets you price, options and timing.",
+    "Review listed dimensions and ask for help checking room fit.",
+    "Ask which sizes and configurations are available for each piece.",
+    "Confirm fabric care and performance for the upholstery you select.",
+    "Use WhatsApp to ask about current price, options and timing.",
   ];
   return (
     <section className="bg-onyx py-16">

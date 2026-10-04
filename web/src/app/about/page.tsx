@@ -1,12 +1,19 @@
 import { WhyUs } from "@/components/home";
 import { Em, SectionLabel, SectionTitle } from "@/components/ui";
 import { site } from "@/lib/site";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = { title: "About & Delivery" };
+export const metadata = pageMetadata(
+  "About Home Update Furniture Nairobi | Home Update",
+  "Meet Home Update Furniture and explore dining sets and sofas designed around real room measurements. Contact us on WhatsApp.",
+  "/about/",
+);
 
 export default function AboutPage() {
   return (
     <>
+      <BreadcrumbSchema items={[{ name: "Home", path: "/" }, { name: "About", path: "/about/" }]} />
       <div className="mx-auto max-w-7xl px-5 pt-16 lg:px-8">
         <SectionLabel>About Home Update</SectionLabel>
         <SectionTitle>
@@ -14,13 +21,13 @@ export default function AboutPage() {
         </SectionTitle>
         <p className="mt-4 max-w-2xl text-muted">
           {site.tagline} We help Nairobi homes choose dining sets and sofas with clear sizes, honest
-          fabrics and delivery that includes setup.
+          fabrics and delivery details before you order.
         </p>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {[
-            ["Delivery & setup", "Scheduled delivery with placement in the room you choose."],
-            ["Warranty", "Craftsmanship warranty details confirmed with your order on WhatsApp."],
-            ["Showroom visits", "Message us to book a visit or a virtual room walkthrough."],
+            ["Delivery & setup", "Ask us to confirm service area, fees, timing and setup details."],
+            ["Warranty", "Ask us to confirm the current warranty terms for your selected piece."],
+            ["Visit options", "Contact us to confirm whether an in-person visit is available."],
           ].map(([t, n]) => (
             <div key={t} className="rounded-2xl border border-white/8 bg-espresso p-5">
               <h2 className="font-serif text-xl text-champagne">{t}</h2>

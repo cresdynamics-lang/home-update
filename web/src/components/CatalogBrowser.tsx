@@ -25,9 +25,10 @@ type Props = {
   category?: "dining" | "sofa" | "all";
   saleOnly?: boolean;
   basePath: string;
+  productIds?: string[];
 };
 
-export function CatalogBrowser({ products, category = "all", saleOnly, basePath }: Props) {
+export function CatalogBrowser({ products, category = "all", saleOnly, basePath, productIds }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -40,15 +41,14 @@ export function CatalogBrowser({ products, category = "all", saleOnly, basePath 
   const width = get("width");
   const fabric = get("fabric");
   const colour = get("colour");
-  const water = get("water") === "1";
-  const tag = get("tag");
 
   const setParam = (key: string, value: string | null) => {
     const params = new URLSearchParams(searchParams.toString());
     if (!value) params.delete(key);
     else params.set(key, value);
     const query = params.toString();
-    router.push(query ? `${basePath}?${query}` : basePath, { scroll: false });
+    const cleanPath = basePath.endsWith("/") ? basePath : `${basePath}/`;
+    router.push(query ? `${cleanPath}?${query}` : cleanPath, { scroll: false });
   };
 
   useEffect(() => {
@@ -61,6 +61,7 @@ export function CatalogBrowser({ products, category = "all", saleOnly, basePath 
 
   const filtered = useMemo(() => {
     let items = products.filter((product) => {
+      if (productIds && !productIds.includes(product.id)) return false;
       if (saleOnly) return Boolean(product.sale);
       if (category === "dining") return product.category === "dining";
       if (category === "sofa") return product.category === "sofa";
@@ -78,9 +79,6 @@ export function CatalogBrowser({ products, category = "all", saleOnly, basePath 
     }
     if (fabric) items = items.filter((p) => p.fabrics.includes(fabric));
     if (colour) items = items.filter((p) => p.colours.includes(colour));
-    if (water) items = items.filter((p) => p.waterResistant);
-    if (tag === "bestseller") items = items.filter((p) => p.bestseller);
-    if (tag === "sale") items = items.filter((p) => p.sale);
 
     if (sort === "price") {
       items = [...items].sort((a, b) => (a.priceFrom ?? 1e9) - (b.priceFrom ?? 1e9));
@@ -92,17 +90,15 @@ export function CatalogBrowser({ products, category = "all", saleOnly, basePath 
       );
     }
     return items;
-  }, [products, category, saleOnly, seats, width, fabric, colour, water, tag, sort]);
+  }, [products, category, saleOnly, seats, width, fabric, colour, sort]);
 
   const activeCount =
     (seats ? 1 : 0) +
     (width ? 1 : 0) +
     (fabric ? 1 : 0) +
-    (colour ? 1 : 0) +
-    (water ? 1 : 0) +
-    (tag ? 1 : 0);
+    (colour ? 1 : 0);
 
-  const clearAll = () => router.push(basePath, { scroll: false });
+  const clearAll = () => router.push(basePath.endsWith("/") ? basePath : `${basePath}/`, { scroll: false });
 
   const FilterControls = (
     <div className="space-y-6">
@@ -152,15 +148,6 @@ export function CatalogBrowser({ products, category = "all", saleOnly, basePath 
 
       <FilterGroup label="Features">
         <div className="flex flex-wrap gap-2">
-          <Pill active={water} onClick={() => setParam("water", water ? null : "1")}>
-            Water-resistant
-          </Pill>
-          <Pill active={tag === "bestseller"} onClick={() => setParam("tag", tag === "bestseller" ? null : "bestseller")}>
-            Bestseller
-          </Pill>
-          <Pill active={tag === "sale"} onClick={() => setParam("tag", tag === "sale" ? null : "sale")}>
-            Sale
-          </Pill>
         </div>
       </FilterGroup>
 

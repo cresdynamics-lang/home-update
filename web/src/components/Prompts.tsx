@@ -6,6 +6,7 @@ import { CloseIcon } from "@/components/icons";
 import { siteConfig, STORAGE_KEYS } from "@/lib/site";
 import { useStoredValue } from "@/lib/use-storage";
 import { whatsappHref } from "@/lib/whatsapp";
+import { track } from "@/lib/analytics";
 
 /**
  * Session prompts. At most ONE proactive prompt per session (the fit finder).
@@ -49,7 +50,7 @@ export function Prompts() {
           className="fixed inset-x-3 bottom-3 z-[70] mx-auto max-w-lg rounded-2xl border border-white/12 bg-espresso/97 p-4 shadow-2xl backdrop-blur md:bottom-6"
         >
           <p className="text-sm text-ivory/90">
-            We use essential storage to remember your shortlist and room size. No ad tracking.
+            Essential storage remembers your shortlist and room size. If you accept, we also load analytics to understand site use; ad tracking is not enabled by this site.
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             <button
@@ -98,6 +99,7 @@ export function Prompts() {
               href={whatsappHref(
                 "Hi Home Update, please help me find the right piece. My room measures (length) x (width) metres.",
               )}
+              onClick={() => track("whatsapp_click", { ctaLocation: "fit-finder-prompt" })}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full bg-wa px-4 text-sm font-medium text-white"
@@ -105,7 +107,7 @@ export function Prompts() {
               Ask on WhatsApp
             </a>
             <Link
-              href="/size-guide"
+              href="/size-guide/"
               onClick={() => setShowFitFinder(false)}
               className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full border border-antique-gold/60 px-4 text-sm text-ivory"
             >

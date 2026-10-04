@@ -17,6 +17,7 @@ import {
 } from "@/lib/site";
 import { useStoredIds, useStoredRoom } from "@/lib/use-storage";
 import { buildWhatsAppMessage, whatsappHref } from "@/lib/whatsapp";
+import { productPath } from "@/lib/seo";
 
 type Row = {
   label: string;
@@ -41,30 +42,28 @@ const ROWS: Row[] = [
     numeric: (p) => p.dimensions.w * p.dimensions.d,
   },
   {
-    label: "Clearance needed",
-    get: (p) => `${p.clearance?.corridorCm ?? 90} cm walkway`,
+    label: "Walkway guide",
+    get: (p) => `About ${p.clearance?.corridorCm ?? 90} cm; confirm fit`,
     better: "low",
     numeric: (p) => p.clearance?.corridorCm ?? 90,
   },
-  { label: "Minimum room", get: (p) => `${p.minRoom.w} × ${p.minRoom.d} m` },
+  { label: "Room planning estimate", get: (p) => `${p.minRoom.w} × ${p.minRoom.d} m; confirm fit` },
   { label: "Layouts", get: (p) => p.layoutOptions.join(", ") },
   { label: "Fabrics", get: (p) => p.fabrics.join(", ") },
   { label: "Colours", get: (p) => p.colours.join(", ") },
   { label: "Timber finishes", get: (p) => p.woodFinishes.join(", ") },
   {
     label: "Water-resistant",
-    get: (p) => (p.resilience?.waterResistant ? "Yes*" : "No"),
-    better: "high",
-    numeric: (p) => (p.resilience?.waterResistant ? 1 : 0),
+    get: (p) => (p.resilience?.waterResistant ? "Confirmed" : "Ask to confirm"),
   },
-  { label: "Kid friendly", get: (p) => (p.resilience?.kidFriendly ? "Yes" : "Caution") },
-  { label: "Pet friendly", get: (p) => (p.resilience?.petFriendly ? "Yes" : "Caution") },
-  { label: "Wipe-clean", get: (p) => (p.resilience?.wipeClean ? "Yes" : "No") },
+  { label: "Kid friendly", get: (p) => (p.resilience?.kidFriendly ? "Confirmed" : "Ask to confirm") },
+  { label: "Pet friendly", get: (p) => (p.resilience?.petFriendly ? "Confirmed" : "Ask to confirm") },
+  { label: "Wipe-clean", get: (p) => (p.resilience?.wipeClean ? "Confirmed" : "Ask to confirm") },
   {
     label: "Lead time",
     get: (p) => leadTimeLabel(p.leadTimeDays),
     better: "low",
-    numeric: (p) => (typeof p.leadTimeDays === "string" ? 999 : p.leadTimeDays.max),
+    numeric: (p) => (typeof p.leadTimeDays === "object" && p.leadTimeDays ? p.leadTimeDays.max : 999),
   },
   { label: "Warranty", get: (p) => p.warranty },
   { label: "Best for", get: (p) => p.bestFor },
@@ -114,7 +113,7 @@ export function ComparisonMatrix() {
           Tick “Compare” on up to three pieces and they will appear here.
         </p>
         <Link
-          href="/dining-sets"
+          href="/dining-sets/"
           className="mt-6 inline-flex min-h-11 items-center rounded-full bg-champagne px-5 py-2.5 text-sm font-medium text-onyx"
         >
           Browse dining sets
@@ -156,7 +155,7 @@ export function ComparisonMatrix() {
           href={waHref}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => track("whatsapp_click", { value: "comparison" })}
+          onClick={() => track("whatsapp_click", { value: "comparison", ctaLocation: "compare-tool", linkUrl: waHref })}
           className="inline-flex min-h-11 items-center rounded-full bg-wa px-5 py-2.5 text-sm font-medium text-white"
         >
           Send comparison on WhatsApp
@@ -195,7 +194,7 @@ export function ComparisonMatrix() {
               <h2 className="mt-3 pr-6 font-serif text-xl text-ivory">{product.name}</h2>
               <p className="mt-0.5 text-[10px] tracking-[0.16em] text-muted uppercase">{product.subtype}</p>
               <Link
-                href={`/products/${product.slug}`}
+                href={productPath(product)}
                 className="mt-2 inline-block text-xs text-champagne hover:underline"
               >
                 View piece →
@@ -264,7 +263,7 @@ export function ComparisonMatrix() {
       </div>
 
       <p className="text-xs text-muted">
-        * Water-resistant claims apply to covered balconies. Values are confirmed on WhatsApp.
+        Clearance numbers are planning guides, not fit guarantees. Performance, care and warranty details are shown only when confirmed.
       </p>
 
       {room && selected.length > 1 && (
@@ -295,7 +294,7 @@ export function ComparisonMatrix() {
                 </tr>
               </thead>
               <tbody>
-                {(["feel", "kids", "pets", "water", "care"] as const).map((field) => (
+                {(["feel", "care"] as const).map((field) => (
                   <tr key={field}>
                     <td className="bg-onyx p-3 capitalize text-muted">{field}</td>
                     {fabsPresent.map((f) => {
@@ -308,14 +307,6 @@ export function ComparisonMatrix() {
                     })}
                   </tr>
                 ))}
-                <tr>
-                  <td className="bg-onyx p-3 text-muted">Price tier</td>
-                  {fabsPresent.map((f) => (
-                    <td key={`${f}-tier`} className="bg-espresso p-3 text-ivory/90">
-                      {fabricInfo[f] ? "$".repeat(fabricInfo[f].priceTier) : "—"}
-                    </td>
-                  ))}
-                </tr>
               </tbody>
             </table>
           </div>

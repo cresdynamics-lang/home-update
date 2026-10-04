@@ -2,15 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { Em, SectionLabel, SectionTitle } from "@/components/ui";
 import { journalPosts } from "@/data/journal";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Journal | Furniture Guides for Kenyan Homes",
-  description:
-    "Practical guides on dining table sizes, small-space sofas, and fabrics for homes with kids and pets — written for real Kenyan rooms.",
-};
+export const metadata = pageMetadata(
+  "Furniture Guides for Kenyan Homes | Home Update Journal",
+  "Practical guides to dining table sizes, small-space sofas and furniture materials for Kenyan homes.",
+  "/journal/",
+);
 
 export default function JournalPage() {
   return (
+    <>
+    <BreadcrumbSchema items={[{ name: "Home", path: "/" }, { name: "Journal", path: "/journal/" }]} />
     <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-20">
       <SectionLabel>Journal</SectionLabel>
       <SectionTitle>
@@ -24,7 +28,7 @@ export default function JournalPage() {
         {journalPosts.map((post) => (
           <Link
             key={post.slug}
-            href={`/journal/${post.slug}`}
+            href={`/journal/${post.slug}/`}
             className="group overflow-hidden rounded-[1.25rem] border border-white/8 bg-espresso transition hover:border-antique-gold/40"
           >
             <div className="relative aspect-[16/10]">
@@ -48,5 +52,6 @@ export default function JournalPage() {
         ))}
       </div>
     </div>
+    </>
   );
 }

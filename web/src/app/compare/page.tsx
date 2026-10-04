@@ -4,6 +4,8 @@ import { SectionLabel, SectionTitle } from "@/components/ui";
 export const metadata = {
   title: "Compare furniture",
   description: "Compare dining sets and sofas side by side before sending your shortlist to WhatsApp.",
+  alternates: { canonical: "https://homeupdate.co.ke/compare/" },
+  robots: { index: false, follow: true },
 };
 
 export default function ComparePage() {

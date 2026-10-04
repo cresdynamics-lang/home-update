@@ -107,7 +107,7 @@ const gallery = useMemo(() => resolveGallery(product, combo), [combo, product]);
             <li aria-hidden>/</li>
             <li>
               <Link
-                href={product.category === "dining" ? "/dining-sets" : "/sofas"}
+                href={product.category === "dining" ? "/dining-sets/" : "/sofas/"}
                 className="hover:text-champagne"
               >
                 {product.category === "dining" ? "Dining sets" : "Sofas"}
@@ -167,30 +167,14 @@ const gallery = useMemo(() => resolveGallery(product, combo), [combo, product]);
         <div className="rounded-[1.35rem] border border-white/10 bg-espresso p-5">
           <p className="text-[11px] tracking-[0.18em] text-antique-gold uppercase">Buying notes</p>
           <dl className="mt-3 space-y-2.5 text-sm">
-            <Row label="Minimum room" value={`${product.minRoom.w} × ${product.minRoom.d} m`} />
-            <Row label="Clearance" value={`${product.clearance?.corridorCm ?? 90} cm walkway`} />
+            <Row label="Room planning estimate" value={`${product.minRoom.w} × ${product.minRoom.d} m; confirm fit for your layout`} />
+            <Row label="Walkway guide" value={`About ${product.clearance?.corridorCm ?? 90} cm; confirm the clearance for your layout`} />
             <Row
               label="Lead time"
-              value={
-                typeof product.leadTimeDays === "string"
-                  ? product.leadTimeDays
-                  : `${product.leadTimeDays.min}-${product.leadTimeDays.max} business days`
-              }
+              value={leadTimeLabel(product.leadTimeDays)}
             />
-            {product.buildNote ? <Row label="Build" value={product.buildNote} /> : null}
             <Row label="Warranty" value={product.warranty} />
-            {product.careNotes.length > 0 && (
-              <div className="pt-1">
-                <dt className="text-muted">Care</dt>
-                <dd className="mt-1 space-y-1">
-                  {product.careNotes.map((note) => (
-                    <p key={note} className="text-ivory/85">
-                      {note}
-                    </p>
-                  ))}
-                </dd>
-              </div>
-            )}
+            <Row label="Care" value="Ask us to confirm the care instructions for the selected materials." />
           </dl>
         </div>
 
@@ -201,13 +185,21 @@ const gallery = useMemo(() => resolveGallery(product, combo), [combo, product]);
             href={waHref}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => track("whatsapp_click", { product: product.name })}
+            onClick={() => track("whatsapp_click", {
+              product: product.name,
+              itemId: product.id,
+              fabric: combo.fabric,
+              configuration: combo.layout,
+              ctaLocation: "product-primary",
+              linkUrl: waHref,
+            })}
             className="inline-flex min-h-13 w-full items-center justify-center rounded-full bg-wa px-5 py-3.5 text-base font-medium text-white transition hover:bg-wa-dark"
           >
             Send to WhatsApp
           </a>
           <a
             href={`tel:${site.phoneTel}`}
+            onClick={() => track("call_click", { product: product.name, itemId: product.id, linkUrl: `tel:${site.phoneTel}`, ctaLocation: "product" })}
             className="inline-flex min-h-13 w-full items-center justify-center rounded-full border border-antique-gold/60 px-5 py-3.5 text-base text-ivory transition hover:border-champagne"
           >
             Call {site.phoneDisplay}
@@ -251,7 +243,7 @@ const gallery = useMemo(() => resolveGallery(product, combo), [combo, product]);
           fabric={combo.fabric}
           colour={combo.colour}
           onUploadPhoto={() => {
-            track("whatsapp_click", { product: product.name, value: "room-photo" });
+            track("whatsapp_click", { product: product.name, itemId: product.id, fabric: combo.fabric, configuration: combo.layout, value: "room-photo", ctaLocation: "room-photo" });
             window.open(
               `https://wa.me/${site.whatsapp}?text=${roomPhotoMessage(room)}`,
               "_blank",

@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ArrowIcon, PhoneIcon, WhatsAppIcon } from "./icons";
-import { site, waLink } from "@/lib/site";
+import { ArrowIcon, WhatsAppIcon } from "./icons";
+import { waLink } from "@/lib/site";
+import { TrackedWhatsAppLink } from "@/components/TrackedWhatsAppLink";
 
 type ButtonProps = {
   children: React.ReactNode;
@@ -8,7 +9,6 @@ type ButtonProps = {
   className?: string;
   external?: boolean;
   type?: "button" | "submit";
-  onClick?: () => void;
 };
 
 function cx(...parts: Array<string | false | undefined>) {
@@ -27,10 +27,8 @@ export function WaButton({
   pulse?: boolean;
 }) {
   return (
-    <a
+    <TrackedWhatsAppLink
       href={waLink(message)}
-      target="_blank"
-      rel="noopener noreferrer"
       className={cx(
         "inline-flex items-center justify-center gap-2 rounded-full bg-wa px-5 py-3 text-sm font-medium text-white transition hover:bg-wa-dark",
         pulse && "wa-pulse",
@@ -39,7 +37,7 @@ export function WaButton({
     >
       <WhatsAppIcon className="h-4 w-4" />
       {children}
-    </a>
+    </TrackedWhatsAppLink>
   );
 }
 
@@ -80,21 +78,6 @@ export function OutlineButton({ children, href, className }: ButtonProps) {
     );
   }
   return <button className={classes}>{children}</button>;
-}
-
-export function CallButton({ className }: { className?: string }) {
-  return (
-    <a
-      href={`tel:${site.phoneTel}`}
-      className={cx(
-        "inline-flex items-center justify-center gap-2 rounded-full border border-antique-gold/60 px-5 py-3 text-sm font-medium text-ivory transition hover:border-champagne hover:text-champagne",
-        className,
-      )}
-    >
-      <PhoneIcon className="h-4 w-4 text-antique-gold" />
-      Call {site.phoneDisplay}
-    </a>
-  );
 }
 
 export function SectionLabel({ children }: { children: React.ReactNode }) {

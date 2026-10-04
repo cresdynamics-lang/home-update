@@ -8,6 +8,7 @@ export type Product = {
   bestseller?: boolean;
   sale?: boolean;
   priceFrom: number | null;
+  availability?: "https://schema.org/InStock" | "https://schema.org/OutOfStock" | "https://schema.org/PreOrder";
   priceNote: string;
   dimensions: { w: number; d: number; h: number };
   seats?: number;
@@ -16,7 +17,7 @@ export type Product = {
   colours: string[];
   woodFinishes: string[];
   waterResistant: boolean;
-  leadTimeDays: { min: number; max: number } | "made to order";
+  leadTimeDays: { min: number; max: number } | "made to order" | null;
   bestFor: string;
   minRoom: { w: number; d: number };
   images: string[];
@@ -56,20 +57,6 @@ export type Product = {
   buildNote?: string;
 };
 
-/**
- * Items the owner must confirm before the placeholders become public facts.
- * Rendered in the product flow and mirrored in OWNER_TODO.md.
- */
-export const ownerTodo = [
-  "Confirm final showroom address, hours and delivery zones for Nairobi and nearby counties.",
-  "Validate all product pricing, lead times, warranty terms and water-resistant claims with the owner.",
-  "Collect final fabric/finish photography for each product variant and upload the matching image references.",
-  "Add real 3D .glb/.usdz models only for products that have approved assets.",
-  "Confirm the liquid-beading or wipe-clean video for the proof badges and replace the placeholder if needed.",
-  "Verify room-fit assumptions and clearance values for each SKU before publication.",
-  "Set a real sale end date in src/lib/site.ts to enable the countdown, or leave it hidden.",
-] as const;
-
 /** Standard clearance rules by category, in cm. */
 export const CLEARANCE = {
   dining: { chairPulloutCm: 60, corridorCm: 90 },
@@ -83,9 +70,7 @@ export const products: Product[] = [
     name: "The Fluted",
     category: "dining",
     subtype: "6-seater dining",
-    tags: ["bestseller", "sale"],
-    bestseller: true,
-    sale: true,
+    tags: [],
     priceFrom: null,
     priceNote: "Ask for today’s price",
     dimensions: { w: 170, d: 90, h: 76 },
@@ -95,7 +80,7 @@ export const products: Product[] = [
     colours: ["Cream", "Sand", "Truffle", "Stone"],
     woodFinishes: ["Mahogany", "Walnut", "Natural Oak", "Ebony"],
     waterResistant: false,
-    leadTimeDays: { min: 10, max: 14 },
+    leadTimeDays: null,
     bestFor: "Family dinners and gatherings",
     minRoom: { w: 3.5, d: 2.7 },
     images: [
@@ -126,12 +111,12 @@ export const products: Product[] = [
       },
     },
     proofVideo: null,
-    resilience: { waterResistant: false, kidFriendly: true, petFriendly: true, wipeClean: true },
+    resilience: {},
     clearance: { chairPulloutCm: 60, corridorCm: 90 },
     priceRange: null,
     buildNote: "Custom timber stain per order.",
     model3d: null,
-    warranty: "Placeholder warranty — confirm with owner.",
+    warranty: "Ask us to confirm warranty terms.",
     careNotes: [
       "Dust often to keep the fluted finish looking sharp.",
       "Wipe spills promptly.",
@@ -143,8 +128,7 @@ export const products: Product[] = [
     name: "The Cloud",
     category: "sofa",
     subtype: "Curved L-shaped sofa",
-    tags: ["bestseller"],
-    bestseller: true,
+    tags: [],
     priceFrom: null,
     priceNote: "Ask for today’s price",
     dimensions: { w: 280, d: 170, h: 80 },
@@ -154,7 +138,7 @@ export const products: Product[] = [
     colours: ["Cream", "Oat", "Sand", "Stone", "Truffle"],
     woodFinishes: ["Walnut", "Natural Oak", "Ebony"],
     waterResistant: false,
-    leadTimeDays: { min: 7, max: 10 },
+    leadTimeDays: null,
     bestFor: "Open-plan living rooms and family lounging",
     minRoom: { w: 3.8, d: 2.5 },
     images: [
@@ -186,12 +170,12 @@ export const products: Product[] = [
       },
     },
     proofVideo: null,
-    resilience: { waterResistant: false, kidFriendly: true, petFriendly: true, wipeClean: true },
+    resilience: {},
     clearance: { chairPulloutCm: 60, corridorCm: 90 },
     priceRange: null,
     buildNote: "Reversible left/right chaise.",
     model3d: null,
-    warranty: "Placeholder warranty — confirm with owner.",
+    warranty: "Ask us to confirm warranty terms.",
     careNotes: ["Vacuum weekly and rotate cushions.", "Spot clean on fabric zones."],
   },
   {
@@ -200,7 +184,7 @@ export const products: Product[] = [
     name: "The Truffle",
     category: "sofa",
     subtype: "Modular sectional",
-    tags: ["popular"],
+    tags: [],
     priceFrom: null,
     priceNote: "Ask for today’s price",
     dimensions: { w: 300, d: 180, h: 82 },
@@ -209,8 +193,8 @@ export const products: Product[] = [
     fabrics: ["Chenille", "Performance Velvet", "Bouclé", "Linen Blend"],
     colours: ["Truffle", "Stone", "Oat", "Charcoal"],
     woodFinishes: ["Walnut", "Mahogany", "Ebony"],
-    waterResistant: true,
-    leadTimeDays: { min: 12, max: 16 },
+    waterResistant: false,
+    leadTimeDays: null,
     bestFor: "Large family spaces and open-plan lounges",
     minRoom: { w: 4.2, d: 3.0 },
     images: [
@@ -241,12 +225,12 @@ export const products: Product[] = [
       },
     },
     proofVideo: null,
-    resilience: { waterResistant: true, kidFriendly: true, petFriendly: true, wipeClean: true },
+    resilience: {},
     clearance: { chairPulloutCm: 60, corridorCm: 90 },
     priceRange: null,
     buildNote: "Built section by section for flexible room planning.",
     model3d: null,
-    warranty: "Placeholder warranty — confirm with owner.",
+    warranty: "Ask us to confirm warranty terms.",
     careNotes: [
       "Built section by section for flexible room planning.",
       "Use a fabric-safe cleaner for careful maintenance.",
@@ -258,7 +242,7 @@ export const products: Product[] = [
     name: "The Linen",
     category: "sofa",
     subtype: "L-shaped sofa",
-    tags: ["popular"],
+    tags: [],
     priceFrom: null,
     priceNote: "Ask for today’s price",
     dimensions: { w: 270, d: 165, h: 78 },
@@ -268,7 +252,7 @@ export const products: Product[] = [
     colours: ["Cream", "Ivory", "Stone", "Oat"],
     woodFinishes: ["Natural Oak", "Walnut"],
     waterResistant: false,
-    leadTimeDays: { min: 7, max: 10 },
+    leadTimeDays: null,
     bestFor: "Light-filled apartments and calm corners",
     minRoom: { w: 2.9, d: 2.4 },
     images: [
@@ -297,12 +281,12 @@ export const products: Product[] = [
       },
     },
     proofVideo: null,
-    resilience: { waterResistant: false, kidFriendly: false, petFriendly: true, wipeClean: true },
+    resilience: {},
     clearance: { chairPulloutCm: 60, corridorCm: 90 },
     priceRange: null,
     buildNote: "Compact L for smaller rooms.",
     model3d: null,
-    warranty: "Placeholder warranty — confirm with owner.",
+    warranty: "Ask us to confirm warranty terms.",
     careNotes: [
       "Brush the fabric lightly and vacuum under the seat.",
       "Avoid harsh direct sunlight to protect colour.",
@@ -314,8 +298,7 @@ export const products: Product[] = [
     name: "The Ivory",
     category: "dining",
     subtype: "Dining set",
-    tags: ["sale"],
-    sale: true,
+    tags: [],
     priceFrom: null,
     priceNote: "Ask for today’s price",
     dimensions: { w: 160, d: 90, h: 75 },
@@ -325,7 +308,7 @@ export const products: Product[] = [
     colours: ["Ivory", "Cream", "Stone"],
     woodFinishes: ["Natural Oak", "Walnut"],
     waterResistant: false,
-    leadTimeDays: { min: 10, max: 14 },
+    leadTimeDays: null,
     bestFor: "Small dining spaces and calm kitchens",
     minRoom: { w: 2.8, d: 2.3 },
     images: [
@@ -352,12 +335,12 @@ export const products: Product[] = [
       },
     },
     proofVideo: null,
-    resilience: { waterResistant: false, kidFriendly: true, petFriendly: true, wipeClean: true },
+    resilience: {},
     clearance: { chairPulloutCm: 60, corridorCm: 90 },
     priceRange: null,
     buildNote: "Compact 4-seater for small rooms.",
     model3d: null,
-    warranty: "Placeholder warranty — confirm with owner.",
+    warranty: "Ask us to confirm warranty terms.",
     careNotes: [
       "Use a soft cloth to polish timber surfaces.",
       "Avoid sitting on the tabletop edge with wet items.",
@@ -369,8 +352,7 @@ export const products: Product[] = [
     name: "The Regent",
     category: "dining",
     subtype: "8-seater dining",
-    tags: ["bestseller"],
-    bestseller: true,
+    tags: [],
     priceFrom: null,
     priceNote: "Ask for today’s price",
     dimensions: { w: 220, d: 100, h: 78 },
@@ -380,7 +362,7 @@ export const products: Product[] = [
     colours: ["Charcoal", "Truffle", "Oat"],
     woodFinishes: ["Mahogany", "Ebony", "Walnut"],
     waterResistant: false,
-    leadTimeDays: { min: 12, max: 18 },
+    leadTimeDays: null,
     bestFor: "Hosting, family dining and formal evenings",
     minRoom: { w: 4.4, d: 2.2 },
     images: [
@@ -408,12 +390,12 @@ export const products: Product[] = [
       },
     },
     proofVideo: null,
-    resilience: { waterResistant: false, kidFriendly: true, petFriendly: true, wipeClean: true },
+    resilience: {},
     clearance: { chairPulloutCm: 60, corridorCm: 90 },
     priceRange: null,
     buildNote: "Long-format table for hosting.",
     model3d: null,
-    warranty: "Placeholder warranty — confirm with owner.",
+    warranty: "Ask us to confirm warranty terms.",
     careNotes: ["Clean with a non-abrasive cloth.", "Protect from water marks and direct heat."],
   },
   {
@@ -422,7 +404,7 @@ export const products: Product[] = [
     name: "The Orbit",
     category: "dining",
     subtype: "Round dining set",
-    tags: ["popular"],
+    tags: [],
     priceFrom: null,
     priceNote: "Ask for today’s price",
     dimensions: { w: 110, d: 110, h: 74 },
@@ -432,7 +414,7 @@ export const products: Product[] = [
     colours: ["Ivory", "Oat", "Stone"],
     woodFinishes: ["Natural Oak", "Walnut"],
     waterResistant: false,
-    leadTimeDays: { min: 8, max: 12 },
+    leadTimeDays: null,
     bestFor: "Apartments, nooks and compact breakfasts",
     minRoom: { w: 2.6, d: 2.6 },
     images: [
@@ -459,12 +441,12 @@ export const products: Product[] = [
       },
     },
     proofVideo: null,
-    resilience: { waterResistant: false, kidFriendly: true, petFriendly: true, wipeClean: true },
+    resilience: {},
     clearance: { chairPulloutCm: 60, corridorCm: 90 },
     priceRange: null,
     buildNote: "Round footprint frees the corners.",
     model3d: null,
-    warranty: "Placeholder warranty — confirm with owner.",
+    warranty: "Ask us to confirm warranty terms.",
     careNotes: [
       "Keep chairs tucked in to protect the floor finish.",
       "Use a linen-safe cleaner for the upholstery.",

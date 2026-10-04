@@ -96,7 +96,7 @@ export function RoomFitSimulator({ product, others = [] }: Props) {
 
   const run = () => {
     setRan(true);
-    track("simulator_run", { product: product.name, value: verdict.status });
+    track("size_checker_used", { product: product.name, value: verdict.status, ctaLocation: "room-fit-simulator" });
   };
 
   // Scale the room into a fixed viewBox so both axes stay to the same scale.
@@ -169,6 +169,9 @@ export function RoomFitSimulator({ product, others = [] }: Props) {
           </p>
           <p className="mt-1 text-sm text-muted">
             Drag the piece to place it. Double-click to rotate it 90°.
+          </p>
+          <p className="mt-2 max-w-2xl text-xs text-muted">
+            Planning estimate only. The 60 cm chair pull-out and 90 cm walkway are starting guidelines; confirm the exact product dimensions, layout and access route before ordering.
           </p>
         </div>
         <div className="flex items-center gap-2">

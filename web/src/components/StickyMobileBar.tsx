@@ -13,13 +13,14 @@ export function StickyMobileBar({ message, productName }: { message: string; pro
           href={whatsappHref(message)}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => track("whatsapp_click", { product: productName })}
+          onClick={() => track("whatsapp_click", { product: productName, ctaLocation: "sticky-mobile", linkUrl: whatsappHref(message) })}
           className="inline-flex min-h-12 flex-1 items-center justify-center rounded-full bg-wa px-4 text-sm font-medium text-white"
         >
           WhatsApp
         </a>
         <a
           href={`tel:${site.phoneTel}`}
+          onClick={() => track("call_click", { product: productName, linkUrl: `tel:${site.phoneTel}`, ctaLocation: "sticky-mobile" })}
           className="inline-flex min-h-12 flex-1 items-center justify-center rounded-full border border-antique-gold/60 px-4 text-sm text-ivory"
         >
           Call

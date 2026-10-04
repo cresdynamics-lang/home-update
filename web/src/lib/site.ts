@@ -30,10 +30,6 @@ export const siteConfig = {
    * a genuine end date.
    */
   saleEnd: null as string | null,
-  analytics: {
-    enabled: false,
-    endpoint: "",
-  },
   ar: {
     enabled: true,
   },
@@ -153,58 +149,34 @@ export const colourHex: Record<string, string> = Object.fromEntries(
 export type FabricInfo = {
   name: string;
   feel: string;
-  kids: "excellent" | "good" | "caution";
-  pets: "excellent" | "good" | "caution";
-  water: "excellent" | "good" | "caution";
   care: string;
-  priceTier: 1 | 2 | 3;
 };
 
 export const fabricInfo: Record<string, FabricInfo> = {
   "Oat Bouclé": {
     name: "Oat Bouclé",
     feel: "Soft, nubby, warm",
-    kids: "caution",
-    pets: "caution",
-    water: "caution",
-    care: "Vacuum weekly, blot spills",
-    priceTier: 3,
+    care: "Ask us to confirm care instructions for the selected upholstery.",
   },
   Bouclé: {
     name: "Bouclé",
     feel: "Soft, nubby, warm",
-    kids: "caution",
-    pets: "caution",
-    water: "caution",
-    care: "Vacuum weekly, blot spills",
-    priceTier: 3,
+    care: "Ask us to confirm care instructions for the selected upholstery.",
   },
   "Performance Velvet": {
     name: "Performance Velvet",
     feel: "Plush, deep, luminous",
-    kids: "excellent",
-    pets: "excellent",
-    water: "excellent",
-    care: "Wipe clean with a damp cloth",
-    priceTier: 2,
+    care: "Ask us to confirm care instructions for the selected upholstery.",
   },
   Chenille: {
     name: "Chenille",
     feel: "Cozy, durable, brushed",
-    kids: "excellent",
-    pets: "excellent",
-    water: "good",
-    care: "Vacuum, spot clean as needed",
-    priceTier: 1,
+    care: "Ask us to confirm care instructions for the selected upholstery.",
   },
   "Linen Blend": {
     name: "Linen Blend",
     feel: "Airy, relaxed, natural",
-    kids: "good",
-    pets: "caution",
-    water: "caution",
-    care: "Wash covers, air dry",
-    priceTier: 1,
+    care: "Ask us to confirm care instructions for the selected upholstery.",
   },
 };
 
@@ -248,19 +220,19 @@ export const rooms = [
   {
     title: "The table your family keeps meaning to sit at.",
     cta: "Explore dining sets",
-    href: "/dining-sets",
+    href: "/dining-sets/",
     image: "/images/dining-set.jpeg",
   },
   {
     title: "The sofa that makes people stay.",
     cta: "Explore sofas",
-    href: "/sofas",
+    href: "/sofas/",
     image: "/images/curved-sofas.jpeg",
   },
   {
     title: "The corner you walk past every day.",
     cta: "See ideas",
-    href: "/journal",
+    href: "/journal/",
     image: "/images/sofa-detail.jpeg",
   },
 ] as const;
@@ -269,25 +241,25 @@ export const fabrics = [
   {
     name: "Bouclé",
     note: "Soft, textured, modern",
-    tags: ["Statement", "Warm handfeel"],
+    tags: ["Textured look", "Soft handfeel"],
     image: "/images/sofa-detail.jpeg",
   },
   {
     name: "Performance Velvet",
     note: "Deep, plush, rich",
-    tags: ["Spill resistant", "Pet friendly"],
+    tags: ["Plush look", "Rich colour"],
     image: "/images/living-l-sofa.jpeg",
   },
   {
     name: "Chenille",
     note: "Cozy, durable, warm",
-    tags: ["Family ready", "Easy care"],
+    tags: ["Soft texture", "Cozy finish"],
     image: "/images/long-l-sofa.jpeg",
   },
   {
     name: "Linen Blend",
     note: "Light, airy, relaxed",
-    tags: ["Breathable", "Casual luxury"],
+    tags: ["Relaxed look", "Light palette"],
     image: "/images/living-marble.jpeg",
   },
 ] as const;
@@ -332,45 +304,39 @@ export const journal = [
 ] as const;
 
 export const nav = [
-  { label: "Dining Sets", href: "/dining-sets" },
-  { label: "Sofas", href: "/sofas" },
-  { label: "Fabrics & Colours", href: "/fabrics" },
-  { label: "Size Guide", href: "/size-guide" },
-  { label: "Custom Design", href: "/custom-design" },
-  { label: "Sale", href: "/sale", hot: true },
-  { label: "Journal", href: "/journal" },
+  { label: "Dining Sets", href: "/dining-sets/" },
+  { label: "Sofas", href: "/sofas/" },
+  { label: "Fabrics & Colours", href: "/fabrics-and-colours/" },
+  { label: "Size Guide", href: "/size-guide/" },
+  { label: "Custom Design", href: "/custom-design/" },
+  { label: "Journal", href: "/journal/" },
 ] as const;
 
 export const mega = {
   dining: [
-    { label: "All dining sets", href: "/dining-sets" },
-    { label: "4-seater round", href: "/dining-sets?seats=4" },
-    { label: "6-seater tables", href: "/dining-sets?seats=6" },
-    { label: "8-seater tables", href: "/dining-sets?seats=8" },
-    { label: "Marble-top sets", href: "/dining-sets" },
-    { label: "Dining chairs only", href: "/dining-sets" },
+    { label: "All dining sets", href: "/dining-sets/" },
+    { label: "4-seater round", href: "/dining-sets/4-seater-round-dining-tables/" },
+    { label: "6-seater tables", href: "/dining-sets/6-seater-dining-tables/" },
+    { label: "8-seater tables", href: "/dining-sets/8-seater-dining-tables/" },
   ],
   sofas: [
-    { label: "All sofas", href: "/sofas" },
-    { label: "L-shaped sofas", href: "/sofas?shape=l" },
-    { label: "Modular sectionals", href: "/sofas?shape=modular" },
-    { label: "Sofas with chaise", href: "/sofas" },
-    { label: "Balcony & nook picks", href: "/sofas" },
-    { label: "Sofa beds", href: "/sofas" },
+    { label: "All sofas", href: "/sofas/" },
+    { label: "L-shaped sofas", href: "/sofas/l-shaped-sofas/" },
+    { label: "Modular sectionals", href: "/sofas/modular-sectional-sofas/" },
+    { label: "Sofas with chaise", href: "/sofas/sofas-with-chaise/" },
   ],
   design: [
-    { label: "Fabrics & colours", href: "/fabrics" },
-    { label: "Match my room", href: "/custom-design#match" },
-    { label: "Size guide", href: "/size-guide" },
-    { label: "Custom design", href: "/custom-design" },
-    { label: "Request samples", href: "/contact" },
+    { label: "Fabrics & colours", href: "/fabrics-and-colours/" },
+    { label: "Match my room", href: "/match-my-room/" },
+    { label: "Size guide", href: "/size-guide/" },
+    { label: "Custom design", href: "/custom-design/" },
+    { label: "Ask about samples", href: "/contact/" },
   ],
   need: [
-    { label: "Water-resistant fabrics", href: "/fabrics" },
-    { label: "Family & pet friendly", href: "/fabrics" },
-    { label: "Small spaces", href: "/size-guide" },
-    { label: "For hosting", href: "/dining-sets" },
-    { label: "Bestsellers", href: "/#bestsellers" },
+    { label: "Fabric options and care", href: "/fabrics-and-colours/" },
+    { label: "Room fit guidance", href: "/size-guide/" },
+    { label: "For hosting", href: "/dining-sets/" },
+    { label: "Browse the collection", href: "/dining-sets/" },
   ],
 } as const;
 
@@ -383,7 +349,8 @@ export function priceLabel(product: { priceFrom: number | null; priceNote: strin
   return product.priceFrom ? `KES ${product.priceFrom.toLocaleString("en-KE")}` : product.priceNote;
 }
 
-export function leadTimeLabel(leadTime: { min: number; max: number } | "made to order") {
+export function leadTimeLabel(leadTime: { min: number; max: number } | "made to order" | null) {
+  if (!leadTime) return "Ask us to confirm lead time";
   return typeof leadTime === "string"
     ? "Made to order"
     : `Ready in ${leadTime.min}-${leadTime.max} days`;

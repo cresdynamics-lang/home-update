@@ -1,6 +1,17 @@
 import type { Product } from "@/data/products";
-import { currentPageUrl, site } from "@/lib/site";
-import type { Combo, } from "@/lib/image-map";
+import { site } from "@/lib/site";
+import { productPath } from "@/lib/seo";
+import type { Combo } from "@/lib/image-map";
+
+/**
+ * Keep the WhatsApp share link deterministic for both SSR and hydration.
+ * Using the canonical production URL avoids client/server mismatches caused by
+ * localhost preview URLs during development.
+ */
+function pageUrl(product?: Product): string {
+  if (product) return `${site.url}${productPath(product)}`;
+  return site.url;
+}
 
 /**
  * Build the pre-filled WhatsApp message. Encodes product name, size, layout,
@@ -27,15 +38,11 @@ export function buildWhatsAppMessage({
     if (combo?.wood) details.push(`${combo.wood} legs`);
 
     const size = `${product.dimensions.w}x${product.dimensions.d} cm`;
-    const lead =
-      typeof product.leadTimeDays === "string"
-        ? product.leadTimeDays
-        : `${product.leadTimeDays.min}-${product.leadTimeDays.max} business days`;
 
     parts.push(
       `I'm interested in ${product.name} (${size}${details.length ? `, ${details.join(", ")}` : ""}).`,
     );
-    parts.push(`Listed lead time: ${lead}.`);
+    parts.push(`Please confirm current lead time and price for this product.`);
   }
 
   if (compare && compare.length > 0) {
@@ -47,7 +54,7 @@ export function buildWhatsAppMessage({
   }
 
   parts.push("Please send price and delivery time.");
-  parts.push(`Link: ${currentPageUrl()}`);
+  parts.push(`Link: ${pageUrl(product)}`);
   return parts.join(" ");
 }
 
@@ -59,6 +66,6 @@ export function whatsappHref(message: string) {
 export function roomPhotoMessage(room?: { lengthM: number; widthM: number } | null) {
   const size = room ? ` My room measures ${room.lengthM} x ${room.widthM} m.` : "";
   return encodeURIComponent(
-    `Hi Home Update, I'd like help matching a piece to my room.${size} Here is my photo — please send your best fabric and size suggestions. Link: ${currentPageUrl()}`,
+    `Hi Home Update, I'd like help matching a piece to my room.${size} Here is my photo — please send your best fabric and size suggestions. Link: ${site.url}`,
   );
 }
