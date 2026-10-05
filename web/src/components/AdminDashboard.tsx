@@ -502,6 +502,18 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
   return <input type="checkbox" aria-label={label} checked={checked} onChange={(event) => onChange(event.target.checked)} className="h-5 w-5 accent-champagne" />;
 }
 
+async function uploadLocalImage(file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append("file", file);
+  const response = await fetch("/api/admin/upload/", {
+    method: "POST",
+    body: formData,
+  });
+  const result = await response.json() as { error?: string; url?: string };
+  if (!response.ok || !result.url) throw new Error(result.error ?? "Image upload failed.");
+  return result.url;
+}
+
 function ProductEditor({ product, busy, onClose, onSave }: { product: Product; busy: boolean; onClose: () => void; onSave: (product: Product) => Promise<string | null> }) {
   const [draft, setDraft] = useState(product);
   const [imageDraft, setImageDraft] = useState(product.images.join("\n"));
@@ -512,9 +524,49 @@ function ProductEditor({ product, busy, onClose, onSave }: { product: Product; b
   const [fabricDraft, setFabricDraft] = useState(product.fabrics.join(", "));
   const [leadDraft, setLeadDraft] = useState(leadTimeText(product));
   const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [variantChoice, setVariantChoice] = useState({ fabric: product.fabrics[0] ?? "", colour: product.colours[0] ?? "", wood: product.woodFinishes[0] ?? "" });
   const [formError, setFormError] = useState("");
   const images = imageDraft.split("\n").map((value) => value.trim()).filter(Boolean);
   const set = <K extends keyof Product>(key: K, value: Product[K]) => setDraft((current) => ({ ...current, [key]: value }));
+
+  const variantGroups = [
+    { key: "fabric", label: "Fabric", options: splitList(fabricDraft), choice: variantChoice.fabric, setChoice: (value: string) => setVariantChoice((current) => ({ ...current, fabric: value })) },
+    { key: "colour", label: "Colour", options: splitList(colourDraft), choice: variantChoice.colour, setChoice: (value: string) => setVariantChoice((current) => ({ ...current, colour: value })) },
+    { key: "wood", label: "Wood finish", options: splitList(woodDraft), choice: variantChoice.wood, setChoice: (value: string) => setVariantChoice((current) => ({ ...current, wood: value })) },
+  ] as const;
+
+  async function handleUpload(files: FileList | null, target?: "images" | "fabric" | "colour" | "wood") {
+    const chosen = Array.from(files ?? []);
+    if (!chosen.length) return;
+    setUploading(true);
+    setFormError("");
+    try {
+      const uploaded = await Promise.all(chosen.map(async (file) => uploadLocalImage(file)));
+      if (target === "images") {
+        const nextPaths = [...images, ...uploaded].filter(Boolean);
+        setImageDraft(nextPaths.join("\n"));
+        return;
+      }
+      const group = target ?? "fabric";
+      const option = variantChoice[group];
+      if (!option) return;
+      setDraft((current) => ({
+        ...current,
+        variants: {
+          ...current.variants,
+          [group]: {
+            ...(current.variants?.[group] ?? {}),
+            [option]: uploaded[0],
+          },
+        },
+      }));
+    } catch (error) {
+      setFormError(error instanceof Error ? error.message : "Image upload failed.");
+    } finally {
+      setUploading(false);
+    }
+  }
 
   function reorderImages(from: number, to: number) {
     const next = [...images];
@@ -587,6 +639,30 @@ function ProductEditor({ product, busy, onClose, onSave }: { product: Product; b
           <Field label="Warranty"><input value={draft.warranty} onChange={(event) => set("warranty", event.target.value)} /></Field>
           <Field label="Fabric / material care (one per line)"><textarea rows={3} value={careDraft} onChange={(event) => setCareDraft(event.target.value)} /></Field>
           <Field label="Image paths (one local /images/ path per line)"><textarea rows={4} value={imageDraft} onChange={(event) => setImageDraft(event.target.value)} /><span className="text-xs text-muted">Use uploaded local assets such as /images/product-name.webp.</span></Field>
+          <div className="md:col-span-2">
+            <label className="mb-1.5 block text-xs text-muted">Upload product images from your computer</label>
+            <div className="flex flex-wrap items-center gap-3 border border-white/10 bg-onyx p-3">
+              <input type="file" accept="image/*" multiple onChange={(event) => { void handleUpload(event.target.files, "images"); event.target.value = ""; }} className="text-sm text-ivory file:mr-3 file:rounded file:border-0 file:bg-champagne file:px-3 file:py-2 file:text-sm file:font-medium file:text-onyx" />
+              <span className="text-[11px] text-muted">{uploading ? "Uploading…" : "Saved to /images/uploads/"}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 border-t border-white/10 pt-4">
+          <h3 className="text-sm font-medium text-ivory">Variant image mapping</h3>
+          <p className="mt-1 text-xs text-muted">Upload one image for each fabric, colour or wood finish option.</p>
+          <div className="mt-3 grid gap-3 md:grid-cols-3">
+            {variantGroups.map((group) => (
+              <div key={group.key} className="border border-white/10 bg-onyx p-3">
+                <label className="mb-2 block text-xs text-muted">{group.label}</label>
+                <select value={group.choice} onChange={(event) => group.setChoice(event.target.value)} className="mb-2 min-h-10 w-full border border-white/10 bg-espresso px-2 text-sm text-ivory">
+                  {group.options.length ? group.options.map((option) => <option key={option} value={option}>{option}</option>) : <option value="">No options</option>}
+                </select>
+                <input type="file" accept="image/*" onChange={(event) => { if (group.choice) { void handleUpload(event.target.files, group.key as "fabric" | "colour" | "wood"); } event.target.value = ""; }} className="block w-full text-xs text-ivory file:mr-2 file:rounded file:border-0 file:bg-champagne file:px-2 file:py-1 file:text-xs file:font-medium file:text-onyx" disabled={!group.choice || !group.options.length || uploading} />
+                {draft.variants?.[group.key] && Object.entries(draft.variants[group.key] ?? {}).length > 0 ? <div className="mt-3 grid grid-cols-2 gap-2">{Object.entries(draft.variants[group.key] ?? {}).map(([name, url]) => <div key={`${group.key}-${name}`} className="border border-white/10 p-1"><div className="relative aspect-square"><Image src={url} alt={`${group.label} ${name}`} fill sizes="120px" className="object-cover" /></div><p className="mt-1 truncate text-[10px] text-muted">{name}</p></div>)}</div> : <p className="mt-2 text-[11px] text-muted">No variant image mapped yet.</p>}
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="mt-3 flex flex-wrap gap-4 border-y border-white/10 py-3 text-sm text-ivory">
