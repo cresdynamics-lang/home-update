@@ -38,7 +38,7 @@ export function Header() {
       <div className="hidden border-b border-white/5 bg-onyx/95 text-[11px] tracking-wide text-muted md:block">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-2 lg:px-8">
           <div className="flex items-center gap-5">
-            <a href={`https://wa.me/${site.whatsapp}`} className="hover:text-champagne">
+            <a href={`https://wa.me/${site.whatsapp}`} onClick={() => track("whatsapp_click", { ctaLocation: "header-room-fit" })} className="hover:text-champagne">
               Room-fit help on WhatsApp
             </a>
             <Link href="/about/" className="hover:text-champagne">
@@ -90,9 +90,7 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 onMouseEnter={() => {
-                  if (item.href === "/dining-sets" || item.href === "/sofas") {
-                    setMegaOpen(true);
-                  }
+                  setMegaOpen(true);
                 }}
                 className="relative rounded-full px-2.5 py-2 text-[12px] text-ivory/90 transition hover:bg-white/5 hover:text-champagne xl:px-3 xl:text-[13px]"
               >
@@ -140,8 +138,7 @@ export function Header() {
             <div className="mx-auto grid max-w-7xl grid-cols-5 gap-8 px-8 py-8">
               {(
                 [
-                  ["Dining Sets", mega.dining],
-                  ["Sofas", mega.sofas],
+                  ["Shop", mega.shop],
                   ["Design", mega.design],
                   ["Shop by need", mega.need],
                 ] as const
@@ -189,6 +186,13 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
+            <div className="my-2 border-t border-white/10 pt-2">
+              {mega.shop.map((item) => (
+                <Link key={item.href} href={item.href} onClick={() => setOpen(false)} className="block rounded-xl px-3 py-2.5 text-sm text-ivory/75 hover:bg-white/5">
+                  {item.label}
+                </Link>
+              ))}
+            </div>
           </nav>
           <div className="absolute inset-x-0 bottom-0 space-y-3 border-t border-white/10 bg-espresso p-5">
             <WaButton className="w-full" />

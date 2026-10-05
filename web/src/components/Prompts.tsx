@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CloseIcon } from "@/components/icons";
-import { siteConfig, STORAGE_KEYS } from "@/lib/site";
+import { CONSENT_COOKIE, siteConfig, STORAGE_KEYS } from "@/lib/site";
 import { useStoredValue } from "@/lib/use-storage";
 import { whatsappHref } from "@/lib/whatsapp";
 import { track } from "@/lib/analytics";
@@ -14,6 +15,8 @@ import { track } from "@/lib/analytics";
  * is always available and never competes for attention.
  */
 export function Prompts() {
+  const pathname = usePathname();
+  const hasStickyProductBar = /^\/(?:shop\/[^/]+\/[^/]+|dining-sets\/[^/]+|sofas\/[^/]+)\/?$/.test(pathname);
   const [showFitFinder, setShowFitFinder] = useState(false);
   const cookieAck = useStoredValue(STORAGE_KEYS.cookie);
   const showCookie = cookieAck === "";
@@ -35,6 +38,7 @@ export function Prompts() {
   const dismissCookie = (ack: boolean) => {
     try {
       window.localStorage.setItem(STORAGE_KEYS.cookie, ack ? "accepted" : "essential");
+      document.cookie = `${CONSENT_COOKIE}=${ack ? "accepted" : "essential"}; Max-Age=31536000; Path=/; SameSite=Lax${window.location.protocol === "https:" ? "; Secure" : ""}`;
       window.dispatchEvent(new Event("home-update-storage"));
     } catch {
       /* ignore */
@@ -47,23 +51,23 @@ export function Prompts() {
         <div
           role="dialog"
           aria-label="Cookie notice"
-          className="fixed inset-x-3 bottom-3 z-[70] mx-auto max-w-lg rounded-2xl border border-white/12 bg-espresso/97 p-4 shadow-2xl backdrop-blur md:bottom-6"
+          className={`fixed inset-x-2 ${hasStickyProductBar ? "bottom-20 sm:bottom-20" : "bottom-1 sm:bottom-3"} z-70 mx-auto max-w-lg rounded-xl border border-white/12 bg-espresso/97 p-2 shadow-2xl backdrop-blur sm:inset-x-3 sm:p-3 md:bottom-6`}
         >
-          <p className="text-sm text-ivory/90">
-            Essential storage remembers your shortlist and room size. If you accept, we also load analytics to understand site use; ad tracking is not enabled by this site.
-          </p>
-          <div className="mt-3 flex flex-wrap gap-2">
+          <div className="flex items-center gap-2">
+            <p className="min-w-0 flex-1 text-[10px] leading-3 text-ivory/90 sm:text-xs sm:leading-4">
+              Optional analytics + Meta ads measurement?
+            </p>
             <button
               type="button"
               onClick={() => dismissCookie(true)}
-              className="min-h-11 flex-1 rounded-full bg-champagne px-4 text-sm font-medium text-onyx"
+              className="min-h-9 shrink-0 rounded-full bg-champagne px-3 text-[10px] font-medium text-onyx sm:min-h-10 sm:px-4 sm:text-xs"
             >
-              Accept
+              Allow
             </button>
             <button
               type="button"
               onClick={() => dismissCookie(false)}
-              className="min-h-11 flex-1 rounded-full border border-white/12 px-4 text-sm text-ivory/85"
+              className="min-h-9 shrink-0 rounded-full border border-white/12 px-2 text-[10px] text-ivory/85 sm:min-h-10 sm:px-3 sm:text-xs"
             >
               Essential only
             </button>
@@ -75,7 +79,7 @@ export function Prompts() {
         <div
           role="dialog"
           aria-label="Find your fit"
-          className="fixed inset-x-3 bottom-3 z-[65] mx-auto max-w-lg rounded-2xl border border-antique-gold/25 bg-espresso/97 p-5 shadow-2xl backdrop-blur md:bottom-24"
+          className="fixed inset-x-3 bottom-20 z-65 mx-auto max-w-lg rounded-2xl border border-antique-gold/25 bg-espresso/97 p-5 shadow-2xl backdrop-blur md:bottom-24"
         >
           <div className="flex items-start justify-between gap-3">
             <div>

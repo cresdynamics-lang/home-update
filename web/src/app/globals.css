@@ -188,6 +188,33 @@ label:has(> input[type="radio"]) {
   -webkit-backdrop-filter: blur(14px);
 }
 
+.admin-login-form input,
+.admin-editor-form input:not([type="checkbox"]),
+.admin-editor-form textarea,
+.admin-editor-form select {
+  min-height: 44px;
+  width: 100%;
+  border: 1px solid rgb(255 255 255 / 16%);
+  background: var(--onyx);
+  padding: 0.65rem 0.75rem;
+  color: var(--ivory);
+  outline: none;
+}
+
+.admin-editor-form textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.admin-login-form input:focus-visible,
+.admin-editor-form input:focus-visible,
+.admin-editor-form textarea:focus-visible,
+.admin-editor-form select:focus-visible {
+  border-color: var(--antique-gold);
+  outline: 2px solid var(--antique-gold);
+  outline-offset: 2px;
+}
+
 .hero-scrim {
   background:
     linear-gradient(

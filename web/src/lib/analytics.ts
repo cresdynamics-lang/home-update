@@ -1,6 +1,7 @@
 declare global {
   interface Window {
     dataLayer?: unknown[];
+    fbq?: (...args: unknown[]) => void;
   }
 }
 
@@ -11,6 +12,7 @@ export type AnalyticsEvent =
   | "fabric_select"
   | "whatsapp_click"
   | "shortlist_send"
+  | "shortlist_add"
   | "call_click"
   | "sample_request"
   | "showroom_directions_click";
@@ -63,5 +65,27 @@ export function track(event: AnalyticsEvent, payload: Payload = {}) {
   w.dataLayer = w.dataLayer ?? [];
   w.dataLayer.push(detail);
 
+  if (event === "whatsapp_click") {
+    const conversion = {
+      content_name: "WhatsApp Direct Inquiry",
+      content_category: payload.ctaLocation ?? detail.page,
+      content_ids: payload.itemId ? [payload.itemId] : undefined,
+    };
+    window.fbq?.("track", "Lead", conversion);
+    window.fbq?.("track", "Contact", conversion);
+  }
+
+  if (event === "shortlist_add") {
+    window.fbq?.("track", "AddToWishlist", {
+      content_name: payload.product,
+      content_ids: payload.itemId ? [payload.itemId] : undefined,
+      content_type: "product",
+    });
+  }
+
   // GA4 collection and consent settings belong in the connected GTM container.
+}
+
+export function trackMeta(event: string, payload: Record<string, unknown> = {}) {
+  if (typeof window !== "undefined") window.fbq?.("track", event, payload);
 }

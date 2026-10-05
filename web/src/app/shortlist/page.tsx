@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { CloseIcon } from "@/components/icons";
-import { track } from "@/lib/analytics";
+import { track, trackMeta } from "@/lib/analytics";
 import { products, leadTimeLabel, priceLabel, STORAGE_KEYS, writeStoredIds } from "@/lib/site";
 import { useStoredIds, useStoredRoom } from "@/lib/use-storage";
 import { buildWhatsAppMessage, whatsappHref } from "@/lib/whatsapp";
@@ -106,6 +106,11 @@ export default function ShortlistPage() {
               onClick={() => {
                 track("shortlist_send", { value: String(selected.length), ctaLocation: "shortlist" });
                 track("whatsapp_click", { value: "shortlist", ctaLocation: "shortlist", linkUrl: whatsappHref(message) });
+                trackMeta("InitiateCheckout", {
+                  content_ids: selected.map((product) => product.id),
+                  content_type: "product",
+                  currency: "KES",
+                });
               }}
               className="inline-flex min-h-12 items-center rounded-full bg-wa px-5 text-sm font-medium text-white"
             >

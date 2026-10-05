@@ -1,7 +1,7 @@
 import type { Product } from "@/data/products";
 import { site } from "@/lib/site";
-import { productPath } from "@/lib/seo";
 import type { Combo } from "@/lib/image-map";
+import { productPath } from "@/lib/seo";
 
 /**
  * Keep the WhatsApp share link deterministic for both SSR and hydration.
@@ -38,11 +38,17 @@ export function buildWhatsAppMessage({
     if (combo?.wood) details.push(`${combo.wood} legs`);
 
     const size = `${product.dimensions.w}x${product.dimensions.d} cm`;
+    const leadTime = product.leadTimeDays;
+    const lead = leadTime === null
+      ? "Ask us to confirm lead time"
+      : typeof leadTime === "string"
+        ? leadTime
+        : `${leadTime.min}-${leadTime.max} business days`;
 
     parts.push(
       `I'm interested in ${product.name} (${size}${details.length ? `, ${details.join(", ")}` : ""}).`,
     );
-    parts.push(`Please confirm current lead time and price for this product.`);
+    parts.push(`Listed lead time: ${lead}.`);
   }
 
   if (compare && compare.length > 0) {

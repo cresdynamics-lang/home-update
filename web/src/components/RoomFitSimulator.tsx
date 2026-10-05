@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import { track } from "@/lib/analytics";
+import { track, trackMeta } from "@/lib/analytics";
 import type { Product } from "@/data/products";
 import { writeRoom, type RoomSize } from "@/lib/site";
 import { useStoredRoom } from "@/lib/use-storage";
@@ -97,6 +97,12 @@ export function RoomFitSimulator({ product, others = [] }: Props) {
   const run = () => {
     setRan(true);
     track("size_checker_used", { product: product.name, value: verdict.status, ctaLocation: "room-fit-simulator" });
+    trackMeta("CustomizeProduct", {
+      content_name: product.name,
+      content_category: product.category,
+      content_ids: [product.id],
+      room_fit_check: true,
+    });
   };
 
   // Scale the room into a fixed viewBox so both axes stay to the same scale.

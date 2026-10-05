@@ -456,18 +456,10 @@ Targets are proposed process and outcome targets because no GA4/GSC baseline or 
 
 ## Repo Audit Basis
 
-- Framework and routes: `web/package.json`, `web/src/app/`, product routes `web/src/app/dining-sets/[slug]/page.tsx` and `web/src/app/sofas/[slug]/page.tsx`, legacy product redirect `web/src/app/products/[slug]/page.tsx`, journal route `web/src/app/journal/[slug]/page.tsx`.
+- Framework and routes: `web/package.json`, `web/src/app/`, product route `web/src/app/products/[slug]/page.tsx`, journal route `web/src/app/journal/[slug]/page.tsx`.
 - Root metadata/store JSON-LD: `web/src/app/layout.tsx`.
 - Sitemap and robots: `web/src/app/sitemap.ts`, `web/src/app/robots.ts`.
 - Catalog and current product facts/placeholders: `web/src/data/products.ts`.
 - Search/analytics event support and site defaults: `web/src/lib/analytics.ts`, `web/src/lib/site.ts`.
-- Current key collection pages: `web/src/app/dining-sets/page.tsx`, `web/src/app/sofas/page.tsx`, `web/src/app/fabrics-and-colours/page.tsx`; `/fabrics` now redirects to the latter.
+- Current key collection pages: `web/src/app/dining-sets/page.tsx`, `web/src/app/sofas/page.tsx`, `web/src/app/fabrics/page.tsx`.
 - Search competitor discovery source was DuckDuckGo HTML snapshots on 3 October 2026; verify all listings, claims, availability and Google ranking positions before using as formal competitive intelligence.
-
-## Implementation Status
-
-Repo-side implementation now covers the current storefront and only the new landing pages supported by the available catalog/content. Canonicals are route-specific; clean collection pages use the requested trailing slash; product links use the requested dining/sofa paths; known old product, fabric and journal slugs have 301 redirects; compare, shortlist, sale and filtered views are excluded from indexing; and the sitemap lists canonical collection, product, guide and journal URLs with product/article images.
-
-The site now emits Organization, Product, Offer (only when both price and stock status are provided), BreadcrumbList, ItemList, Article and visible-content FAQPage JSON-LD where applicable. `FurnitureStore` address/geo/opening-hours data is intentionally withheld until confirmed. Unsupported performance, lead-time, warranty and sale claims were removed or changed to confirmation prompts. Analytics events are available in the data layer; GTM loads only after analytics consent when `NEXT_PUBLIC_GTM_ID` is set, and `NEXT_PUBLIC_GSC_VERIFICATION` supports Search Console meta-token verification.
-
-Pages that need facts or evidence remain unpublished and out of the sitemap: marble-top or dining-chair inventory pages, sofa beds, balcony-specific products, fabric-performance pages, delivery area pages, showroom, warranty/returns, reviews and customer homes. External account steps still require the owner's access: add the GTM container and GA4 configuration, verify Search Console, establish the Google Business Profile, and confirm prices, stock, dimensions, customization, sample availability, care, delivery, warranty, address and customer permissions. No build or automated validation command was run in this implementation pass.

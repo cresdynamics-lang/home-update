@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CatalogPage } from "@/components/CatalogPage";
 import { ProductSEOPage } from "@/components/ProductSEOPage";
-import { products } from "@/data/products";
+import { getCatalogProducts } from "@/lib/catalog-store";
 import { productMetadata, productPath } from "@/lib/seo";
 import { site } from "@/lib/site";
 
@@ -30,7 +30,8 @@ export function generateStaticParams() {
 export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { slug } = await params;
   const filtered = Object.keys(await searchParams).length > 0;
-  const product = products.find((item) => item.id === productSlugs[slug]);
+  const catalog = await getCatalogProducts();
+  const product = catalog.find((item) => item.id === productSlugs[slug] || item.category === "sofa" && item.slug === slug);
   if (product) return filtered ? { ...productMetadata(product), robots: { index: false, follow: true } } : productMetadata(product);
   const collection = collections[slug as keyof typeof collections];
   if (!collection) return { title: "Sofas | Home Update", robots: { index: false, follow: true } };
@@ -46,11 +47,12 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
 
 export default async function SofaSubpage({ params }: Props) {
   const { slug } = await params;
-  const product = products.find((item) => item.id === productSlugs[slug]);
+  const catalog = await getCatalogProducts();
+  const product = catalog.find((item) => item.id === productSlugs[slug] || item.category === "sofa" && item.slug === slug);
   if (product) return <ProductSEOPage product={product} />;
   const collection = collections[slug as keyof typeof collections];
   if (!collection) notFound();
-  const ids = products.filter((item) => item.category === "sofa" && collection.filter(item.id)).map((item) => item.id);
+  const ids = catalog.filter((item) => item.category === "sofa" && collection.filter(item.id)).map((item) => item.id);
   const url = `${site.url}/sofas/${slug}/`;
   const structuredData = [
     {
@@ -67,7 +69,7 @@ export default async function SofaSubpage({ params }: Props) {
       "@type": "ItemList",
       name: slug.replaceAll("-", " "),
       itemListElement: ids.map((id, index) => {
-        const product = products.find((item) => item.id === id)!;
+        const product = catalog.find((item) => item.id === id)!;
         return { "@type": "ListItem", position: index + 1, url: `${site.url}${productPath(product)}`, item: { "@type": "Product", name: product.name } };
       }),
     },

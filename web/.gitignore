@@ -16,6 +16,10 @@
 # next.js
 /.next/
 /out/
+/data/catalog-overrides.json
+/data/catalog-overrides.json.*.tmp
+/data/sales-ledger.json
+/data/sales-ledger.json.*.tmp
 
 # production
 /build

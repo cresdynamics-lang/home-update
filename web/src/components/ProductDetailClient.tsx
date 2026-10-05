@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ARButton } from "@/components/ARButton";
 import { Gallery } from "@/components/Gallery";
 import { MaterialSwap } from "@/components/MaterialSwap";
 import { ProofBadges } from "@/components/ProofBadges";
 import { PreloadImages } from "@/components/PreloadImages";
 import { StickyMobileBar } from "@/components/StickyMobileBar";
-import { track } from "@/lib/analytics";
+import { track, trackMeta } from "@/lib/analytics";
 import { comboSummary, nextVariantImages, resolveGallery, type Combo } from "@/lib/image-map";
 import { buildWhatsAppMessage, roomPhotoMessage, whatsappHref } from "@/lib/whatsapp";
 import type { Product } from "@/data/products";
@@ -41,7 +41,8 @@ const FinishMatcher = dynamic(
   },
 );
 
-export function ProductDetailClient({ product }: { product: Product }) {
+export function ProductDetailClient({ product: initialProduct }: { product: Product }) {
+  const [product, setProduct] = useState(initialProduct);
   const [edited, setEdited] = useState<Combo | null>(null);
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [compareFull, setCompareFull] = useState(false);
@@ -53,6 +54,22 @@ export function ProductDetailClient({ product }: { product: Product }) {
 
   const isCompared = compareIds.includes(product.id);
   const isSaved = shortlistIds.includes(product.id);
+
+  useEffect(() => {
+    let active = true;
+    fetch("/api/catalog/", { cache: "no-store" })
+      .then((response) => response.ok ? response.json() as Promise<Product[]> : null)
+      .then((items) => {
+        const latest = items?.find((item) => item.id === initialProduct.id);
+        if (active && latest) setProduct(latest);
+      })
+      .catch(() => undefined);
+    return () => { active = false; };
+  }, [initialProduct.id]);
+
+  useEffect(() => {
+    trackMeta("ViewContent", { content_name: product.name, content_category: product.category, content_ids: [product.id], value: product.priceFrom ?? undefined, currency: "KES" });
+  }, [product]);
 
   const defaults = useMemo<Combo>(
     () => ({
@@ -76,6 +93,7 @@ const gallery = useMemo(() => resolveGallery(product, combo), [combo, product]);
     setEdited(next);
     setGalleryIndex(0);
     writeCombo(product.id, next);
+    trackMeta("CustomizeProduct", { content_name: product.name, wood: next.wood, fabric: next.fabric, length: next.layout });
   };
 
   const waHref = whatsappHref(buildWhatsAppMessage({ product, combo, room }));
@@ -88,6 +106,9 @@ const gallery = useMemo(() => resolveGallery(product, combo), [combo, product]);
     }
     const next = raw.includes(product.id) ? raw.filter((i) => i !== product.id) : [...raw, product.id];
     writeStoredIds(key, next);
+    if (key === STORAGE_KEYS.shortlist && !raw.includes(product.id)) {
+      track("shortlist_add", { product: product.name, itemId: product.id, ctaLocation: "product-detail" });
+    }
     if (key === STORAGE_KEYS.compare) {
       setCompareFull(false);
       track("compare_add", { product: product.name, value: product.slug });
@@ -107,10 +128,10 @@ const gallery = useMemo(() => resolveGallery(product, combo), [combo, product]);
             <li aria-hidden>/</li>
             <li>
               <Link
-                href={product.category === "dining" ? "/dining-sets/" : "/sofas/"}
+                href={product.category === "dining" ? "/dining-sets/" : product.category === "sofa" ? "/sofas/" : product.category === "tv-stands" ? "/tv-stands/" : "/coffee-tables/"}
                 className="hover:text-champagne"
               >
-                {product.category === "dining" ? "Dining sets" : "Sofas"}
+                {product.category === "dining" ? "Dining sets" : product.category === "sofa" ? "Sofas" : product.category === "tv-stands" ? "TV Stands" : "Coffee Tables"}
               </Link>
             </li>
             <li aria-hidden>/</li>
@@ -156,6 +177,8 @@ const gallery = useMemo(() => resolveGallery(product, combo), [combo, product]);
             {product.dimensions.w} × {product.dimensions.d} × {product.dimensions.h} cm
             {product.seats ? ` · seats ${product.seats}` : ""}
           </p>
+          {product.maxTvSize ? <p className="mt-1 text-sm text-muted">TV support: {product.maxTvSize} · Cable management: {product.cableManagement ? "Yes" : "No"}{product.storageDrawers !== undefined ? ` · Drawers: ${product.storageDrawers}` : ""}</p> : null}
+          {product.tableShape ? <p className="mt-1 text-sm text-muted">Shape: {product.tableShape} · Top: {product.topMaterial}</p> : null}
           <p className="mt-1 text-sm text-champagne">{leadTimeLabel(product.leadTimeDays)}</p>
           <p className="mt-3 text-sm text-muted">{product.priceNote}</p>
 
@@ -195,7 +218,7 @@ const gallery = useMemo(() => resolveGallery(product, combo), [combo, product]);
             })}
             className="inline-flex min-h-13 w-full items-center justify-center rounded-full bg-wa px-5 py-3.5 text-base font-medium text-white transition hover:bg-wa-dark"
           >
-            Send to WhatsApp
+            Enquire on WhatsApp
           </a>
           <a
             href={`tel:${site.phoneTel}`}

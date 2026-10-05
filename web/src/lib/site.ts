@@ -1,4 +1,4 @@
-export { CLEARANCE, getProductById, getProductBySlug, ownerTodo, products } from "@/data/products";
+export { CLEARANCE, getProductById, getProductBySlug, products } from "@/data/products";
 export type { Product } from "@/data/products";
 
 export const STORAGE_KEYS = {
@@ -10,12 +10,14 @@ export const STORAGE_KEYS = {
   cookie: "home-update-cookie-ack",
 } as const;
 
+export const CONSENT_COOKIE = "home_update_optional_tracking";
+
 export const site = {
   name: "Home Update Furniture",
   shortName: "Home Update",
   phoneDisplay: "0743 844 362",
   phoneTel: "+254743844362",
-  whatsapp: "254743844362",
+  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "254743844362",
   email: "hello@homeupdate.co.ke",
   address: "Nairobi, Kenya",
   hours: "Mon–Sat · 9am–6pm",
@@ -305,14 +307,22 @@ export const journal = [
 
 export const nav = [
   { label: "Dining Sets", href: "/dining-sets/" },
-  { label: "Sofas", href: "/sofas/" },
-  { label: "Fabrics & Colours", href: "/fabrics-and-colours/" },
-  { label: "Size Guide", href: "/size-guide/" },
+  { label: "Sofas & Sectionals", href: "/sofas/" },
+  { label: "TV Stands", href: "/tv-stands/" },
+  { label: "Coffee Tables", href: "/coffee-tables/" },
   { label: "Custom Design", href: "/custom-design/" },
-  { label: "Journal", href: "/journal/" },
+  { label: "Sale", href: "/sale/" },
 ] as const;
 
 export const mega = {
+  shop: [
+    { label: "All products", href: "/shop/" },
+    { label: "Dining sets", href: "/dining-sets/" },
+    { label: "Sofas", href: "/sofas/" },
+    { label: "TV stands", href: "/tv-stands/" },
+    { label: "Coffee tables", href: "/coffee-tables/" },
+    { label: "Sale", href: "/sale/" },
+  ],
   dining: [
     { label: "All dining sets", href: "/dining-sets/" },
     { label: "4-seater round", href: "/dining-sets/4-seater-round-dining-tables/" },

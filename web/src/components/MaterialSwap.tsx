@@ -70,7 +70,7 @@ export function MaterialSwap({
         </fieldset>
       )}
 
-      <fieldset className="mt-5">
+      {fabrics.length > 0 ? <fieldset className="mt-5">
         <legend className="mb-2 text-[10px] tracking-[0.18em] text-muted uppercase">Fabric</legend>
         <div className="flex flex-wrap gap-2">
           {fabrics.map((fabric) => (
@@ -89,9 +89,9 @@ export function MaterialSwap({
             </button>
           ))}
         </div>
-      </fieldset>
+      </fieldset> : null}
 
-      <fieldset className="mt-5">
+      {colours.length > 0 ? <fieldset className="mt-5">
         <legend className="mb-2 text-[10px] tracking-[0.18em] text-muted uppercase">Colour</legend>
         <div className="flex flex-wrap gap-2">
           {colours.map((colour) => {
@@ -119,7 +119,7 @@ export function MaterialSwap({
             );
           })}
         </div>
-      </fieldset>
+      </fieldset> : null}
 
       {woodFinishes.length > 0 && (
         <fieldset className="mt-5">

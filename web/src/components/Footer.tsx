@@ -4,6 +4,7 @@ import { PhoneIcon, WhatsAppIcon } from "./icons";
 import { WaButton } from "./ui";
 import { CallButton } from "./CallButton";
 import { site, waLink } from "@/lib/site";
+import { TrackedWhatsAppLink } from "@/components/TrackedWhatsAppLink";
 
 const columns = [
   {
@@ -162,15 +163,13 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a
+                <TrackedWhatsAppLink
                   href={waLink()}
                   className="inline-flex items-center gap-2 hover:text-champagne"
-                  target="_blank"
-                  rel="noopener noreferrer"
                 >
                   <WhatsAppIcon className="h-4 w-4 text-wa" />
                   WhatsApp: fastest reply
-                </a>
+                </TrackedWhatsAppLink>
               </li>
               <li className="text-muted">Nairobi, Kenya</li>
             </ul>
@@ -182,7 +181,7 @@ export function Footer() {
             <Link href="/about/">About Home Update</Link>
             <Link href="/sale/">Current prices</Link>
             <Link href="/contact/">Contact</Link>
-            <a href="/sitemap.xml">XML sitemap</a>
+            <Link href="/admin/">Admin</Link>
           </div>
           <div className="flex items-center gap-2 text-xs text-muted">
             <span>We accept</span>

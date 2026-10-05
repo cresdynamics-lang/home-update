@@ -49,8 +49,11 @@ export function QuickViewModal({
       ? raw.filter((i) => i !== product.id)
       : [...raw, product.id];
     writeStoredIds(key, next);
+    if (key === STORAGE_KEYS.shortlist && !raw.includes(product.id)) {
+      track("shortlist_add", { product: product.name, itemId: product.id, ctaLocation: "quick-view" });
+    }
     if (key === STORAGE_KEYS.compare) {
-      track("compare_add", { product: product.name, itemId: product.id, value: product.slug, ctaLocation: "quick-view" });
+      track("compare_add", { product: product.name, value: product.slug });
     }
   };
 
@@ -107,7 +110,7 @@ export function QuickViewModal({
             href={waHref}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => track("whatsapp_click", { product: product.name, itemId: product.id, ctaLocation: "quick-view", linkUrl: waHref })}
+            onClick={() => track("whatsapp_click", { product: product.name })}
             className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full bg-wa px-5 py-3 text-sm font-medium text-white transition hover:bg-wa-dark"
           >
             Ask for today’s price

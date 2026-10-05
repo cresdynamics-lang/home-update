@@ -15,10 +15,12 @@ export function ProductCard({
   product,
   view = "grid",
   priority = false,
+  compactSquare = false,
 }: {
   product: Product;
   view?: "grid" | "list";
   priority?: boolean;
+  compactSquare?: boolean;
 }) {
   const compareIds = useStoredIds(STORAGE_KEYS.compare);
   const shortlistIds = useStoredIds(STORAGE_KEYS.shortlist);
@@ -37,25 +39,29 @@ export function ProductCard({
 
     const next = raw.includes(value) ? raw.filter((item) => item !== value) : [...raw, value];
     writeStoredIds(key, next);
+    if (key === STORAGE_KEYS.shortlist && !raw.includes(value)) {
+      track("shortlist_add", { product: product.name, itemId: product.id, ctaLocation: "product-card" });
+    }
     if (key === STORAGE_KEYS.compare) {
       setMessage("");
       track("compare_add", { product: product.name, itemId: product.id, value: product.slug, ctaLocation: "product-card" });
     }
   };
 
-  const waHref = whatsappHref(buildWhatsAppMessage({ product }));
+  const timberTone = product.woodFinishes[0] ?? product.colours[0] ?? "Natural Oak";
+  const waHref = whatsappHref(buildWhatsAppMessage({ product, combo: { wood: timberTone } }));
   const listView = view === "list";
 
   return (
     <>
       <article
-        className={`group overflow-hidden rounded-[1.35rem] border border-white/8 bg-espresso shadow-lg shadow-onyx/20 ${
+        className={`group overflow-hidden rounded-lg border ${compactSquare ? "border-antique-gold/40" : "border-white/8"} bg-espresso shadow-lg shadow-onyx/20 ${
           listView ? "sm:flex sm:items-stretch" : ""
         }`}
       >
         <Link
           href={productPath(product)}
-          className={`relative block overflow-hidden ${listView ? "sm:w-56 sm:shrink-0" : "aspect-[4/5]"}`}
+          className={`relative block overflow-hidden ${listView ? "sm:w-56 sm:shrink-0" : compactSquare ? "aspect-square" : "aspect-4/5"}`}
         >
           <Image
             src={product.images[0]}
@@ -75,6 +81,11 @@ export function ProductCard({
               {product.bestseller ? "Bestseller" : "Sale"}
             </span>
           )}
+          {product.conceptPreview ? (
+            <span className="absolute right-2 bottom-2 rounded bg-onyx/90 px-2 py-1 text-[9px] font-medium text-champagne">
+              Concept preview · photo pending
+            </span>
+          ) : null}
         </Link>
 
         <div className={`p-4 sm:p-5 ${listView ? "sm:flex-1" : ""}`}>
@@ -85,7 +96,7 @@ export function ProductCard({
                   {product.name}
                 </Link>
               </h2>
-              <p className="mt-1 text-[11px] tracking-[0.16em] text-muted uppercase">{product.subtype}</p>
+              <p className="mt-1 text-[11px] tracking-widest text-muted uppercase">{product.subtype}</p>
             </div>
             <div className="flex shrink-0 items-center gap-2">
               <label className="flex min-h-11 cursor-pointer items-center gap-1.5 rounded-full border border-white/10 px-2.5 text-[11px] text-ivory/85">
@@ -136,7 +147,7 @@ export function ProductCard({
               onClick={() => track("whatsapp_click", { product: product.name, itemId: product.id, ctaLocation: "product-card", linkUrl: waHref })}
               className="inline-flex min-h-11 items-center justify-center rounded-full bg-wa px-4 py-2.5 text-sm font-medium text-white transition hover:bg-wa-dark"
             >
-              Enquire
+              {product.conceptPreview ? "Ask about this concept" : "Enquire"}
             </a>
             <button
               type="button"

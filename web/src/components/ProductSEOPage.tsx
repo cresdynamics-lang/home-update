@@ -43,9 +43,13 @@ const profiles: Record<string, { overview: string; planning: string; related: st
 };
 
 export function ProductSEOPage({ product }: { product: Product }) {
-  const profile = profiles[product.id];
+  const profile = profiles[product.id] ?? {
+    overview: `${product.name} is a concept preview with listed dimensions of ${product.dimensions.w} × ${product.dimensions.d} × ${product.dimensions.h} cm. Confirm that the specification, materials, price and availability are approved before ordering.`,
+    planning: `Measure the room footprint and the narrowest access route, then compare them with the listed ${product.dimensions.w} × ${product.dimensions.d} cm footprint. The photography is illustrative concept imagery, not a photograph of this exact product. Ask Home Update to confirm the design and finish before purchase.`,
+    related: product.pairedProducts ?? [],
+  };
   const similar = products.filter((item) => profile?.related.includes(item.id));
-  const categoryLabel = product.category === "dining" ? "dining sets" : "sofas";
+  const categoryLabel = product.category === "dining" ? "dining sets" : product.category === "sofa" ? "sofas" : product.category === "tv-stands" ? "TV stands" : "coffee tables";
   const faqs = [
     {
       question: `What is the current price of ${product.name}?`,
@@ -109,7 +113,7 @@ export function ProductSEOPage({ product }: { product: Product }) {
 
         {similar.length > 0 ? (
           <div>
-            <h2 className="font-serif text-2xl text-champagne">Compare similar {categoryLabel}</h2>
+            <h2 className="font-serif text-2xl text-champagne">{product.category === "coffee-tables" ? "Pairs well with sectional sofas" : `Compare similar ${categoryLabel}`}</h2>
             <p className="mt-2 text-sm text-muted">Compare listed footprints and configurations. Ask us to confirm current product options and prices.</p>
             <div className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-3">
               {similar.map((item) => <ProductCard key={item.id} product={item} />)}
@@ -117,7 +121,7 @@ export function ProductSEOPage({ product }: { product: Product }) {
           </div>
         ) : null}
         <p className="text-sm text-muted">
-          <Link className="underline" href={product.category === "dining" ? "/size-guide/dining-table-size-guide/" : "/size-guide/sofa-size-guide/"}>Read the {product.category} size guide</Link>
+          <Link className="underline" href={product.category === "dining" ? "/size-guide/dining-table-size-guide/" : product.category === "sofa" ? "/size-guide/sofa-size-guide/" : "/size-guide/"}>Read the {product.category} size guide</Link>
           {" · "}
           <Link className="underline" href="/fabrics-and-colours/">Explore fabric and colour options</Link>
         </p>

@@ -22,15 +22,17 @@ const WIDTHS = [
 
 type Props = {
   products: Product[];
-  category?: "dining" | "sofa" | "all";
+  category?: "dining" | "sofa" | "tv-stands" | "coffee-tables" | "all";
   saleOnly?: boolean;
   basePath: string;
   productIds?: string[];
+  compactProducts?: boolean;
 };
 
-export function CatalogBrowser({ products, category = "all", saleOnly, basePath, productIds }: Props) {
+export function CatalogBrowser({ products, category = "all", saleOnly, basePath, productIds, compactProducts = false }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [catalogProducts, setCatalogProducts] = useState(products);
 
   const [view, setView] = useState<"grid" | "list">("grid");
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -52,6 +54,15 @@ export function CatalogBrowser({ products, category = "all", saleOnly, basePath,
   };
 
   useEffect(() => {
+    let active = true;
+    fetch("/api/catalog/", { cache: "no-store" })
+      .then((response) => response.ok ? response.json() as Promise<Product[]> : null)
+      .then((items) => { if (active && items) setCatalogProducts(items); })
+      .catch(() => undefined);
+    return () => { active = false; };
+  }, []);
+
+  useEffect(() => {
     if (!sheetOpen) return;
     document.body.style.overflow = "hidden";
     return () => {
@@ -60,11 +71,12 @@ export function CatalogBrowser({ products, category = "all", saleOnly, basePath,
   }, [sheetOpen]);
 
   const filtered = useMemo(() => {
-    let items = products.filter((product) => {
+    let items = catalogProducts.filter((product) => {
       if (productIds && !productIds.includes(product.id)) return false;
       if (saleOnly) return Boolean(product.sale);
       if (category === "dining") return product.category === "dining";
       if (category === "sofa") return product.category === "sofa";
+      if (category === "tv-stands" || category === "coffee-tables") return product.category === category;
       return true;
     });
 
@@ -90,7 +102,7 @@ export function CatalogBrowser({ products, category = "all", saleOnly, basePath,
       );
     }
     return items;
-  }, [products, category, saleOnly, seats, width, fabric, colour, sort]);
+  }, [catalogProducts, category, saleOnly, productIds, seats, width, fabric, colour, sort]);
 
   const activeCount =
     (seats ? 1 : 0) +
@@ -235,28 +247,28 @@ export function CatalogBrowser({ products, category = "all", saleOnly, basePath,
         </div>
       ) : (
         <div
-          className={`mt-8 grid gap-4 ${
+          className={`mt-8 grid gap-3 sm:gap-4 ${
             view === "grid"
-              ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3"
+              ? compactProducts ? "grid-cols-2 xl:grid-cols-3" : "grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3"
               : "grid-cols-1"
           }`}
         >
           {filtered.map((product, i) => (
-            <ProductCard key={product.id} product={product} view={view} priority={i < 2} />
+            <ProductCard key={product.id} product={product} view={view} priority={i < 2} compactSquare={compactProducts && view === "grid"} />
           ))}
         </div>
       )}
 
       {sheetOpen && (
         <div
-          className="fixed inset-0 z-[60] flex items-end bg-onyx/80 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-60 flex items-end bg-onyx/80 backdrop-blur-sm lg:hidden"
           role="dialog"
           aria-modal="true"
           aria-label="Filters"
           onClick={() => setSheetOpen(false)}
         >
           <div
-            className="slide-up max-h-[85vh] w-full overflow-y-auto rounded-t-[1.5rem] border-t border-white/10 bg-espresso p-5"
+            className="slide-up max-h-[85vh] w-full overflow-y-auto rounded-t-3xl border-t border-white/10 bg-espresso p-5"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="mb-5 flex items-center justify-between">

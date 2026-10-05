@@ -1,11 +1,14 @@
 import type { MetadataRoute } from "next";
 import { journalPosts } from "@/data/journal";
-import { products } from "@/data/products";
+import { getCatalogProducts } from "@/lib/catalog-store";
 import { productPath } from "@/lib/seo";
 import { site } from "@/lib/site";
 
 const staticPaths = [
   "/",
+  "/shop/",
+  "/tv-stands/",
+  "/coffee-tables/",
   "/dining-sets/",
   "/dining-sets/4-seater-round-dining-tables/",
   "/dining-sets/6-seater-dining-tables/",
@@ -26,7 +29,8 @@ const staticPaths = [
   "/journal/",
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const products = await getCatalogProducts();
   const staticRoutes: MetadataRoute.Sitemap = staticPaths.map((path) => ({
     url: `${site.url}${path}`,
     changeFrequency: path === "/" || path.includes("sets") || path.includes("sofas") ? "weekly" : "monthly",

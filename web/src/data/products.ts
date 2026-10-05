@@ -2,7 +2,7 @@ export type Product = {
   id: string;
   slug: string;
   name: string;
-  category: "dining" | "sofa";
+  category: "dining" | "sofa" | "tv-stands" | "coffee-tables";
   subtype: string;
   tags: string[];
   bestseller?: boolean;
@@ -11,6 +11,16 @@ export type Product = {
   availability?: "https://schema.org/InStock" | "https://schema.org/OutOfStock" | "https://schema.org/PreOrder";
   priceNote: string;
   dimensions: { w: number; d: number; h: number };
+  maxTvSize?: string;
+  cableManagement?: boolean;
+  storageDrawers?: number;
+  tableShape?: "Round" | "Oval" | "Rectangular" | "Fluted/Organic Nesting";
+  topMaterial?: "Marble" | "Solid Wood" | "Fluted Base";
+  pairedProducts?: string[];
+  conceptPreview?: boolean;
+  regularPrice?: number | null;
+  salePrice?: number | null;
+  inStock?: boolean;
   seats?: number;
   layoutOptions: string[];
   fabrics: string[];
@@ -62,6 +72,10 @@ export const CLEARANCE = {
   dining: { chairPulloutCm: 60, corridorCm: 90 },
   sofa: { chairPulloutCm: 60, corridorCm: 90 },
 } as const;
+
+export const categoryLabels: Record<Product["category"], string> = {
+  dining: "Dining Sets", sofa: "Sofas", "tv-stands": "TV Stands", "coffee-tables": "Coffee Tables",
+};
 
 export const products: Product[] = [
   {
@@ -451,6 +465,126 @@ export const products: Product[] = [
       "Keep chairs tucked in to protect the floor finish.",
       "Use a linen-safe cleaner for the upholstery.",
     ],
+  },
+  {
+    id: "metro-tv-stand",
+    slug: "the-metro-tv-stand",
+    name: "The Metro",
+    category: "tv-stands",
+    subtype: "TV stand · storage console",
+    tags: ["new"],
+    priceFrom: null,
+    regularPrice: null,
+    salePrice: null,
+    priceNote: "Concept preview · ask us to confirm availability",
+    inStock: false,
+    dimensions: { w: 180, d: 42, h: 55 },
+    maxTvSize: "Up to 75 inches (concept specification)",
+    cableManagement: true,
+    storageDrawers: 2,
+    layoutOptions: ["Wall-facing", "Freestanding"],
+    fabrics: [],
+    colours: ["Mahogany", "Natural Oak", "Walnut", "Ebony"],
+    woodFinishes: ["Mahogany", "Natural Oak", "Walnut", "Ebony"],
+    waterResistant: false,
+    leadTimeDays: null,
+    bestFor: "A considered media wall with concealed cable storage",
+    minRoom: { w: 2.4, d: 1.8 },
+    images: ["/images/living-marble.jpeg", "/images/living-l-sofa.jpeg"],
+    conceptPreview: true,
+    model3d: null,
+    warranty: "Ask us to confirm warranty terms.",
+    careNotes: ["Use a soft, dry cloth. Confirm finish-specific care before ordering."],
+  },
+  {
+    id: "arc-tv-stand",
+    slug: "the-arc-tv-stand",
+    name: "The Arc",
+    category: "tv-stands",
+    subtype: "TV stand · low console",
+    tags: ["new"],
+    priceFrom: null,
+    regularPrice: null,
+    salePrice: null,
+    priceNote: "Concept preview · ask us to confirm availability",
+    inStock: false,
+    dimensions: { w: 200, d: 45, h: 50 },
+    maxTvSize: "55 to 85 inches (confirm model and support)",
+    cableManagement: true,
+    storageDrawers: 3,
+    layoutOptions: ["Low console", "Custom width inquiry"],
+    fabrics: [],
+    colours: ["Mahogany", "Natural Oak", "Walnut", "Ebony"],
+    woodFinishes: ["Mahogany", "Natural Oak", "Walnut", "Ebony"],
+    waterResistant: false,
+    leadTimeDays: null,
+    bestFor: "Large living rooms that need a long, low media console",
+    minRoom: { w: 2.6, d: 2.0 },
+    images: ["/images/living-l-sofa.jpeg", "/images/living-marble.jpeg"],
+    conceptPreview: true,
+    model3d: null,
+    warranty: "Ask us to confirm warranty terms.",
+    careNotes: ["Use a soft, dry cloth. Confirm finish-specific care before ordering."],
+  },
+  {
+    id: "vale-coffee-table",
+    slug: "the-vale-coffee-table",
+    name: "The Vale",
+    category: "coffee-tables",
+    subtype: "Coffee table · fluted oval",
+    tags: ["new"],
+    priceFrom: null,
+    regularPrice: null,
+    salePrice: null,
+    priceNote: "Concept preview · ask us to confirm availability",
+    inStock: false,
+    dimensions: { w: 120, d: 65, h: 40 },
+    tableShape: "Oval",
+    topMaterial: "Fluted Base",
+    layoutOptions: ["Oval"],
+    fabrics: [],
+    colours: ["Mahogany", "Natural Oak", "Walnut", "Ebony"],
+    woodFinishes: ["Mahogany", "Natural Oak", "Walnut", "Ebony"],
+    waterResistant: false,
+    leadTimeDays: null,
+    bestFor: "Pairing with curved and sectional sofas",
+    minRoom: { w: 2.8, d: 2.0 },
+    images: ["/images/living-marble.jpeg", "/images/curved-sofas.jpeg"],
+    pairedProducts: ["cloud", "truffle", "linen"],
+    conceptPreview: true,
+    model3d: null,
+    warranty: "Ask us to confirm warranty terms.",
+    careNotes: ["Use a soft, dry cloth. Confirm finish-specific care before ordering."],
+  },
+  {
+    id: "nest-coffee-table",
+    slug: "the-nest-nesting-coffee-tables",
+    name: "The Nest",
+    category: "coffee-tables",
+    subtype: "Nesting coffee tables · 2-piece",
+    tags: ["new"],
+    priceFrom: null,
+    regularPrice: null,
+    salePrice: null,
+    priceNote: "Concept preview · ask us to confirm availability",
+    inStock: false,
+    dimensions: { w: 90, d: 60, h: 42 },
+    tableShape: "Fluted/Organic Nesting",
+    topMaterial: "Solid Wood",
+    layoutOptions: ["Nesting 2-piece"],
+    fabrics: [],
+    colours: ["Mahogany", "Natural Oak", "Walnut", "Ebony"],
+    woodFinishes: ["Mahogany", "Natural Oak", "Walnut", "Ebony"],
+    waterResistant: false,
+    leadTimeDays: null,
+    bestFor: "Flexible surfaces beside modular sectionals",
+    minRoom: { w: 2.3, d: 1.8 },
+    images: ["/images/curved-sofas.jpeg", "/images/living-marble.jpeg"],
+    pairedProducts: ["cloud", "truffle", "linen"],
+    conceptPreview: true,
+    model3d: null,
+    warranty: "Ask us to confirm warranty terms.",
+    careNotes: ["Use a soft, dry cloth. Confirm finish-specific care before ordering."],
   },
 ];
 

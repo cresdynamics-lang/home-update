@@ -4,9 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { buildWhatsAppMessage, whatsappHref } from "@/lib/whatsapp";
+import { track } from "@/lib/analytics";
 import { products, readStoredIds, STORAGE_KEYS, writeStoredIds } from "@/lib/site";
 import { useStoredRoom } from "@/lib/use-storage";
-import { track } from "@/lib/analytics";
 
 export function CompareDock() {
   const [compared, setCompared] = useState<string[]>([]);
@@ -57,7 +57,7 @@ export function CompareDock() {
         <div className="flex items-center gap-2">
           {savedCount > 0 && (
             <Link
-              href="/shortlist/"
+              href="/shortlist"
               className="hidden min-h-11 items-center rounded-full border border-white/12 px-3 text-sm text-ivory/80 md:inline-flex"
             >
               Shortlist ({savedCount})
@@ -65,9 +65,9 @@ export function CompareDock() {
           )}
           <a
             href={whatsappHref(compareMessage)}
+            onClick={() => track("whatsapp_click", { value: "comparison", ctaLocation: "compare-dock", linkUrl: whatsappHref(compareMessage) })}
             target="_blank"
             rel="noreferrer noopener"
-            onClick={() => track("whatsapp_click", { value: "compare-dock", ctaLocation: "compare-dock", linkUrl: whatsappHref(compareMessage) })}
             className="inline-flex min-h-11 items-center rounded-full bg-wa px-3 text-sm font-medium text-white"
           >
             Ask on WhatsApp
@@ -83,7 +83,7 @@ export function CompareDock() {
             Clear
           </button>
           <Link
-            href="/compare/"
+            href="/compare"
             className="inline-flex min-h-11 items-center rounded-full bg-champagne px-4 text-sm font-medium text-onyx"
           >
             Compare ({chosen.length})

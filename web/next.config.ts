@@ -42,6 +42,8 @@ const nextConfig: NextConfig = {
     ] as const;
 
     return [
+      { source: "/shop/tv-stands", destination: "/tv-stands/", statusCode: 301 },
+      { source: "/shop/coffee-tables", destination: "/coffee-tables/", statusCode: 301 },
       { source: "/fabrics", destination: "/fabrics-and-colours/", statusCode: 301 },
       ...journalSlugs.map(([oldSlug, newSlug]) => ({
         source: `/journal/${oldSlug}`,

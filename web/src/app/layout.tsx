@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { HelpBubble } from "@/components/home";
 import { Prompts } from "@/components/Prompts";
-import { GoogleTagManager } from "@/components/GoogleTagManager";
+import { MetaPixel } from "@/components/MetaPixel";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -27,34 +27,56 @@ const jost = Jost({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "Dining Sets & Sofas in Nairobi | Home Update",
-    template: "%s",
+    default: `${site.name} | Dining sets & sofas made to fit your home`,
+    template: `%s | ${site.name}`,
   },
   description:
-    "Shop dining sets and sofas made for Kenyan homes. Check room fit, choose finishes and ask today's price on WhatsApp.",
+    "Premium dining sets and sofas designed for real Kenyan homes. Custom sizes, forgiving fabrics, delivery & setup. Chat on WhatsApp for today's price.",
   openGraph: {
     type: "website",
     siteName: site.name,
     locale: "en_KE",
+    url: site.url,
+    title: `${site.name} | Dining sets & sofas made to fit your home`,
+    description:
+      "Premium dining sets and sofas designed for real Kenyan homes. Custom sizes, forgiving fabrics, delivery & setup.",
     images: [{ url: "/images/curved-sofas.jpeg", width: 1200, height: 630, alt: "Curved sofa in a modern living room" }],
   },
   twitter: {
     card: "summary_large_image",
+    title: `${site.name} | Dining sets & sofas`,
+    description: "Premium dining sets and sofas made to fit real Kenyan homes.",
     images: ["/images/curved-sofas.jpeg"],
   },
   robots: { index: true, follow: true },
-  verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION
-    ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION }
-    : undefined,
+  alternates: { canonical: site.url },
 };
 
-const organization = {
+const localBusiness = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "@id": `${site.url}/#organization`,
+  "@type": "FurnitureStore",
   name: site.name,
+  image: `${site.url}/images/curved-sofas.jpeg`,
   url: site.url,
   telephone: site.phoneTel,
+  email: site.email,
+  priceRange: "KES",
+  address: {
+    "@type": "PostalAddress",
+    // TODO(OWNER): replace with the confirmed showroom address.
+    addressLocality: "Nairobi",
+    addressCountry: "KE",
+  },
+  areaServed: { "@type": "Country", name: "Kenya" },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      opens: "09:00",
+      closes: "18:00",
+    },
+  ],
+  sameAs: [],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -65,10 +87,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${cormorant.variable} ${jost.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-onyx font-sans text-ivory">
-        <GoogleTagManager />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }}
         />
         <Header />
         <main className="flex-1">{children}</main>
@@ -76,6 +97,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <HelpBubble />
         <CompareDock />
         <Prompts />
+        <MetaPixel />
       </body>
     </html>
   );

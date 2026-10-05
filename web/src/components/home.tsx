@@ -11,6 +11,8 @@ import {
   TruckIcon,
 } from "./icons";
 import { Em, GoldButton, OutlineButton, SectionLabel, SectionTitle, WaButton } from "./ui";
+import { track } from "@/lib/analytics";
+import { TrackedWhatsAppLink } from "@/components/TrackedWhatsAppLink";
 import {
   colours,
   fabrics,
@@ -18,14 +20,15 @@ import {
   products,
   rooms,
   site,
+  siteConfig,
   waLink,
+  writeRoom,
 } from "@/lib/site";
-import { productPath } from "@/lib/seo";
-import { track } from "@/lib/analytics";
 
 export function Hero() {
   return (
-    <section className="relative min-h-[78vh] overflow-hidden sm:min-h-[85vh] lg:min-h-[92vh]">
+    <>
+    <section className="relative flex min-h-[54vh] flex-col overflow-hidden sm:min-h-[75vh] lg:min-h-[92vh]">
       <div className="hero-scene absolute inset-0" aria-hidden="true">
         <Image
           src="/images/living-l-sofa.jpeg"
@@ -39,7 +42,7 @@ export function Hero() {
       </div>
       <div className="hero-scrim absolute inset-0" />
 
-      <div className="relative mx-auto flex min-h-[78vh] max-w-7xl flex-col justify-start px-5 pt-8 pb-36 sm:min-h-[85vh] sm:pt-14 md:justify-center md:pt-20 md:pb-36 lg:min-h-[92vh] lg:px-8 lg:pb-36">
+      <div className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-start px-5 pt-4 pb-0 sm:pt-14 sm:pb-12 md:justify-center md:pt-20 lg:px-8">
         <div className="absolute top-8 right-5 hidden w-[240px] overflow-hidden rounded-2xl border border-white/10 glass md:block lg:right-8">
           <div className="relative h-28 w-full">
             <Image
@@ -57,7 +60,7 @@ export function Hero() {
             <p className="mt-1 font-serif text-base text-ivory">The Truffle Sectional</p>
             <a
               href={waLink("Hi — I’d like today’s price for The Truffle Sectional.")}
-              onClick={() => track("whatsapp_click", { product: "The Truffle", itemId: "truffle", ctaLocation: "featured-card" })}
+              onClick={() => track("whatsapp_click", { product: "The Truffle", ctaLocation: "hero-featured" })}
               className="mt-2 inline-block text-sm text-champagne hover:text-ivory"
               target="_blank"
               rel="noopener noreferrer"
@@ -68,22 +71,21 @@ export function Hero() {
         </div>
 
         <div className="max-w-2xl">
-          <p className="animate-fade-up mb-4 text-[11px] tracking-[0.22em] text-champagne uppercase">
-            Dining sets · Sofas · Room-fit guidance
+          <p className="animate-fade-up mb-3 text-[11px] tracking-[0.22em] text-champagne uppercase sm:mb-4">
+            Dining sets · Sofas · Made to fit your home
           </p>
-          <h1 className="animate-fade-up-delay font-serif text-4xl leading-[1.08] text-champagne sm:text-5xl lg:text-6xl">
+          <h1 className="animate-fade-up-delay font-serif text-3xl leading-[1.08] text-champagne sm:text-5xl lg:text-6xl">
             Look around your living room.{" "}
             <span className="text-ivory italic">Is this how you want to live?</span>
           </h1>
-          <p className="animate-fade-up-delay-2 mt-5 max-w-xl text-base leading-relaxed text-ivory/85 md:text-lg">
+          <p className="animate-fade-up-delay-2 mt-3 max-w-xl text-base leading-relaxed text-ivory/85 sm:mt-5 md:text-lg">
             Every dinner, every guest and every quiet Sunday happens on your furniture. Make it
             worthy of the life you are living.
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-4">
+          <div className="mt-5 flex flex-wrap items-center gap-4 sm:mt-8">
             <WaButton pulse>Chat on WhatsApp for today’s price</WaButton>
             <a
               href={`tel:${site.phoneTel}`}
-              onClick={() => track("call_click", { linkUrl: `tel:${site.phoneTel}`, ctaLocation: "home-hero" })}
               className="inline-flex items-center gap-2 text-sm text-ivory/90 hover:text-champagne"
             >
               <PhoneIcon className="h-4 w-4 text-antique-gold" />
@@ -100,76 +102,92 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 translate-y-1/2 px-5 lg:px-8">
-        <FitFinder />
-      </div>
     </section>
+    <section aria-labelledby="fit-finder-title" className="relative z-10 bg-onyx px-5 py-3 sm:py-9 lg:px-8">
+      <FitFinder />
+    </section>
+    </>
   );
 }
 
 function FitFinder() {
   const [room, setRoom] = useState("Dining room");
   const [seats, setSeats] = useState("4 seats");
-  const [fabric, setFabric] = useState("Ask about fabric options");
+  const [fabric, setFabric] = useState("Water-resistant");
   const [colour, setColour] = useState("Oat");
+  const [roomLength, setRoomLength] = useState("4.2");
+  const [roomWidth, setRoomWidth] = useState("3.5");
 
   const message = useMemo(
     () =>
-      `Hi Home Update — I’m looking for a ${room.toLowerCase()} piece for ${seats.toLowerCase()} with a ${fabric.toLowerCase()} finish in ${colour} colour. Please suggest the best option and current price.`,
-    [room, seats, fabric, colour],
+      `Hi Home Update — I’m looking for a ${room.toLowerCase()} piece for ${seats.toLowerCase()} with a ${fabric.toLowerCase()} finish in ${colour} colour. My room is ${roomLength} m × ${roomWidth} m. Please suggest pieces that fit and send the current price.`,
+    [room, seats, fabric, colour, roomLength, roomWidth],
   );
 
   return (
     <form
-      action={waLink(message)}
-      method="get"
-      className="mx-auto flex max-w-7xl flex-col gap-4 rounded-[1.35rem] border border-white/10 bg-espresso/95 p-4 shadow-2xl backdrop-blur md:flex-row md:items-end md:gap-3 md:p-5"
+      onSubmit={(event) => {
+        event.preventDefault();
+        const lengthM = Number(roomLength);
+        const widthM = Number(roomWidth);
+        if (!Number.isFinite(lengthM) || !Number.isFinite(widthM) || lengthM <= 0 || widthM <= 0) return;
+        writeRoom({ lengthM, widthM });
+        track("whatsapp_click", { ctaLocation: "fit-finder" });
+        window.open(waLink(message), "_blank", "noopener,noreferrer");
+      }}
+      className="mx-auto grid max-w-7xl grid-cols-2 gap-2 rounded-xl border border-antique-gold/35 bg-espresso p-3 shadow-xl sm:gap-4 sm:p-5 lg:grid-cols-4 lg:items-end"
     >
-      <div className="md:min-w-[9rem]">
-        <p className="text-[10px] tracking-[0.18em] text-antique-gold uppercase">Find my fit</p>
-        <p className="mt-1 text-sm text-ivory">In 4 quick choices</p>
+      <div className="col-span-2 lg:col-span-4">
+        <h2 id="fit-finder-title" className="font-serif text-xl text-ivory sm:text-2xl">Find my fit</h2>
+        <p className="mt-1 hidden text-xs text-muted sm:block">Enter room measurements for fit advice.</p>
       </div>
-      {(
-        [
-          ["Room", ["Dining room", "Living room", "Both"], room, setRoom],
-          ["Seats / Size", ["4 seats", "6 seats", "8 seats", "Custom"], seats, setSeats],
-          ["Fabric", ["Ask about fabric options", "Velvet", "Bouclé", "Linen blend"], fabric, setFabric],
-          ["Colour", ["Oat", "Cream", "Truffle", "Charcoal"], colour, setColour],
-        ] as const
-      ).map(([label, options, value, setter]) => (
-        <label key={label} className="min-w-0 flex-1">
-          <span className="mb-1.5 block text-[10px] tracking-[0.16em] text-muted uppercase">
-            {label}
-          </span>
-          <select
-            value={value}
-            onChange={(event) => setter(event.target.value)}
-            className="w-full appearance-none rounded-xl border border-white/10 bg-onyx px-3 py-3 text-sm text-ivory outline-none focus:border-antique-gold/50"
-          >
-            {options.map((o) => (
-              <option key={o} value={o}>
-                {o}
-              </option>
-            ))}
-          </select>
-        </label>
-      ))}
+      <label className="min-w-0">
+        <span className="mb-1 block text-[10px] tracking-[0.16em] text-muted uppercase sm:mb-1.5">Room length (m)</span>
+        <input type="number" min="1" max="20" step="0.1" required value={roomLength} onChange={(event) => { const value = event.target.value; setRoomLength(value); const lengthM = Number(value); const widthM = Number(roomWidth); if (lengthM > 0 && widthM > 0) writeRoom({ lengthM, widthM }); }} className="min-h-11 w-full min-w-0 rounded-xl border border-white/10 bg-onyx px-2 text-sm text-ivory outline-none focus:border-antique-gold/50 sm:min-h-12 sm:px-3" />
+      </label>
+      <label className="min-w-0">
+        <span className="mb-1 block text-[10px] tracking-[0.16em] text-muted uppercase sm:mb-1.5">Room width (m)</span>
+        <input type="number" min="1" max="20" step="0.1" required value={roomWidth} onChange={(event) => { const value = event.target.value; setRoomWidth(value); const widthM = Number(value); const lengthM = Number(roomLength); if (lengthM > 0 && widthM > 0) writeRoom({ lengthM, widthM }); }} className="min-h-11 w-full min-w-0 rounded-xl border border-white/10 bg-onyx px-2 text-sm text-ivory outline-none focus:border-antique-gold/50 sm:min-h-12 sm:px-3" />
+      </label>
       <button
         type="submit"
-        className="inline-flex items-center justify-center gap-2 rounded-full bg-champagne px-5 py-3 text-sm font-medium text-onyx transition hover:bg-antique-gold md:mb-0.5 md:px-4"
+        className="col-span-2 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-champagne px-4 py-2.5 text-xs font-medium text-onyx transition hover:bg-antique-gold sm:min-h-12 sm:px-5 sm:py-3 sm:text-sm lg:col-span-1"
       >
-        Find my fit
+        Get fit advice on WhatsApp
       </button>
+      <details className="col-span-2 border-t border-white/10 pt-2 lg:col-span-4">
+        <summary className="min-h-10 cursor-pointer py-2 text-xs text-champagne sm:text-sm">More preferences: room, seats and finish</summary>
+        <div className="grid grid-cols-2 gap-2 pt-2 sm:gap-4 lg:grid-cols-4">
+          {(
+            [
+              ["Room", ["Dining room", "Living room", "Both"], room, setRoom],
+              ["Seats / Size", ["4 seats", "6 seats", "8 seats", "Custom"], seats, setSeats],
+              ["Fabric", ["Water-resistant", "Velvet", "Bouclé", "Linen blend"], fabric, setFabric],
+              ["Colour", ["Oat", "Cream", "Truffle", "Charcoal"], colour, setColour],
+            ] as const
+          ).map(([label, options, value, setter]) => (
+            <label key={label} className="min-w-0">
+              <span className="mb-1 block text-[10px] tracking-[0.16em] text-muted uppercase">{label}</span>
+              <select value={value} onChange={(event) => setter(event.target.value)} className="min-h-11 w-full min-w-0 appearance-none rounded-xl border border-white/10 bg-onyx px-2 text-xs text-ivory outline-none focus:border-antique-gold/50 sm:min-h-12 sm:px-3 sm:text-sm">
+                {options.map((option) => <option key={option} value={option}>{option}</option>)}
+              </select>
+            </label>
+          ))}
+        </div>
+      </details>
+      <Link href="/size-guide/" className="col-span-2 inline-flex min-h-9 items-center justify-center text-xs text-champagne underline underline-offset-4 hover:text-ivory sm:min-h-11 sm:text-sm lg:col-span-4">
+        Open the visual room simulator
+      </Link>
     </form>
   );
 }
 
 export function ValueBar() {
   const items = [
-    { icon: RulerIcon, title: "Check the room fit", note: "Compare room and product dimensions" },
-    { icon: LayersIcon, title: "Explore finishes", note: "Review listed colours and upholstery" },
-    { icon: DropIcon, title: "Ask about fabric care", note: "Confirm details for your chosen finish" },
-    { icon: TruckIcon, title: "Ask about delivery", note: "Confirm area, timing and setup" },
+    { icon: DropIcon, title: "Water-resistant fabrics", note: "Built for spills and real life" },
+    { icon: RulerIcon, title: "Made to your size", note: "Custom lengths and depths" },
+    { icon: LayersIcon, title: "Matched to your room", note: "Tiles, curtains, timber" },
+    { icon: TruckIcon, title: "Delivered & set up", note: "Placed where you want it" },
   ];
   return (
     <section className="border-b border-white/5 bg-onyx pt-24 pb-10 md:pt-28">
@@ -236,12 +254,12 @@ export function Bestsellers() {
   return (
     <section id="bestsellers" className="bg-onyx py-8 lg:py-12">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <SectionLabel>Furniture collection</SectionLabel>
+        <SectionLabel>Bestsellers</SectionLabel>
         <SectionTitle>
-          Dining and lounge pieces to <Em>explore.</Em>
+          Pieces people <Em>keep choosing.</Em>
         </SectionTitle>
         <p className="mt-3 max-w-2xl text-muted">
-          Review listed product details and ask us to confirm current options and today's price on WhatsApp.
+          Real photos, real sizes, real fabrics. Tap WhatsApp and we send today’s price.
         </p>
         <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-6">
           {products.map((product) => (
@@ -258,7 +276,7 @@ export function Bestsellers() {
                   sizes="(max-width:1024px) 50vw, 33vw"
                 />
                 <span className="absolute top-3 left-3 rounded-full bg-champagne px-2.5 py-1 text-[10px] font-semibold tracking-wide text-onyx uppercase">
-                  Featured
+                  {product.bestseller ? "Bestseller" : product.sale ? "Sale" : "Featured"}
                 </span>
               </div>
               <div className="p-5">
@@ -301,7 +319,7 @@ export function Bestsellers() {
                   >
                     Get price
                   </WaButton>
-                  <OutlineButton href={productPath(product)} className="!px-4 !py-2.5 text-xs">
+                  <OutlineButton href={`/products/${product.slug}`} className="!px-4 !py-2.5 text-xs">
                     View details
                   </OutlineButton>
                 </div>
@@ -310,7 +328,7 @@ export function Bestsellers() {
           ))}
         </div>
         <div className="mt-10 flex justify-center">
-          <OutlineButton href="/dining-sets/">Shop all pieces</OutlineButton>
+          <OutlineButton href="/dining-sets">Shop all pieces</OutlineButton>
         </div>
       </div>
     </section>
@@ -323,10 +341,10 @@ export function FabricsSection() {
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <SectionLabel>Fabrics</SectionLabel>
         <SectionTitle>
-          Fabrics and colours to <Em>explore.</Em>
+          Fabrics that <Em>forgive.</Em>
         </SectionTitle>
         <p className="mt-3 max-w-xl text-muted">
-          Explore the options shown here. Ask us to confirm composition, care guidance and performance for the selected upholstery.
+          Life happens on furniture. Choose a fabric built for spills, pets, kids and long Sundays.
         </p>
         <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-5">
           {fabrics.map((fabric) => (
@@ -476,7 +494,7 @@ export function SizeGuideTeaser() {
           ))}
         </div>
         <div className="mt-8">
-          <OutlineButton href="/size-guide/">Open the full size guide</OutlineButton>
+          <OutlineButton href="/size-guide">Open the full size guide</OutlineButton>
         </div>
       </div>
     </section>
@@ -499,17 +517,18 @@ export function CustomDesign() {
         <div className="bg-espresso p-8 md:p-12">
           <SectionLabel>Custom design</SectionLabel>
           <SectionTitle>
-            Need a different size? <Em>Ask what is possible.</Em>
+            Not quite right? <Em>Make it yours.</Em>
           </SectionTitle>
           <p className="mt-4 text-sm leading-relaxed text-muted">
-            Share your room measurements and the changes you have in mind. We&apos;ll confirm whether the selected piece can be made to those specifications and provide the current price and lead time.
+            Length, depth, timber tone, fabric and seat count — we build around the room you already
+            live in.
           </p>
           <ul className="mt-6 space-y-3 text-sm text-ivory/90">
             {[
-              "Ask which dimensions can be changed",
-              "Confirm available timber tones and finishes",
-              "Ask about fabric and colour options",
-              "Confirm delivery and setup for your location",
+              "Any length, width or seat count",
+              "Timber tone and finish",
+              "Fabric and colour matched to your room",
+              "Delivery and professional setup",
             ].map((item) => (
               <li key={item} className="flex gap-3">
                 <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-antique-gold" />
@@ -517,13 +536,61 @@ export function CustomDesign() {
               </li>
             ))}
           </ul>
-          <GoldButton href="/custom-design/" className="mt-8">
-            Start your design
-          </GoldButton>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <GoldButton href="/custom-design">Start your design</GoldButton>
+            <TrackedWhatsAppLink
+              href={waLink("Hi Home Update, I'd like to send my custom furniture design. Please help me confirm dimensions, finishes and a quote.")}
+              ctaLocation="custom-design"
+              initiateCheckout
+              className="inline-flex min-h-11 items-center justify-center rounded-full border border-antique-gold/60 px-5 py-3 text-sm font-medium text-ivory transition hover:border-champagne hover:text-champagne"
+            >
+              Send My Design on WhatsApp
+            </TrackedWhatsAppLink>
+          </div>
         </div>
       </div>
     </section>
   );
+}
+
+export function SaleBanner() {
+  // No urgency is faked: nothing renders unless the owner has set a real end
+  // date in siteConfig. The date is printed statically (deterministic, and
+  // visible to crawlers) rather than ticking on the client.
+  const saleEndIso = siteConfig.saleEnd;
+
+  return (
+    <section className="bg-onyx py-8">
+      <div className="mx-auto max-w-7xl px-5 lg:px-8">
+        <div className="flex flex-col gap-6 rounded-[1.35rem] border border-antique-gold/25 bg-[linear-gradient(120deg,#2a1c14,#1a110d_45%,#3a2818)] p-6 md:flex-row md:items-center md:justify-between md:p-8">
+          <div>
+            <span className="mb-2 inline-flex rounded-full bg-champagne px-2.5 py-1 text-[10px] font-semibold tracking-wide text-onyx">
+              SALE
+            </span>
+            <h2 className="font-serif text-3xl text-ivory md:text-4xl">The Home Update Sale.</h2>
+            {saleEndIso ? (
+              <p className="mt-2 text-sm text-champagne">Ends {formatDate(saleEndIso)}</p>
+            ) : null}
+          </div>
+          <GoldButton href="/sale">Shop the sale</GoldButton>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Deterministic date format: fixed locale and timezone, no client/server drift. */
+function formatDate(iso: string) {
+  try {
+    return new Date(iso).toLocaleDateString("en-KE", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      timeZone: "Africa/Nairobi",
+    });
+  } catch {
+    return iso;
+  }
 }
 
 export function JournalTeaser() {
@@ -538,7 +605,7 @@ export function JournalTeaser() {
           {journal.map((post) => (
             <Link
               key={post.slug}
-              href={`/journal/${post.slug}/`}
+              href={`/journal/${post.slug}`}
               className="group overflow-hidden rounded-[1.25rem] border border-white/8 bg-espresso"
             >
               <div className="relative aspect-[16/10]">
@@ -569,10 +636,10 @@ export function JournalTeaser() {
 
 export function WhyUs() {
   const reasons = [
-    "Review listed dimensions and ask for help checking room fit.",
-    "Ask which sizes and configurations are available for each piece.",
-    "Confirm fabric care and performance for the upholstery you select.",
-    "Use WhatsApp to ask about current price, options and timing.",
+    "You see exactly what you are getting — real room photos.",
+    "Sizes are made for Kenyan rooms, not foreign showrooms.",
+    "Fabrics chosen for spills, pets and everyday living.",
+    "One WhatsApp message gets you price, options and timing.",
   ];
   return (
     <section className="bg-onyx py-16">
@@ -611,9 +678,10 @@ export function HelpBubble() {
   return (
     <a
       href={waLink()}
+      onClick={() => track("whatsapp_click", { ctaLocation: "help-bubble" })}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed right-4 bottom-4 z-40 flex max-w-[240px] items-center gap-3 rounded-2xl border border-white/10 bg-espresso/95 p-3 shadow-2xl backdrop-blur transition hover:-translate-y-0.5 md:right-6 md:bottom-6"
+      className="fixed right-4 bottom-6 z-40 hidden max-w-[240px] items-center gap-3 rounded-2xl border border-white/10 bg-espresso/95 p-3 shadow-2xl backdrop-blur transition hover:-translate-y-0.5 md:flex md:right-6 md:bottom-6"
     >
       <span className="relative h-11 w-11 overflow-hidden rounded-full border border-wa/40">
         <Image src="/images/logo.jpeg" alt="" fill className="object-cover object-top" sizes="44px" />

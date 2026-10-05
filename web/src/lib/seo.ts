@@ -13,18 +13,18 @@ export const PRODUCT_PATHS: Record<string, string> = {
 };
 
 export function productPath(product: Product) {
-  return PRODUCT_PATHS[product.id] ?? `/${product.category === "dining" ? "dining-sets" : "sofas"}/${product.slug}/`;
+  return PRODUCT_PATHS[product.id] ?? `/shop/${product.category}/${product.slug}/`;
 }
 
 export function productMetadata(product: Product): Metadata {
   const url = `${site.url}${productPath(product)}`;
   const titleById: Record<string, string> = {
-    fluted: "The Fluted 6-Seater Dining Set | Home Update",
-    cloud: "The Cloud Curved L-Shaped Sofa | Home Update",
-    truffle: "The Truffle Modular Sectional Sofa | Home Update",
-    orbit: "The Orbit 4-Seater Round Dining Set | Home Update",
+    fluted: "The Fluted 6-Seater Dining Set",
+    cloud: "The Cloud Curved L-Shaped Sofa",
+    truffle: "The Truffle Modular Sectional Sofa",
+    orbit: "The Orbit 4-Seater Round Dining Set",
   };
-  const title = titleById[product.id] ?? `${product.name} ${product.category === "dining" ? "Dining Set" : "Sofa"} | Home Update`;
+  const title = titleById[product.id] ?? product.name;
   const description = `${product.name}: ${product.dimensions.w} × ${product.dimensions.d} cm${product.seats ? `, ${product.seats} seats` : ""}. Check room fit and ask for today's price on WhatsApp.`;
   return {
     title,
@@ -55,7 +55,7 @@ export function pageMetadata(title: string, description: string, path: string): 
 export function productStructuredData(product: Product) {
   const path = productPath(product);
   const url = `${site.url}${path}`;
-  const categoryPath = `${site.url}/${product.category === "dining" ? "dining-sets" : "sofas"}/`;
+  const categoryPath = `${site.url}${product.category === "dining" ? "/dining-sets/" : product.category === "sofa" ? "/sofas/" : product.category === "tv-stands" ? "/tv-stands/" : "/coffee-tables/"}`;
   const productData = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -64,7 +64,7 @@ export function productStructuredData(product: Product) {
     description: `${product.name}, ${product.subtype}, ${product.dimensions.w} × ${product.dimensions.d} × ${product.dimensions.h} cm.`,
     image: product.images.map((src) => `${site.url}${src}`),
     brand: { "@type": "Brand", name: site.name },
-    category: product.category === "dining" ? "Dining sets" : "Sofas",
+    category: product.category,
     ...(product.priceFrom !== null && product.priceFrom > 0 && product.availability
       ? {
           offers: {
@@ -90,7 +90,7 @@ export function productStructuredData(product: Product) {
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: `${site.url}/` },
-      { "@type": "ListItem", position: 2, name: product.category === "dining" ? "Dining sets" : "Sofas", item: categoryPath },
+      { "@type": "ListItem", position: 2, name: product.category, item: categoryPath },
       { "@type": "ListItem", position: 3, name: product.name, item: url },
     ],
   };
