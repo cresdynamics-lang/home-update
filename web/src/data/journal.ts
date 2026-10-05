@@ -8,6 +8,8 @@ export type JournalPost = {
   sections: { heading: string; body: string[] }[];
   faq: { q: string; a: string }[];
   relatedProducts: string[];
+  category?: string;
+  publishedAt?: string;
 };
 
 export const journalPosts: JournalPost[] = [

@@ -68,6 +68,37 @@ export function whatsappHref(message: string) {
   return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`;
 }
 
+export function buildFitFinderMessage({
+  roomType,
+  length,
+  width,
+  floorType,
+}: {
+  roomType: string;
+  length: number;
+  width: number;
+  floorType: string;
+}) {
+  return `Hi Home Update, I used your Fit Finder. My ${roomType.toLowerCase()} is ${length}m x ${width}m with ${floorType}. Which piece fits best without crowding the room?`;
+}
+
+export function buildJournalProductInquiryMessage({
+  articleTitle,
+  productName,
+  roomType,
+  length,
+  width,
+}: {
+  articleTitle: string;
+  productName: string;
+  roomType?: string;
+  length?: number;
+  width?: number;
+}) {
+  const roomText = roomType && length && width ? ` My room is ${roomType} (${length}m x ${width}m).` : "";
+  return `Hi Home Update, I was reading "${articleTitle}" and I'd like help with ${productName}.${roomText} Please send the best size, fabric and price options.`;
+}
+
 /** Room photo upload instructions sent straight to WhatsApp. */
 export function roomPhotoMessage(room?: { lengthM: number; widthM: number } | null) {
   const size = room ? ` My room measures ${room.lengthM} x ${room.widthM} m.` : "";
