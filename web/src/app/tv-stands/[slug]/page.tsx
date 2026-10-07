@@ -5,7 +5,7 @@ import { getCatalogProducts } from "@/lib/catalog-store";
 import { productMetadata } from "@/lib/seo";
 
 const productByRoute: Record<string, string> = {
-  "custom-hardwood-tv-stand-nairobi": "metro-tv-stand",
+  "custom-tv-stand-nairobi-cable-management": "metro-tv-stand",
 };
 
 type Props = { params: Promise<{ slug: string }> };

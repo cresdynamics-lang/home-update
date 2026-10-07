@@ -3,15 +3,15 @@ import type { Product } from "@/data/products";
 import { site } from "@/lib/site";
 
 export const PRODUCT_PATHS: Record<string, string> = {
-  fluted: "/dining-sets/6-seater-dining-set-nairobi/",
+  fluted: "/dining-sets/6-seater-dining-set-nairobi-apartments/",
   orbit: "/dining-sets/the-orbit-4-seater-round-dining-set/",
   ivory: "/dining-sets/the-ivory-dining-set/",
   regent: "/dining-sets/the-regent-dining-set/",
   cloud: "/sofas/the-cloud-curved-l-shaped-sofa/",
   truffle: "/sofas/the-truffle-modular-sectional/",
-  linen: "/sofas/l-shaped-sofa-nairobi/",
-  "metro-tv-stand": "/tv-stands/custom-hardwood-tv-stand-nairobi/",
-  "nest-coffee-table": "/coffee-tables/fluted-nesting-coffee-table-set/",
+  linen: "/sofas/l-shaped-sectional-sofa-nairobi/",
+  "metro-tv-stand": "/tv-stands/custom-tv-stand-nairobi-cable-management/",
+  "nest-coffee-table": "/coffee-tables/nesting-coffee-tables-nairobi-small-apartments/",
 };
 
 export function productPath(product: Product) {

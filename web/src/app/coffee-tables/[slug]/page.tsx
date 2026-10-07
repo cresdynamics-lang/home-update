@@ -5,7 +5,7 @@ import { getCatalogProducts } from "@/lib/catalog-store";
 import { productMetadata } from "@/lib/seo";
 
 const productByRoute: Record<string, string> = {
-  "fluted-nesting-coffee-table-set": "nest-coffee-table",
+  "nesting-coffee-tables-nairobi-small-apartments": "nest-coffee-table",
 };
 
 type Props = { params: Promise<{ slug: string }> };

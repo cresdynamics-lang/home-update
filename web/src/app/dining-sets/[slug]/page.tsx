@@ -11,7 +11,7 @@ const productSlugs: Record<string, string> = {
   "the-orbit-4-seater-round-dining-set": "orbit",
   "the-ivory-dining-set": "ivory",
   "the-regent-dining-set": "regent",
-  "6-seater-dining-set-nairobi": "fluted",
+  "6-seater-dining-set-nairobi-apartments": "fluted",
 };
 
 const collections = {

@@ -27,13 +27,21 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     const products = [
-      ["the-fluted", "/dining-sets/the-fluted-6-seater-dining-set/"],
+      ["the-fluted", "/dining-sets/6-seater-dining-set-nairobi-apartments/"],
       ["the-orbit", "/dining-sets/the-orbit-4-seater-round-dining-set/"],
       ["the-ivory", "/dining-sets/the-ivory-dining-set/"],
       ["the-regent", "/dining-sets/the-regent-dining-set/"],
       ["the-cloud", "/sofas/the-cloud-curved-l-shaped-sofa/"],
       ["the-truffle", "/sofas/the-truffle-modular-sectional/"],
-      ["the-linen", "/sofas/the-linen-l-shaped-sofa/"],
+      ["the-linen", "/sofas/l-shaped-sectional-sofa-nairobi/"],
+    ] as const;
+    const seoProductSlugs = [
+      ["/dining-sets/6-seater-dining-set-nairobi", "/dining-sets/6-seater-dining-set-nairobi-apartments/"],
+      ["/dining-sets/the-fluted-6-seater-dining-set", "/dining-sets/6-seater-dining-set-nairobi-apartments/"],
+      ["/sofas/l-shaped-sofa-nairobi", "/sofas/l-shaped-sectional-sofa-nairobi/"],
+      ["/sofas/the-linen-l-shaped-sofa", "/sofas/l-shaped-sectional-sofa-nairobi/"],
+      ["/tv-stands/custom-hardwood-tv-stand-nairobi", "/tv-stands/custom-tv-stand-nairobi-cable-management/"],
+      ["/coffee-tables/fluted-nesting-coffee-table-set", "/coffee-tables/nesting-coffee-tables-nairobi-small-apartments/"],
     ] as const;
     const journalSlugs = [
       ["small-space-sofa-ideas", "small-living-room-sofa-ideas-nairobi"],
@@ -45,6 +53,7 @@ const nextConfig: NextConfig = {
       { source: "/shop/tv-stands", destination: "/tv-stands/", statusCode: 301 },
       { source: "/shop/coffee-tables", destination: "/coffee-tables/", statusCode: 301 },
       { source: "/fabrics", destination: "/fabrics-and-colours/", statusCode: 301 },
+      ...seoProductSlugs.map(([source, destination]) => ({ source, destination, statusCode: 301 })),
       ...journalSlugs.map(([oldSlug, newSlug]) => ({
         source: `/journal/${oldSlug}`,
         destination: `/journal/${newSlug}/`,
