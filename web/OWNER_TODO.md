@@ -6,6 +6,7 @@ The SEO and content implementation avoids presenting unverified business details
 
 - [ ] Confirm current KES prices and any genuine offer dates for each product.
 - [ ] Confirm which SKUs/configurations are available, their dimensions, materials, finishes, and whether customization is possible.
+- [ ] Verify and enter construction materials separately from finish names in `/admin`; confirm the TV console load rating/screen compatibility and individual nesting-table dimensions before making those SEO aliases indexable.
 - [ ] Confirm live stock or availability, production lead times, delivery areas and fees, and setup terms.
 - [ ] Confirm care instructions, fabric performance claims, warranty and return terms, payment options, and sample availability.
 - [ ] Review room-fit estimates against the actual products; the size guides describe planning practices and are not guarantees of fit.

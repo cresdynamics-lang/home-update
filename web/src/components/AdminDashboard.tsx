@@ -578,6 +578,7 @@ function ProductEditor({ product, busy, onClose, onSave }: { product: Product; b
   const [tagDraft, setTagDraft] = useState(product.tags.join(", "));
   const [colourDraft, setColourDraft] = useState(product.colours.join(", "));
   const [woodDraft, setWoodDraft] = useState(product.woodFinishes.join(", "));
+  const [materialsDraft, setMaterialsDraft] = useState((product.materials ?? []).join(", "));
   const [fabricDraft, setFabricDraft] = useState(product.fabrics.join(", "));
   const [leadDraft, setLeadDraft] = useState(leadTimeText(product));
   const [dragIndex, setDragIndex] = useState<number | null>(null);
@@ -654,6 +655,7 @@ function ProductEditor({ product, busy, onClose, onSave }: { product: Product; b
       tags: splitList(tagDraft),
       colours: splitList(colourDraft),
       woodFinishes: splitList(woodDraft),
+      materials: splitList(materialsDraft),
       fabrics: splitList(fabricDraft),
       careNotes: careDraft.split("\n").map((value) => value.trim()).filter(Boolean),
       leadTimeDays,
@@ -692,6 +694,7 @@ function ProductEditor({ product, busy, onClose, onSave }: { product: Product; b
           </> : null}
           <Field label="Colours (comma separated)"><input value={colourDraft} onChange={(event) => setColourDraft(event.target.value)} /></Field>
           <Field label="Wood finishes / timber tones"><input value={woodDraft} onChange={(event) => setWoodDraft(event.target.value)} /></Field>
+          <Field label="Confirmed construction materials"><input value={materialsDraft} onChange={(event) => setMaterialsDraft(event.target.value)} /><span className="text-xs text-muted">Use verified materials only; keep finish names in the finish field.</span></Field>
           <Field label="Fabric variants (comma separated)"><input value={fabricDraft} onChange={(event) => setFabricDraft(event.target.value)} /></Field>
           <Field label="Warranty"><input value={draft.warranty} onChange={(event) => set("warranty", event.target.value)} /></Field>
           <Field label="Fabric / material care (one per line)"><textarea rows={3} value={careDraft} onChange={(event) => setCareDraft(event.target.value)} /></Field>

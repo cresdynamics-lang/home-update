@@ -1,3 +1,12 @@
+import { localSeoArticles } from "@/data/local-seo-articles";
+
+export type JournalSection = {
+  heading: string;
+  body: string[];
+  table?: { headers: string[]; rows: string[][] };
+  links?: { href: string; label: string }[];
+};
+
 export type JournalPost = {
   slug: string;
   title: string;
@@ -5,11 +14,18 @@ export type JournalPost = {
   image: string;
   excerpt: string;
   intro: string;
-  sections: { heading: string; body: string[] }[];
+  sections: JournalSection[];
   faq: { q: string; a: string }[];
   relatedProducts: string[];
   category?: string;
   publishedAt?: string;
+  modifiedAt?: string;
+  primaryKeyword?: string;
+  secondaryKeywords?: string[];
+  metaTitle?: string;
+  metaDescription?: string;
+  featuredProductId?: string;
+  productHighlight?: string;
 };
 
 export const journalPosts: JournalPost[] = [
@@ -281,6 +297,7 @@ export const journalPosts: JournalPost[] = [
     ],
     relatedProducts: ["the-cloud", "the-truffle", "the-linen"],
   },
+  ...localSeoArticles,
 ];
 
 export function getPost(slug: string) {

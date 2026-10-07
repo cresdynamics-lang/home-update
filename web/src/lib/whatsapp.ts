@@ -85,18 +85,15 @@ export function buildFitFinderMessage({
 export function buildJournalProductInquiryMessage({
   articleTitle,
   productName,
-  roomType,
-  length,
-  width,
+  articleUrl,
+  productUrl,
 }: {
   articleTitle: string;
   productName: string;
-  roomType?: string;
-  length?: number;
-  width?: number;
+  articleUrl: string;
+  productUrl: string;
 }) {
-  const roomText = roomType && length && width ? ` My room is ${roomType} (${length}m x ${width}m).` : "";
-  return `Hi Home Update, I was reading "${articleTitle}" and I'd like help with ${productName}.${roomText} Please send the best size, fabric and price options.`;
+  return `Hi Home Update, I was reading "${articleTitle}" (${articleUrl}) and would like advice about ${productName}. Please review my room measurements and advise on suitable sizes, available finishes, current price and delivery. Product: ${productUrl}`;
 }
 
 /** Room photo upload instructions sent straight to WhatsApp. */

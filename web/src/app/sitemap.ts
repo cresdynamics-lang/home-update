@@ -36,7 +36,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: path === "/" || path.includes("sets") || path.includes("sofas") ? "weekly" : "monthly",
     priority: path === "/" ? 1 : path === "/dining-sets/" || path === "/sofas/" ? 0.9 : 0.6,
   }));
-  const productRoutes: MetadataRoute.Sitemap = products.map((product) => ({
+  const productRoutes: MetadataRoute.Sitemap = products.filter((product) => !product.conceptPreview).map((product) => ({
     url: `${site.url}${productPath(product)}`,
     changeFrequency: "weekly",
     priority: 0.8,

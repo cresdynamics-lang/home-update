@@ -66,6 +66,7 @@ function parseProduct(value: unknown, current: Product): Product | null {
     ...current,
     name: text(value.name, current.name, 100) || current.name,
     subtype: text(value.subtype, current.subtype, 140),
+    materials: stringList(value.materials, current.materials ?? [], 20),
     slug: /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(String(value.slug ?? "")) ? String(value.slug) : current.slug,
     category,
     tags: stringList(value.tags, current.tags),

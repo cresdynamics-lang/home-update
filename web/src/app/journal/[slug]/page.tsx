@@ -20,18 +20,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return { title: "Journal" };
 
   const url = `${site.url}/journal/${post.slug}/`;
+  const title = post.metaTitle ?? `${post.title} | Home Update`;
+  const description = post.metaDescription ?? post.excerpt;
   return {
-    title: `${post.title} | Home Update`,
-    description: post.excerpt,
+    title: { absolute: title },
+    description,
     alternates: { canonical: url, languages: { "en-KE": url } },
     openGraph: {
       type: "article",
-      title: post.title,
-      description: post.excerpt,
+      title,
+      description,
       url,
       images: [{ url: post.image, width: 1200, height: 630, alt: post.title }],
     },
-    twitter: { card: "summary_large_image", title: post.title, description: post.excerpt },
+    twitter: { card: "summary_large_image", title, description },
   };
 }
 
@@ -42,7 +44,7 @@ export default async function JournalArticlePage({ params }: Props) {
 
   const related = products.filter((p) => post.relatedProducts.includes(p.id));
   const url = `${site.url}/journal/${post.slug}/`;
-  const featuredProduct = related[0] ?? products[0];
+  const featuredProduct = products.find((product) => product.id === post.featuredProductId) ?? related[0] ?? products[0];
 
   const jsonLd = [
     {
@@ -51,8 +53,9 @@ export default async function JournalArticlePage({ params }: Props) {
       headline: post.title,
       description: post.excerpt,
       image: [`${site.url}${post.image}`],
-      datePublished: post.publishedAt ?? "2024-01-01",
-      dateModified: post.publishedAt ?? "2024-01-01",
+      ...(post.primaryKeyword ? { keywords: [post.primaryKeyword, ...(post.secondaryKeywords ?? [])] } : {}),
+      ...(post.publishedAt ? { datePublished: post.publishedAt } : {}),
+      ...(post.modifiedAt || post.publishedAt ? { dateModified: post.modifiedAt ?? post.publishedAt } : {}),
       author: { "@type": "Organization", name: "Home Update Furniture" },
       publisher: { "@type": "Organization", name: "Home Update Furniture", logo: { "@type": "ImageObject", url: `${site.url}/images/logo.jpeg` } },
       mainEntityOfPage: url,
@@ -77,7 +80,7 @@ export default async function JournalArticlePage({ params }: Props) {
     },
   ];
 
-  const articleMessage = buildJournalProductInquiryMessage({ articleTitle: post.title, productName: featuredProduct.name, roomType: "Living Room", length: 4, width: 3 });
+  const articleMessage = buildJournalProductInquiryMessage({ articleTitle: post.title, productName: featuredProduct.name, articleUrl: url, productUrl: `${site.url}${productPath(featuredProduct)}` });
 
   return (
     <article className="mx-auto max-w-5xl px-5 py-16 lg:px-8">
@@ -91,7 +94,7 @@ export default async function JournalArticlePage({ params }: Props) {
         <div className="mt-5 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.12em] text-muted">
           <span>{post.category ?? "Buying Guides"}</span>
           <span>•</span>
-          <span>{post.publishedAt ?? "Updated recently"}</span>
+          <span>{post.publishedAt ? new Date(`${post.publishedAt}T12:00:00Z`).toLocaleDateString("en-KE", { day: "numeric", month: "long", year: "numeric", timeZone: "Africa/Nairobi" }) : "Buying guide"}</span>
           <span>•</span>
           <span>Home Update Furniture</span>
         </div>
@@ -111,6 +114,15 @@ export default async function JournalArticlePage({ params }: Props) {
                   {paragraph}
                 </p>
               ))}
+                  {section.table ? (
+                    <div className="mt-5 overflow-x-auto border border-white/10">
+                      <table className="w-full min-w-[600px] border-collapse text-left text-sm">
+                        <thead className="bg-espresso text-xs uppercase text-champagne"><tr>{section.table.headers.map((header) => <th key={header} className="p-3">{header}</th>)}</tr></thead>
+                        <tbody>{section.table.rows.map((row, rowIndex) => <tr key={`${section.heading}-${rowIndex}`} className="border-t border-white/10">{row.map((cell, cellIndex) => <td key={`${rowIndex}-${cellIndex}`} className="p-3 align-top text-muted">{cell}</td>)}</tr>)}</tbody>
+                      </table>
+                    </div>
+                  ) : null}
+                  {section.links?.length ? <div className="mt-4 flex flex-col gap-2 border-l border-antique-gold/50 pl-4">{section.links.map((link) => <Link key={link.href + link.label} href={link.href} className="w-fit text-sm text-champagne underline underline-offset-4 hover:text-ivory">{link.label}</Link>)}</div> : null}
             </section>
           ))}
 
@@ -150,8 +162,13 @@ export default async function JournalArticlePage({ params }: Props) {
                   </div>
                   <h3 className="mt-3 font-serif text-2xl text-ivory">{featuredProduct.name}</h3>
                   <p className="mt-1 text-sm text-muted">{featuredProduct.subtype}</p>
-                  <p className="mt-2 text-lg text-champagne">{featuredProduct.priceFrom ? `KES ${featuredProduct.priceFrom.toLocaleString("en-KE")}` : "Ask for today’s price"}</p>
-                  <a href={whatsappHref(articleMessage)} target="_blank" rel="noreferrer" className="mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-full bg-wa px-4 text-sm font-medium text-white">Order on WhatsApp</a>
+                  <p className="mt-2 text-sm text-ivory">Listed dimensions: {featuredProduct.dimensions.w} × {featuredProduct.dimensions.d} × {featuredProduct.dimensions.h} cm</p>
+                  {featuredProduct.woodFinishes.length ? <p className="mt-2 text-xs text-muted">Listed finish names: {featuredProduct.woodFinishes.join(", ")}. Confirm the available finish and construction.</p> : null}
+                  {featuredProduct.fabrics.length ? <p className="mt-2 text-xs text-muted">Listed fabric names: {featuredProduct.fabrics.join(", ")}. Confirm composition, care and availability.</p> : null}
+                  {post.productHighlight ? <p className="mt-3 text-xs leading-relaxed text-muted">{post.productHighlight}</p> : null}
+                  <p className="mt-3 text-sm text-champagne">{featuredProduct.priceFrom ? `From KES ${featuredProduct.priceFrom.toLocaleString("en-KE")}` : "Price: ask us to confirm the current quote"}</p>
+                  <Link href={productPath(featuredProduct)} className="mt-3 inline-flex min-h-10 items-center text-sm text-champagne underline underline-offset-4">View {featuredProduct.name} details</Link>
+                  <a href={whatsappHref(articleMessage)} target="_blank" rel="noreferrer" className="mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-full bg-wa px-4 text-sm font-medium text-white">Ask about this piece on WhatsApp</a>
                 </div>
               )}
             </div>
@@ -185,7 +202,14 @@ export default async function JournalArticlePage({ params }: Props) {
         </section>
       )}
 
-      <WaButton className="mt-10" message={`Hi Home Update, I read "${post.title}" and I'd like help choosing.`}>Talk through this idea</WaButton>
+      <div className="mt-10 border-t border-white/10 pt-8">
+        <h2 className="font-serif text-2xl text-ivory">Want advice for your own room?</h2>
+        <p className="mt-2 max-w-2xl text-sm text-muted">Ask whether a sample can be inspected, or send your room measurements and a photo so the team can discuss suitable sizes and current options.</p>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <WaButton message={articleMessage}>Send room details on WhatsApp</WaButton>
+          <a href="tel:+254743844362" className="inline-flex min-h-11 items-center border border-white/20 px-4 text-sm text-ivory">Call 0743 844 362</a>
+        </div>
+      </div>
     </article>
   );
 }

@@ -152,6 +152,23 @@ Google's API may return a limited set of reviews, and display must follow the
 current Google Maps Platform attribution and Places API policies. The admin
 review endpoint is authenticated and does not expose the API key.
 
+## Local SEO articles and product facts
+
+Four Nairobi-focused buying guides are published from
+[`src/data/local-seo-articles.ts`](src/data/local-seo-articles.ts), with their
+SEO fields and content rendered by the journal route. Their product links use
+the product's canonical URL; WhatsApp messages include both that URL and the
+article URL.
+
+Requested search-intent routes are mapped to current catalog items. TV stands
+and coffee tables are still concept previews, so their alias pages are marked
+`noindex` until the owner confirms their construction, dimensions, load/support
+specifications, availability and real product photography. Do not remove that
+restriction or advertise “hardwood”/screen support as a fact until verified.
+The admin's **Confirmed construction materials** field feeds Product JSON-LD;
+wood finish names are not treated as solid-wood materials. Product Offer schema
+is emitted only when price and availability are populated.
+
 ## How the site is built
 
 - **Gallery** — thumbnail strip, swipe on mobile, arrow/keyboard navigation,

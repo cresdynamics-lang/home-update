@@ -4,6 +4,8 @@ export type Product = {
   name: string;
   category: "dining" | "sofa" | "tv-stands" | "coffee-tables";
   subtype: string;
+  /** Verified construction materials; finish names are stored separately. */
+  materials?: string[];
   tags: string[];
   bestseller?: boolean;
   sale?: boolean;

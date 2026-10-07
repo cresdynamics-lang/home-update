@@ -54,7 +54,8 @@ export const metadata: Metadata = {
 
 const localBusiness = {
   "@context": "https://schema.org",
-  "@type": "FurnitureStore",
+  "@type": ["LocalBusiness", "FurnitureStore"],
+  "@id": `${site.url}/#organization`,
   name: site.name,
   image: `${site.url}/images/curved-sofas.jpeg`,
   url: site.url,
@@ -67,7 +68,15 @@ const localBusiness = {
     addressLocality: "Nairobi",
     addressCountry: "KE",
   },
-  areaServed: { "@type": "Country", name: "Kenya" },
+  areaServed: [
+    { "@type": "AdministrativeArea", name: "Nairobi, Kenya" },
+    { "@type": "Place", name: "Kilimani, Nairobi" },
+    { "@type": "Place", name: "Kileleshwa, Nairobi" },
+    { "@type": "Place", name: "Westlands, Nairobi" },
+    { "@type": "Place", name: "Lavington, Nairobi" },
+    { "@type": "Place", name: "Karen, Nairobi" },
+    { "@type": "Place", name: "Kiambu Road, Nairobi" },
+  ],
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",

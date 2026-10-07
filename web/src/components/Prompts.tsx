@@ -96,26 +96,26 @@ export function Prompts() {
             </button>
           </div>
           <p className="mt-2 text-sm text-muted">
-            Send us the length and width and we will suggest a piece that actually fits.
+            Share your room measurements with our team and we’ll help you choose a suitable piece.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             <a
               href={whatsappHref(
-                "Hi Home Update, please help me find the right piece. My room measures (length) x (width) metres.",
+                 "Hi Home Update, I would like personal advice for my room. I can send the room measurements and a photo. Please help me choose a suitable piece.",
               )}
               onClick={() => track("whatsapp_click", { ctaLocation: "fit-finder-prompt" })}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full bg-wa px-4 text-sm font-medium text-white"
             >
-              Ask on WhatsApp
+              Ask our team on WhatsApp
             </a>
             <Link
-              href="/size-guide/"
+              href="/custom-design/"
               onClick={() => setShowFitFinder(false)}
               className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full border border-antique-gold/60 px-4 text-sm text-ivory"
             >
-              Open the simulator
+              Share room details
             </Link>
           </div>
         </div>

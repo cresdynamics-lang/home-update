@@ -10,6 +10,7 @@ const productSlugs: Record<string, string> = {
   "the-cloud-curved-l-shaped-sofa": "cloud",
   "the-truffle-modular-sectional": "truffle",
   "the-linen-l-shaped-sofa": "linen",
+  "l-shaped-sofa-nairobi": "linen",
 };
 
 const collections = {
