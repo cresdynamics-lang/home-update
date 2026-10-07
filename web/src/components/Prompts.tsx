@@ -51,23 +51,23 @@ export function Prompts() {
         <div
           role="dialog"
           aria-label="Cookie notice"
-          className={`fixed inset-x-2 ${hasStickyProductBar ? "bottom-20 sm:bottom-20" : "bottom-1 sm:bottom-3"} z-70 mx-auto max-w-lg rounded-xl border border-white/12 bg-espresso/97 p-2 shadow-2xl backdrop-blur sm:inset-x-3 sm:p-3 md:bottom-6`}
+          className={`fixed inset-x-2 ${hasStickyProductBar ? "bottom-20 sm:bottom-20" : "bottom-2 sm:bottom-3"} z-70 mx-auto max-w-sm rounded-lg border border-white/12 bg-espresso/97 p-2 shadow-xl backdrop-blur sm:inset-x-auto sm:right-4 sm:mx-0 md:bottom-5`}
         >
           <div className="flex items-center gap-2">
-            <p className="min-w-0 flex-1 text-[10px] leading-3 text-ivory/90 sm:text-xs sm:leading-4">
-              Optional analytics + Meta ads measurement?
+            <p className="min-w-0 flex-1 text-[10px] leading-3 text-ivory/90">
+              Allow optional analytics and ads measurement?
             </p>
             <button
               type="button"
               onClick={() => dismissCookie(true)}
-              className="min-h-9 shrink-0 rounded-full bg-champagne px-3 text-[10px] font-medium text-onyx sm:min-h-10 sm:px-4 sm:text-xs"
+              className="min-h-9 shrink-0 rounded-full bg-champagne px-2.5 text-[10px] font-medium text-onyx"
             >
               Allow
             </button>
             <button
               type="button"
               onClick={() => dismissCookie(false)}
-              className="min-h-9 shrink-0 rounded-full border border-white/12 px-2 text-[10px] text-ivory/85 sm:min-h-10 sm:px-3 sm:text-xs"
+              className="min-h-9 shrink-0 rounded-full border border-white/12 px-2 text-[10px] text-ivory/85"
             >
               Essential only
             </button>

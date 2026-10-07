@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import {
   DropIcon,
   LayersIcon,
@@ -28,7 +28,7 @@ import {
 export function Hero() {
   return (
     <>
-    <section className="relative flex min-h-[54vh] flex-col overflow-hidden sm:min-h-[75vh] lg:min-h-[92vh]">
+    <section className="relative flex min-h-[60svh] flex-col overflow-hidden sm:min-h-[64vh] lg:min-h-[76vh]">
       <div className="hero-scene absolute inset-0" aria-hidden="true">
         <Image
           src="/images/living-l-sofa.jpeg"
@@ -72,18 +72,20 @@ export function Hero() {
 
         <div className="max-w-2xl">
           <p className="animate-fade-up mb-3 text-[11px] tracking-[0.22em] text-champagne uppercase sm:mb-4">
-            Dining sets · Sofas · Made to fit your home
+            Home Update Furniture · Nairobi, Kenya
           </p>
-          <h1 className="animate-fade-up-delay font-serif text-3xl leading-[1.08] text-champagne sm:text-5xl lg:text-6xl">
-            Look around your living room.{" "}
-            <span className="text-ivory italic">Is this how you want to live?</span>
+          <h1 className="animate-fade-up-delay max-w-3xl font-serif text-3xl leading-[1.08] text-champagne sm:text-4xl lg:text-5xl xl:text-6xl">
+            Sofas and dining sets <span className="text-ivory italic">made to fit home.</span>
           </h1>
           <p className="animate-fade-up-delay-2 mt-3 max-w-xl text-base leading-relaxed text-ivory/85 sm:mt-5 md:text-lg">
-            Every dinner, every guest and every quiet Sunday happens on your furniture. Make it
-            worthy of the life you are living.
+            Explore real furniture, compare sizes and finishes, or share your room measurements so
+            our team can help you choose.
           </p>
           <div className="mt-5 flex flex-wrap items-center gap-4 sm:mt-8">
             <WaButton pulse>Chat on WhatsApp for today’s price</WaButton>
+            <Link href="/shop/" className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/50 px-5 py-3 text-sm font-medium text-ivory transition hover:border-champagne hover:text-champagne">
+              Explore furniture
+            </Link>
             <a
               href={`tel:${site.phoneTel}`}
               className="inline-flex items-center gap-2 text-sm text-ivory/90 hover:text-champagne"
@@ -111,16 +113,16 @@ export function Hero() {
 }
 
 function FitFinder() {
-  const [room, setRoom] = useState("Dining room");
-  const [seats, setSeats] = useState("4 seats");
-  const [fabric, setFabric] = useState("Water-resistant");
-  const [colour, setColour] = useState("Oat");
-  const [roomLength, setRoomLength] = useState("4.2");
-  const [roomWidth, setRoomWidth] = useState("3.5");
+  const [room, setRoom] = useState("Choose a room");
+  const [seats, setSeats] = useState("Not sure yet");
+  const [fabric, setFabric] = useState("Not sure");
+  const [colour, setColour] = useState("Not sure");
+  const [roomLength, setRoomLength] = useState("");
+  const [roomWidth, setRoomWidth] = useState("");
 
   const message = useMemo(
     () =>
-      `Hi Home Update — I’m looking for a ${room.toLowerCase()} piece for ${seats.toLowerCase()} with a ${fabric.toLowerCase()} finish in ${colour} colour. My room is ${roomLength} m × ${roomWidth} m. Please suggest pieces that fit and send the current price.`,
+      `Hi Home Update — I’m looking for a ${room.toLowerCase()} piece for ${seats.toLowerCase()} with a ${fabric.toLowerCase()} finish in ${colour} colour. My room is ${roomLength} m × ${roomWidth} m. Please review my measurements and advise what may work, then send the current price.`,
     [room, seats, fabric, colour, roomLength, roomWidth],
   );
 
@@ -138,8 +140,8 @@ function FitFinder() {
       className="mx-auto grid max-w-7xl grid-cols-2 gap-2 rounded-xl border border-antique-gold/35 bg-espresso p-3 shadow-xl sm:gap-4 sm:p-5 lg:grid-cols-4 lg:items-end"
     >
       <div className="col-span-2 lg:col-span-4">
-        <h2 id="fit-finder-title" className="font-serif text-xl text-ivory sm:text-2xl">Find my fit</h2>
-        <p className="mt-1 hidden text-xs text-muted sm:block">Enter room measurements for fit advice.</p>
+        <h2 id="fit-finder-title" className="font-serif text-xl text-ivory sm:text-2xl">Room advice from our team</h2>
+        <p className="mt-1 hidden text-xs text-muted sm:block">Share your measurements and preferences. Our team will recommend options personally.</p>
       </div>
       <label className="min-w-0">
         <span className="mb-1 block text-[10px] tracking-[0.16em] text-muted uppercase sm:mb-1.5">Room length (m)</span>
@@ -153,7 +155,7 @@ function FitFinder() {
         type="submit"
         className="col-span-2 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-champagne px-4 py-2.5 text-xs font-medium text-onyx transition hover:bg-antique-gold sm:min-h-12 sm:px-5 sm:py-3 sm:text-sm lg:col-span-1"
       >
-        Get fit advice on WhatsApp
+        Ask our team on WhatsApp
       </button>
       <details className="col-span-2 border-t border-white/10 pt-2 lg:col-span-4">
         <summary className="min-h-10 cursor-pointer py-2 text-xs text-champagne sm:text-sm">More preferences: room, seats and finish</summary>
@@ -162,8 +164,8 @@ function FitFinder() {
             [
               ["Room", ["Dining room", "Living room", "Both"], room, setRoom],
               ["Seats / Size", ["4 seats", "6 seats", "8 seats", "Custom"], seats, setSeats],
-              ["Fabric", ["Water-resistant", "Velvet", "Bouclé", "Linen blend"], fabric, setFabric],
-              ["Colour", ["Oat", "Cream", "Truffle", "Charcoal"], colour, setColour],
+              ["Fabric", ["Not sure", "Velvet", "Bouclé", "Linen blend"], fabric, setFabric],
+              ["Colour", ["Not sure", "Cream", "Truffle", "Charcoal"], colour, setColour],
             ] as const
           ).map(([label, options, value, setter]) => (
             <label key={label} className="min-w-0">
@@ -502,6 +504,25 @@ export function SizeGuideTeaser() {
 }
 
 export function CustomDesign() {
+  const [projectType, setProjectType] = useState("Sofa");
+  const [roomLength, setRoomLength] = useState("");
+  const [roomWidth, setRoomWidth] = useState("");
+  const [designNotes, setDesignNotes] = useState("");
+
+  const handleDesignInquiry = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const message = [
+      "Hi Home Update, I'd like to discuss a custom design.",
+      `I'm interested in: ${projectType}.`,
+      `My room measures ${roomLength} m x ${roomWidth} m.`,
+      designNotes.trim() ? `What I have in mind: ${designNotes.trim()}.` : "",
+      "Please review the room measurements and advise what dimensions you recommend, along with finish options and a quote.",
+    ].filter(Boolean).join(" ");
+
+    track("whatsapp_click", { ctaLocation: "custom-design-room-measurements" });
+    window.open(waLink(message), "_blank", "noopener,noreferrer");
+  };
+
   return (
     <section className="bg-onyx py-16">
       <div className="mx-auto grid max-w-7xl items-stretch gap-0 overflow-hidden rounded-[1.5rem] border border-white/8 lg:grid-cols-2">
@@ -536,6 +557,35 @@ export function CustomDesign() {
               </li>
             ))}
           </ul>
+          <form onSubmit={handleDesignInquiry} className="mt-8 border-t border-white/10 pt-6">
+            <h3 className="font-serif text-xl text-ivory">Share your room measurements</h3>
+            <p className="mt-1 text-sm text-muted">Our team will review them and help plan a piece for your space.</p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <label className="text-xs text-muted sm:col-span-2">
+                What are you planning?
+                <select value={projectType} onChange={(event) => setProjectType(event.target.value)} className="mt-1.5 min-h-11 w-full border border-white/10 bg-onyx px-3 text-sm text-ivory">
+                  <option>Sofa</option>
+                  <option>Dining set</option>
+                  <option>Other custom furniture</option>
+                </select>
+              </label>
+              <label className="text-xs text-muted">
+                Room length (m)
+                <input type="number" min="0.1" max="50" step="0.1" required value={roomLength} onChange={(event) => setRoomLength(event.target.value)} placeholder="e.g. 4.2" className="mt-1.5 min-h-11 w-full border border-white/10 bg-onyx px-3 text-sm text-ivory placeholder:text-muted" />
+              </label>
+              <label className="text-xs text-muted">
+                Room width (m)
+                <input type="number" min="0.1" max="50" step="0.1" required value={roomWidth} onChange={(event) => setRoomWidth(event.target.value)} placeholder="e.g. 3.5" className="mt-1.5 min-h-11 w-full border border-white/10 bg-onyx px-3 text-sm text-ivory placeholder:text-muted" />
+              </label>
+              <label className="text-xs text-muted sm:col-span-2">
+                Design notes (optional)
+                <textarea value={designNotes} onChange={(event) => setDesignNotes(event.target.value)} rows={2} placeholder="Preferred size, finish, or anything else to consider" className="mt-1.5 w-full border border-white/10 bg-onyx px-3 py-2 text-sm text-ivory placeholder:text-muted" />
+              </label>
+            </div>
+            <button type="submit" className="mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-full bg-wa px-5 py-3 text-sm font-medium text-white transition hover:brightness-110 sm:w-auto">
+              Discuss my room on WhatsApp
+            </button>
+          </form>
           <div className="mt-8 flex flex-wrap gap-3">
             <GoldButton href="/custom-design">Start your design</GoldButton>
             <TrackedWhatsAppLink

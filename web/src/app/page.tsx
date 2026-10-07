@@ -11,6 +11,7 @@ import {
   ValueBar,
   WhyUs,
 } from "@/components/home";
+import { GoogleReviews } from "@/components/GoogleReviews";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -40,6 +41,7 @@ export default function HomePage() {
       <ValueBar />
       <RoomsSection />
       <Bestsellers />
+      <GoogleReviews />
       <FabricsSection />
       <ColourRange />
       <MatchRoom />

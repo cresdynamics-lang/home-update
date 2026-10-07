@@ -11,6 +11,8 @@ The SEO and content implementation avoids presenting unverified business details
 - [ ] Review room-fit estimates against the actual products; the size guides describe planning practices and are not guarantees of fit.
 - [ ] Replace placeholder product/fabric imagery with approved photos that accurately depict current products and variants.
 - [ ] Obtain permission and accurate details before publishing customer reviews, customer homes, or customer photographs.
+- [ ] Confirm the Google Business Profile is verified and its name, address/service area, phone and website match the site.
+- [ ] Configure a restricted server-side Google Places API (New) key and the Business Profile Place ID for Google review display; confirm API billing and attribution requirements.
 
 ## Business identity and local SEO
 
@@ -32,3 +34,10 @@ Pages for delivery areas, showroom, warranty/returns, fabric performance, review
 ## Validation
 
 The SEO code changes have not been run through a production build, typecheck, lint, or automated tests. Run the project's normal validation and inspect deployed canonical URLs, redirects, structured data, sitemap, robots file, consent behavior, and Search Console coverage before launch.
+
+## Deployment and admin operations
+
+- [ ] Configure persistent storage for admin catalog JSON and uploaded product/variant images. The local uploader writes to `public/images/uploads`, which is not durable on ephemeral/serverless deployment filesystems; deploy a persistent volume or implement an object-storage adapter before relying on admin uploads in production.
+- [ ] Sign into `/admin`, upload a real primary gallery image and a variant image, save the product, then verify both images on the public page after a deployment/restart.
+- [ ] Sign into `/admin` → Google reviews and verify that the Google Places connection loads the correct business and real review data.
+- [ ] Test the homepage and product enquiry flows on mobile, including WhatsApp links, image loading, cookie consent, and navigation.

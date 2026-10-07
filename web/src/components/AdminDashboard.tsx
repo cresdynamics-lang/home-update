@@ -6,10 +6,11 @@ import type { Product } from "@/data/products";
 import { categoryLabels } from "@/data/products";
 import { colourHex } from "@/lib/site";
 import type { SaleRecord, SaleStatus } from "@/lib/sales-store";
+import type { GoogleReviewsResult } from "@/lib/google-reviews";
 import { productPath } from "@/lib/seo";
 
 type CategoryFilter = "all" | Product["category"];
-type AdminView = "overview" | "sales" | "products";
+type AdminView = "overview" | "sales" | "products" | "reviews";
 
 function leadTimeText(product: Product) {
   if (!product.leadTimeDays) return "";
@@ -38,6 +39,9 @@ export function AdminDashboard() {
   const [password, setPassword] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
   const [sales, setSales] = useState<SaleRecord[]>([]);
+  const [googleReviews, setGoogleReviews] = useState<GoogleReviewsResult | null>(null);
+  const [googleReviewsConfigured, setGoogleReviewsConfigured] = useState<boolean | null>(null);
+  const [googleReviewsError, setGoogleReviewsError] = useState("");
   const [view, setView] = useState<AdminView>("overview");
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<CategoryFilter>("all");
@@ -56,6 +60,25 @@ export function AdminDashboard() {
     const response = await fetch("/api/admin/sales/", { cache: "no-store" });
     if (!response.ok) throw new Error("Could not load sales records. Please sign in again.");
     setSales((await response.json()) as SaleRecord[]);
+  }
+
+  async function loadGoogleReviews() {
+    setGoogleReviewsError("");
+    try {
+      const response = await fetch("/api/admin/google-reviews/", { cache: "no-store" });
+      const result = await response.json() as { configured: boolean; error?: string; businessName?: string; rating?: number | null; reviewCount?: number | null; googleMapsUrl?: string; reviews?: GoogleReviewsResult["reviews"] };
+      setGoogleReviewsConfigured(result.configured);
+      if (!response.ok) throw new Error(result.error ?? "Google reviews could not be loaded.");
+      setGoogleReviews(result.configured ? {
+        businessName: result.businessName ?? "Home Update Furniture",
+        rating: result.rating ?? null,
+        reviewCount: result.reviewCount ?? null,
+        googleMapsUrl: result.googleMapsUrl ?? "https://www.google.com/maps",
+        reviews: result.reviews ?? [],
+      } : null);
+    } catch (error) {
+      setGoogleReviewsError(error instanceof Error ? error.message : "Google reviews could not be loaded.");
+    }
   }
 
   useEffect(() => {
@@ -273,8 +296,8 @@ export function AdminDashboard() {
       </header>
 
       <nav aria-label="Admin sections" className="mt-5 flex gap-2 overflow-x-auto border-b border-white/10">
-        {([ ["overview", "Overview"], ["sales", "Sales & orders"], ["products", "Products"] ] as const).map(([key, label]) => (
-          <button key={key} type="button" onClick={() => setView(key)} aria-current={view === key ? "page" : undefined} className={`min-h-11 shrink-0 border-b-2 px-4 text-sm ${view === key ? "border-champagne text-champagne" : "border-transparent text-muted hover:text-ivory"}`}>
+        {([ ["overview", "Overview"], ["sales", "Sales & orders"], ["products", "Products"], ["reviews", "Google reviews"] ] as const).map(([key, label]) => (
+          <button key={key} type="button" onClick={() => { setView(key); if (key === "reviews") void loadGoogleReviews(); }} aria-current={view === key ? "page" : undefined} className={`min-h-11 shrink-0 border-b-2 px-4 text-sm ${view === key ? "border-champagne text-champagne" : "border-transparent text-muted hover:text-ivory"}`}>
             {label}
           </button>
         ))}
@@ -301,6 +324,7 @@ export function AdminDashboard() {
 
       {view === "overview" ? <AdminOverview products={products} sales={sales} onViewSales={() => setView("sales")} /> : null}
       {view === "sales" ? <SalesOperations sales={sales} products={products} busy={busy} onCreate={createSale} onUpdate={updateSale} onDelete={deleteSale} /> : null}
+      {view === "reviews" ? <AdminGoogleReviews data={googleReviews} configured={googleReviewsConfigured} error={googleReviewsError} onRefresh={() => void loadGoogleReviews()} /> : null}
 
       {view === "products" ? <>
       <div className="mt-5 overflow-x-auto border border-white/10">
@@ -337,6 +361,39 @@ function formatKes(value: number) {
 
 function statusLabel(status: SaleStatus) {
   return ({ enquiry: "Enquiry", confirmed: "Confirmed", paid: "Paid", delivered: "Delivered", cancelled: "Cancelled" })[status];
+}
+
+function AdminGoogleReviews({ data, configured, error, onRefresh }: {
+  data: GoogleReviewsResult | null;
+  configured: boolean | null;
+  error: string;
+  onRefresh: () => void;
+}) {
+  return (
+    <section aria-labelledby="admin-google-reviews" className="mt-6">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p className="text-xs uppercase tracking-widest text-antique-gold">Customer feedback</p>
+          <h2 id="admin-google-reviews" className="mt-1 font-serif text-2xl text-ivory">Google reviews</h2>
+        </div>
+        <button type="button" onClick={onRefresh} className="min-h-11 border border-antique-gold/60 px-4 text-sm text-champagne">Refresh reviews</button>
+      </div>
+      {configured === false ? (
+        <div className="mt-5 border border-antique-gold/30 bg-espresso p-5">
+          <h3 className="font-medium text-ivory">Google connection needed</h3>
+          <p className="mt-2 max-w-3xl text-sm leading-relaxed text-muted">Set GOOGLE_PLACES_API_KEY and GOOGLE_BUSINESS_PLACE_ID in the server environment. Enable Places API (New) for the Google Cloud project and restrict the key to Places API. Reviews will appear here and on the homepage after the next deployment.</p>
+        </div>
+      ) : null}
+      {error ? <p role="alert" className="mt-4 border-l-2 border-hot px-3 py-2 text-sm text-ivory">{error}</p> : null}
+      {configured === true && data ? <>
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-y border-white/10 py-4">
+          <div><p className="text-ivory">{data.businessName}</p><p className="mt-1 text-sm text-muted">{data.rating !== null ? `${data.rating.toFixed(1)} / 5` : "Google rating unavailable"} · {data.reviewCount ?? 0} reviews</p></div>
+          <a href={data.googleMapsUrl} target="_blank" rel="noreferrer" className="text-sm text-champagne underline underline-offset-4">Open Google Business Profile</a>
+        </div>
+        {data.reviews.length ? <div className="divide-y divide-white/10">{data.reviews.map((review, index) => <article key={`${review.authorName}-${review.published}-${index}`} className="py-5"><div className="flex flex-wrap items-center justify-between gap-2"><a href={review.authorUrl} target="_blank" rel="noreferrer" className="font-medium text-ivory underline underline-offset-4">{review.authorName}</a><span className="text-sm text-champagne" aria-label={`${review.rating} out of 5 stars`}>{"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)} <span className="text-xs text-muted">{review.published}</span></span></div><p className="mt-2 max-w-4xl whitespace-pre-line text-sm leading-relaxed text-muted">{review.text || "No written review."}</p></article>)}</div> : <p className="mt-5 text-sm text-muted">Google has not returned any review text for this profile.</p>}
+      </> : null}
+    </section>
+  );
 }
 
 function AdminOverview({ products, sales, onViewSales }: { products: Product[]; sales: SaleRecord[]; onViewSales: () => void }) {

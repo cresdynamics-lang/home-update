@@ -134,6 +134,24 @@ Edit `siteConfig` in [`src/lib/site.ts`](src/lib/site.ts):
 
 Contact details, nav and the 7-link menu are in the same file.
 
+## Google reviews
+
+The homepage and authenticated `/admin` dashboard can display reviews returned
+by Google Places API (New). To enable them:
+
+1. Verify and manage the business in Google Business Profile.
+2. In Google Cloud, enable Places API (New), configure billing, and create a
+  server-side API key restricted to Places API (New).
+3. Set `GOOGLE_PLACES_API_KEY` and `GOOGLE_BUSINESS_PLACE_ID` in the deployment
+  environment. Keep both server-only; never use a `NEXT_PUBLIC_` prefix.
+4. Redeploy and sign into `/admin` → **Google reviews** to check the connection.
+
+The website displays Google-provided reviews with their attribution and links
+to the Google profile; it does not let the admin edit or fabricate reviews.
+Google's API may return a limited set of reviews, and display must follow the
+current Google Maps Platform attribution and Places API policies. The admin
+review endpoint is authenticated and does not expose the API key.
+
 ## How the site is built
 
 - **Gallery** — thumbnail strip, swipe on mobile, arrow/keyboard navigation,
