@@ -41,10 +41,10 @@ export function Header() {
             <a href={`https://wa.me/${site.whatsapp}`} onClick={() => track("whatsapp_click", { ctaLocation: "header-room-fit" })} className="hover:text-champagne">
               Room-fit help on WhatsApp
             </a>
-            <Link href="/about/" className="hover:text-champagne">
+            <Link href="/about-home-update-furniture-nairobi/" className="hover:text-champagne">
               Ask about delivery &amp; setup
             </Link>
-            <Link href="/custom-design/" className="hover:text-champagne">
+            <Link href="/custom-furniture-design-nairobi/" className="hover:text-champagne">
               Ask about custom options
             </Link>
           </div>

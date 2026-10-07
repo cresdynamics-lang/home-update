@@ -16,8 +16,8 @@ const questions = [
 export const metadata: Metadata = {
   title: "Furniture FAQs | Home Update Nairobi",
   description: "Answers about furniture prices, room fit, custom options, upholstery, delivery and warranty. Confirm current details on WhatsApp.",
-  alternates: { canonical: `${site.url}/faqs/`, languages: { "en-KE": `${site.url}/faqs/` } },
-  openGraph: { title: "Furniture FAQs | Home Update Nairobi", description: "Answers about furniture prices, room fit, custom options, upholstery, delivery and warranty.", url: `${site.url}/faqs/` },
+  alternates: { canonical: `${site.url}/furniture-faqs-prices-delivery-care/`, languages: { "en-KE": `${site.url}/furniture-faqs-prices-delivery-care/` } },
+  openGraph: { title: "Furniture FAQs | Home Update Nairobi", description: "Answers about furniture prices, room fit, custom options, upholstery, delivery and warranty.", url: `${site.url}/furniture-faqs-prices-delivery-care/` },
 };
 
 export default function FAQsPage() {
@@ -32,7 +32,7 @@ export default function FAQsPage() {
   };
   return (
     <main className="mx-auto max-w-5xl px-5 py-16 lg:px-8">
-      <BreadcrumbSchema items={[{ name: "Home", path: "/" }, { name: "FAQs", path: "/faqs/" }]} />
+      <BreadcrumbSchema items={[{ name: "Home", path: "/" }, { name: "Furniture FAQs", path: "/furniture-faqs-prices-delivery-care/" }]} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <SectionLabel>Frequently asked questions</SectionLabel>
       <SectionTitle>Useful answers before you <em className="text-champagne">choose.</em></SectionTitle>

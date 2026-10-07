@@ -7,13 +7,13 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata(
   "About Home Update Furniture Nairobi | Home Update",
   "Meet Home Update Furniture and explore dining sets and sofas designed around real room measurements. Contact us on WhatsApp.",
-  "/about/",
+  "/about-home-update-furniture-nairobi/",
 );
 
 export default function AboutPage() {
   return (
     <>
-      <BreadcrumbSchema items={[{ name: "Home", path: "/" }, { name: "About", path: "/about/" }]} />
+      <BreadcrumbSchema items={[{ name: "Home", path: "/" }, { name: "About", path: "/about-home-update-furniture-nairobi/" }]} />
       <div className="mx-auto max-w-7xl px-5 pt-16 lg:px-8">
         <SectionLabel>About Home Update</SectionLabel>
         <SectionTitle>

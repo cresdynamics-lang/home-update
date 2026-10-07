@@ -111,7 +111,7 @@ export function Prompts() {
               Ask our team on WhatsApp
             </a>
             <Link
-              href="/custom-design/"
+              href="/custom-furniture-design-nairobi/"
               onClick={() => setShowFitFinder(false)}
               className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full border border-antique-gold/60 px-4 text-sm text-ivory"
             >

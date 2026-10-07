@@ -121,9 +121,9 @@ export function ProductSEOPage({ product }: { product: Product }) {
           </div>
         ) : null}
         <p className="text-sm text-muted">
-          <Link className="underline" href={product.category === "dining" ? "/size-guide/dining-table-size-guide/" : product.category === "sofa" ? "/size-guide/sofa-size-guide/" : "/size-guide/"}>Read the {product.category} size guide</Link>
+          <Link className="underline" href={product.category === "dining" ? "/dining-table-size-guide-nairobi-room-clearance/" : product.category === "sofa" ? "/sofa-size-guide-nairobi-room-measurements/" : "/furniture-size-guide-nairobi/"}>Read the {product.category} size guide</Link>
           {" · "}
-          <Link className="underline" href="/fabrics-and-colours/">Explore fabric and colour options</Link>
+          <Link className="underline" href="/furniture-fabrics-colours-nairobi/">Explore fabric and colour options</Link>
         </p>
       </section>
     </>

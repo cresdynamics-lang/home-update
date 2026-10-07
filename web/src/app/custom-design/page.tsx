@@ -5,13 +5,13 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata(
   "Custom Furniture Design in Nairobi | Home Update",
   "Discuss furniture dimensions and finishes with Home Update. Share your room measurements and ask for a quote on WhatsApp.",
-  "/custom-design/",
+  "/custom-furniture-design-nairobi/",
 );
 
 export default function CustomDesignPage() {
   return (
     <>
-    <BreadcrumbSchema items={[{ name: "Home", path: "/" }, { name: "Custom design", path: "/custom-design/" }]} />
+    <BreadcrumbSchema items={[{ name: "Home", path: "/" }, { name: "Custom design", path: "/custom-furniture-design-nairobi/" }]} />
     <div id="match" className="pt-8">
       <CustomDesign />
       <MatchRoom />

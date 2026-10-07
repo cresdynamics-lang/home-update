@@ -113,7 +113,7 @@ export function ComparisonMatrix() {
           Tick “Compare” on up to three pieces and they will appear here.
         </p>
         <Link
-          href="/dining-sets/"
+          href="/dining-sets-nairobi/"
           className="mt-6 inline-flex min-h-11 items-center rounded-full bg-champagne px-5 py-2.5 text-sm font-medium text-onyx"
         >
           Browse dining sets

@@ -42,13 +42,13 @@ export default function ShortlistPage() {
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Link
-              href="/dining-sets/"
+              href="/dining-sets-nairobi/"
               className="inline-flex min-h-11 items-center rounded-full bg-champagne px-5 text-sm font-medium text-onyx"
             >
               Browse dining sets
             </Link>
             <Link
-              href="/sofas/"
+              href="/sofas-nairobi/"
               className="inline-flex min-h-11 items-center rounded-full border border-antique-gold/60 px-5 text-sm text-ivory"
             >
               Browse sofas
@@ -60,7 +60,7 @@ export default function ShortlistPage() {
           {room && (
             <p className="mt-6 rounded-xl border border-white/10 bg-espresso px-4 py-3 text-sm text-muted">
               Room size on file: <span className="text-champagne">{room.lengthM} × {room.widthM} m</span>.{" "}
-              <Link href="/size-guide/" className="underline">
+              <Link href="/furniture-size-guide-nairobi/" className="underline">
                 Change it
               </Link>
             </p>

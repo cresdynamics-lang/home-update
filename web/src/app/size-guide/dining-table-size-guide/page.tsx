@@ -1,19 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { SectionLabel, SectionTitle } from "@/components/ui";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Dining Table Size Guide for Kenyan Homes | Home Update",
   description: "Measure your dining area, table footprint and chair clearance before you choose. Send room dimensions on WhatsApp for help.",
-  alternates: { canonical: `${site.url}/size-guide/dining-table-size-guide/`, languages: { "en-KE": `${site.url}/size-guide/dining-table-size-guide/` } },
+  alternates: { canonical: `${site.url}/dining-table-size-guide-nairobi-room-clearance/`, languages: { "en-KE": `${site.url}/dining-table-size-guide-nairobi-room-clearance/` } },
 };
 
 export default function DiningTableSizeGuidePage() {
   return (
     <main className="mx-auto max-w-5xl px-5 py-16 lg:px-8">
-      <BreadcrumbSchema items={[{ name: "Home", path: "/" }, { name: "Size guide", path: "/size-guide/" }, { name: "Dining table size guide", path: "/size-guide/dining-table-size-guide/" }]} />
       <SectionLabel>Dining table size guide</SectionLabel>
       <SectionTitle>Measure your dining area before you <em className="text-champagne">choose a table.</em></SectionTitle>
       <p className="mt-4 max-w-3xl text-muted">Start with the clear floor area, including door swings, cupboards and the route people use to pass through the room. Measure the narrowest entrance and stair route too, so the table and chairs can reach the room.</p>
@@ -26,9 +24,9 @@ export default function DiningTableSizeGuidePage() {
         <p>Share the room length and width, table position, doorway width and any tight turns on the delivery route. We can help you compare the listed dimensions and confirm the model details before an order.</p>
       </section>
       <div className="mt-9 flex flex-wrap gap-4 text-champagne underline">
-        <Link href="/dining-sets/">Browse dining sets</Link>
-        <Link href="/dining-sets/4-seater-round-dining-tables/">Explore four-seat round tables</Link>
-        <Link href="/contact/">Ask about room fit on WhatsApp</Link>
+        <Link href="/dining-sets-nairobi/">Browse dining sets</Link>
+        <Link href="/dining-sets-nairobi/4-seater-round-dining-tables-nairobi/">Explore four-seat round tables</Link>
+        <Link href="/contact-home-update-furniture-nairobi/">Ask about room fit on WhatsApp</Link>
       </div>
     </main>
   );

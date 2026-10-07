@@ -10,11 +10,11 @@ const columns = [
   {
     title: "Shop",
     links: [
-      ["Dining Sets", "/dining-sets/"],
-      ["4-Seater Round Tables", "/dining-sets/4-seater-round-dining-tables/"],
-      ["6-Seater Tables", "/dining-sets/6-seater-dining-tables/"],
-      ["Sofas & Sectionals", "/sofas/"],
-      ["L-Shaped Sofas", "/sofas/l-shaped-sofas/"],
+      ["Dining Sets", "/dining-sets-nairobi/"],
+      ["4-Seater Round Tables", "/dining-sets-nairobi/4-seater-round-dining-tables-nairobi/"],
+      ["6-Seater Tables", "/dining-sets-nairobi/6-seater-dining-tables-nairobi/"],
+      ["Sofas & Sectionals", "/sofas-nairobi/"],
+      ["L-Shaped Sofas", "/sofas-nairobi/l-shaped-sofas-nairobi/"],
       ["Furniture collection", "/#bestsellers"],
       ["Current prices", "/sale/"],
     ],
@@ -22,11 +22,11 @@ const columns = [
   {
     title: "Design",
     links: [
-      ["Fabrics & Colours", "/fabrics-and-colours/"],
-      ["Match My Room", "/match-my-room/"],
-      ["Size Guide", "/size-guide/"],
-      ["Custom Design", "/custom-design/"],
-      ["Ask about fabric samples", "/contact/"],
+      ["Fabrics & Colours", "/furniture-fabrics-colours-nairobi/"],
+      ["Match My Room", "/match-furniture-to-my-room-nairobi/"],
+      ["Size Guide", "/furniture-size-guide-nairobi/"],
+      ["Custom Design", "/custom-furniture-design-nairobi/"],
+      ["Ask about fabric samples", "/contact-home-update-furniture-nairobi/"],
     ],
   },
   {
@@ -35,18 +35,18 @@ const columns = [
       ["The Journal", "/journal/"],
       ["Buying Guides", "/journal/"],
       ["Small-Space Ideas", "/journal/small-living-room-sofa-ideas-nairobi/"],
-      ["Fabric Care", "/fabrics-and-colours/"],
-      ["FAQs", "/faqs/"],
+      ["Fabric Care", "/furniture-fabrics-colours-nairobi/"],
+      ["FAQs", "/furniture-faqs-prices-delivery-care/"],
     ],
   },
   {
     title: "Company",
     links: [
-      ["About Home Update", "/about/"],
-      ["Ask about Delivery & Setup", "/contact/"],
-      ["Ask about Warranty & Returns", "/contact/"],
-      ["Ask about an in-person visit", "/contact/"],
-      ["Contact", "/contact/"],
+      ["About Home Update", "/about-home-update-furniture-nairobi/"],
+      ["Ask about Delivery & Setup", "/contact-home-update-furniture-nairobi/"],
+      ["Ask about Warranty & Returns", "/contact-home-update-furniture-nairobi/"],
+      ["Ask about an in-person visit", "/contact-home-update-furniture-nairobi/"],
+      ["Contact", "/contact-home-update-furniture-nairobi/"],
     ],
   },
 ] as const;
@@ -178,9 +178,9 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col gap-4 border-t border-white/8 pt-6 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-wrap gap-4 text-xs text-muted">
-            <Link href="/about/">About Home Update</Link>
+            <Link href="/about-home-update-furniture-nairobi/">About Home Update</Link>
             <Link href="/sale/">Current prices</Link>
-            <Link href="/contact/">Contact</Link>
+            <Link href="/contact-home-update-furniture-nairobi/">Contact</Link>
             <Link href="/admin/">Admin</Link>
           </div>
           <div className="flex items-center gap-2 text-xs text-muted">

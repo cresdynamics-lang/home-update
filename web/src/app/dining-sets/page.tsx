@@ -40,7 +40,7 @@ export default function DiningSetsPage() {
   };
   return (
     <>
-      <BreadcrumbSchema items={[{ name: "Home", path: "/" }, { name: "Dining sets", path: "/dining-sets/" }]} />
+      <BreadcrumbSchema items={[{ name: "Home", path: "/" }, { name: "Dining sets", path: "/dining-sets-nairobi/" }]} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }} />
     <CatalogPage
       eyebrow="Dining sets"

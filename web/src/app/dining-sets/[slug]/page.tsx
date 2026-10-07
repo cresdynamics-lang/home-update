@@ -15,9 +15,9 @@ const productSlugs: Record<string, string> = {
 };
 
 const collections = {
-  "4-seater-round-dining-tables": { title: "4-Seater Round Dining Tables in Nairobi | Home Update", description: "Explore compact four-seat dining sets. Check dimensions and ask today's price on WhatsApp.", filter: (id: string) => ["orbit", "ivory"].includes(id) },
-  "6-seater-dining-tables": { title: "6-Seater Dining Tables in Nairobi | Home Update", description: "Compare six-seat dining sets by dimensions and finish. Ask Home Update for today's price on WhatsApp.", filter: (id: string) => id === "fluted" },
-  "8-seater-dining-tables": { title: "8-Seater Dining Tables in Nairobi | Home Update", description: "Explore eight-seat dining sets and check room fit. Ask for today's price and lead time on WhatsApp.", filter: (id: string) => id === "regent" },
+  "4-seater-round-dining-tables-nairobi": { title: "4-Seater Round Dining Tables in Nairobi | Home Update", description: "Explore compact four-seat dining sets. Check dimensions and ask today's price on WhatsApp.", filter: (id: string) => ["orbit", "ivory"].includes(id) },
+  "6-seater-dining-tables-nairobi": { title: "6-Seater Dining Tables in Nairobi | Home Update", description: "Compare six-seat dining sets by dimensions and finish. Ask Home Update for today's price on WhatsApp.", filter: (id: string) => id === "fluted" },
+  "8-seater-dining-tables-nairobi": { title: "8-Seater Dining Tables in Nairobi | Home Update", description: "Explore eight-seat dining sets and check room fit. Ask for today's price and lead time on WhatsApp.", filter: (id: string) => id === "regent" },
 };
 
 type Props = {

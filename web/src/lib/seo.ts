@@ -3,15 +3,17 @@ import type { Product } from "@/data/products";
 import { site } from "@/lib/site";
 
 export const PRODUCT_PATHS: Record<string, string> = {
-  fluted: "/dining-sets/6-seater-dining-set-nairobi-apartments/",
-  orbit: "/dining-sets/the-orbit-4-seater-round-dining-set/",
-  ivory: "/dining-sets/the-ivory-dining-set/",
-  regent: "/dining-sets/the-regent-dining-set/",
-  cloud: "/sofas/the-cloud-curved-l-shaped-sofa/",
-  truffle: "/sofas/the-truffle-modular-sectional/",
-  linen: "/sofas/l-shaped-sectional-sofa-nairobi/",
-  "metro-tv-stand": "/tv-stands/custom-tv-stand-nairobi-cable-management/",
-  "nest-coffee-table": "/coffee-tables/nesting-coffee-tables-nairobi-small-apartments/",
+  fluted: "/dining-sets-nairobi/6-seater-dining-set-nairobi-apartments/",
+  orbit: "/dining-sets-nairobi/4-seater-round-dining-set-nairobi/",
+  ivory: "/dining-sets-nairobi/ivory-4-seater-dining-set-nairobi/",
+  regent: "/dining-sets-nairobi/regent-8-seater-dining-set-nairobi/",
+  cloud: "/sofas-nairobi/cloud-curved-l-shaped-sectional-sofa/",
+  truffle: "/sofas-nairobi/truffle-modular-sectional-sofa/",
+  linen: "/sofas-nairobi/l-shaped-sectional-sofa-nairobi/",
+  "metro-tv-stand": "/tv-stands-nairobi/custom-tv-stand-cable-management/",
+  "arc-tv-stand": "/tv-stands-nairobi/arc-low-tv-media-console/",
+  "nest-coffee-table": "/coffee-tables-nairobi/nesting-coffee-tables-small-apartments/",
+  "vale-coffee-table": "/coffee-tables-nairobi/vale-fluted-oval-coffee-table/",
 };
 
 export function productPath(product: Product) {
@@ -48,7 +50,7 @@ export function productMetadata(product: Product): Metadata {
 export function pageMetadata(title: string, description: string, path: string): Metadata {
   const url = `${site.url}${path.endsWith("/") ? path : `${path}/`}`;
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: { canonical: url, languages: { "en-KE": url } },
     openGraph: { title, description, url },
@@ -59,7 +61,7 @@ export function pageMetadata(title: string, description: string, path: string): 
 export function productStructuredData(product: Product) {
   const path = productPath(product);
   const url = `${site.url}${path}`;
-  const categoryPath = `${site.url}${product.category === "dining" ? "/dining-sets/" : product.category === "sofa" ? "/sofas/" : product.category === "tv-stands" ? "/tv-stands/" : "/coffee-tables/"}`;
+  const categoryPath = `${site.url}${product.category === "dining" ? "/dining-sets-nairobi/" : product.category === "sofa" ? "/sofas-nairobi/" : product.category === "tv-stands" ? "/tv-stands-nairobi/" : "/coffee-tables-nairobi/"}`;
   const productData = {
     "@context": "https://schema.org",
     "@type": "Product",

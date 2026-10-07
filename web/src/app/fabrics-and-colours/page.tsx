@@ -8,13 +8,13 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata: Metadata = pageMetadata(
   "Furniture Fabrics & Colours | Home Update",
   "Explore upholstery fabric and colour options for Home Update sofas. Ask about samples and care guidance on WhatsApp.",
-  "/fabrics-and-colours/",
+  "/furniture-fabrics-colours-nairobi/",
 );
 
 export default function FabricsAndColoursPage() {
   return (
     <>
-      <BreadcrumbSchema items={[{ name: "Home", path: "/" }, { name: "Fabrics & colours", path: "/fabrics-and-colours/" }]} />
+      <BreadcrumbSchema items={[{ name: "Home", path: "/" }, { name: "Fabrics & colours", path: "/furniture-fabrics-colours-nairobi/" }]} />
       <div className="mx-auto max-w-7xl px-5 pt-16 lg:px-8">
         <SectionLabel>Fabrics &amp; colours</SectionLabel>
         <SectionTitle>

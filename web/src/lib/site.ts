@@ -222,13 +222,13 @@ export const rooms = [
   {
     title: "The table your family keeps meaning to sit at.",
     cta: "Explore dining sets",
-    href: "/dining-sets/",
+    href: "/dining-sets-nairobi/",
     image: "/images/dining-set.jpeg",
   },
   {
     title: "The sofa that makes people stay.",
     cta: "Explore sofas",
-    href: "/sofas/",
+    href: "/sofas-nairobi/",
     image: "/images/curved-sofas.jpeg",
   },
   {
@@ -274,7 +274,7 @@ export const journal = [
     image: "/images/dining-close.jpeg",
   },
   {
-    slug: "measure-before-you-fall",
+    slug: "how-to-measure-your-room-for-a-sofa",
     title: "Measure twice. Fall in love once.",
     minutes: 4,
     image: "/images/4-seats-dinning.jpeg",
@@ -286,7 +286,7 @@ export const journal = [
     image: "/images/curved-sofas.jpeg",
   },
   {
-    slug: "small-space-sofa-ideas",
+    slug: "small-living-room-sofa-ideas-nairobi",
     title: "Small-space sofa ideas for Nairobi apartments",
     minutes: 6,
     image: "/images/living-l-sofa.jpeg",
@@ -298,7 +298,7 @@ export const journal = [
     image: "/images/6-seats-dinning.jpeg",
   },
   {
-    slug: "fabrics-for-kids-and-pets",
+    slug: "best-sofa-fabric-for-kids-and-pets",
     title: "Best sofa fabrics for homes with kids and pets",
     minutes: 5,
     image: "/images/sofa-detail.jpeg",
@@ -306,47 +306,47 @@ export const journal = [
 ] as const;
 
 export const nav = [
-  { label: "Dining Sets", href: "/dining-sets/" },
-  { label: "Sofas & Sectionals", href: "/sofas/" },
-  { label: "TV Stands", href: "/tv-stands/" },
-  { label: "Coffee Tables", href: "/coffee-tables/" },
-  { label: "Custom Design", href: "/custom-design/" },
+  { label: "Dining Sets", href: "/dining-sets-nairobi/" },
+  { label: "Sofas & Sectionals", href: "/sofas-nairobi/" },
+  { label: "TV Stands", href: "/tv-stands-nairobi/" },
+  { label: "Coffee Tables", href: "/coffee-tables-nairobi/" },
+  { label: "Custom Design", href: "/custom-furniture-design-nairobi/" },
   { label: "Sale", href: "/sale/" },
 ] as const;
 
 export const mega = {
   shop: [
-    { label: "All products", href: "/shop/" },
-    { label: "Dining sets", href: "/dining-sets/" },
-    { label: "Sofas", href: "/sofas/" },
-    { label: "TV stands", href: "/tv-stands/" },
-    { label: "Coffee tables", href: "/coffee-tables/" },
+    { label: "All products", href: "/furniture-shop-nairobi-kenya/" },
+    { label: "Dining sets", href: "/dining-sets-nairobi/" },
+    { label: "Sofas", href: "/sofas-nairobi/" },
+    { label: "TV stands", href: "/tv-stands-nairobi/" },
+    { label: "Coffee tables", href: "/coffee-tables-nairobi/" },
     { label: "Sale", href: "/sale/" },
   ],
   dining: [
-    { label: "All dining sets", href: "/dining-sets/" },
-    { label: "4-seater round", href: "/dining-sets/4-seater-round-dining-tables/" },
-    { label: "6-seater tables", href: "/dining-sets/6-seater-dining-tables/" },
-    { label: "8-seater tables", href: "/dining-sets/8-seater-dining-tables/" },
+    { label: "All dining sets", href: "/dining-sets-nairobi/" },
+    { label: "4-seater round", href: "/dining-sets-nairobi/4-seater-round-dining-tables-nairobi/" },
+    { label: "6-seater tables", href: "/dining-sets-nairobi/6-seater-dining-tables-nairobi/" },
+    { label: "8-seater tables", href: "/dining-sets-nairobi/8-seater-dining-tables-nairobi/" },
   ],
   sofas: [
-    { label: "All sofas", href: "/sofas/" },
-    { label: "L-shaped sofas", href: "/sofas/l-shaped-sofas/" },
-    { label: "Modular sectionals", href: "/sofas/modular-sectional-sofas/" },
-    { label: "Sofas with chaise", href: "/sofas/sofas-with-chaise/" },
+    { label: "All sofas", href: "/sofas-nairobi/" },
+    { label: "L-shaped sofas", href: "/sofas-nairobi/l-shaped-sofas-nairobi/" },
+    { label: "Modular sectionals", href: "/sofas-nairobi/modular-sectional-sofas-nairobi/" },
+    { label: "Sofas with chaise", href: "/sofas-nairobi/sofas-with-chaise-nairobi/" },
   ],
   design: [
-    { label: "Fabrics & colours", href: "/fabrics-and-colours/" },
-    { label: "Match my room", href: "/match-my-room/" },
-    { label: "Size guide", href: "/size-guide/" },
-    { label: "Custom design", href: "/custom-design/" },
-    { label: "Ask about samples", href: "/contact/" },
+    { label: "Fabrics & colours", href: "/furniture-fabrics-colours-nairobi/" },
+    { label: "Match my room", href: "/match-furniture-to-my-room-nairobi/" },
+    { label: "Size guide", href: "/furniture-size-guide-nairobi/" },
+    { label: "Custom design", href: "/custom-furniture-design-nairobi/" },
+    { label: "Ask about samples", href: "/contact-home-update-furniture-nairobi/" },
   ],
   need: [
-    { label: "Fabric options and care", href: "/fabrics-and-colours/" },
-    { label: "Room fit guidance", href: "/size-guide/" },
-    { label: "For hosting", href: "/dining-sets/" },
-    { label: "Browse the collection", href: "/dining-sets/" },
+    { label: "Fabric options and care", href: "/furniture-fabrics-colours-nairobi/" },
+    { label: "Room fit guidance", href: "/furniture-size-guide-nairobi/" },
+    { label: "For hosting", href: "/dining-sets-nairobi/" },
+    { label: "Browse the collection", href: "/dining-sets-nairobi/" },
   ],
 } as const;
 

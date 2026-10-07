@@ -83,7 +83,7 @@ export function Hero() {
           </p>
           <div className="mt-5 flex flex-wrap items-center gap-4 sm:mt-8">
             <WaButton pulse>Chat on WhatsApp for today’s price</WaButton>
-            <Link href="/shop/" className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/50 px-5 py-3 text-sm font-medium text-ivory transition hover:border-champagne hover:text-champagne">
+            <Link href="/furniture-shop-nairobi-kenya/" className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/50 px-5 py-3 text-sm font-medium text-ivory transition hover:border-champagne hover:text-champagne">
               Explore furniture
             </Link>
             <a
@@ -177,7 +177,7 @@ function FitFinder() {
           ))}
         </div>
       </details>
-      <Link href="/size-guide/" className="col-span-2 inline-flex min-h-9 items-center justify-center text-xs text-champagne underline underline-offset-4 hover:text-ivory sm:min-h-11 sm:text-sm lg:col-span-4">
+      <Link href="/furniture-size-guide-nairobi/" className="col-span-2 inline-flex min-h-9 items-center justify-center text-xs text-champagne underline underline-offset-4 hover:text-ivory sm:min-h-11 sm:text-sm lg:col-span-4">
         Open the visual room simulator
       </Link>
     </form>

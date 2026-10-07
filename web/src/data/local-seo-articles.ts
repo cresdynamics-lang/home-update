@@ -25,7 +25,7 @@ export const localSeoArticles: JournalPost[] = [
           "Then measure the wall, socket positions, skirting, door swing and the path from the entrance to the room. A 180 cm unit is not a sensible choice just because it fits the wall if the lift door or corridor turn cannot take it. For Kilimani, Kileleshwa, Westlands, Lavington, Karen or Kiambu Road apartments, send the narrowest access measurement as well as the final wall width when asking for a quote.",
         ],
         table: { headers: ["Check", "Measure or confirm", "Why it matters"], rows: [["Console length", "Wall width and TV base spacing", "Avoid an overhang or cramped proportions"], ["Depth", "TV feet, plugs and cable bend radius", "Keep the screen stable and plugs accessible"], ["Access", "Lift door, corridor and tightest turn", "A unit must reach the room intact"], ["Placement", "Sockets, skirting and wall fixing", "Plan cable routes and anchoring before delivery"]] },
-        links: [{ href: "/tv-stands/", label: "Compare Home Update TV stand concepts and listed footprints" }, { href: "/custom-design/", label: "Discuss a custom-width media console with the design team" }],
+        links: [{ href: "/tv-stands-nairobi/", label: "Compare Home Update TV stand concepts and listed footprints" }, { href: "/custom-furniture-design-nairobi/", label: "Discuss a custom-width media console with the design team" }],
       },
       {
         heading: "Do not guess the support capacity for a 65-inch screen",
@@ -33,7 +33,7 @@ export const localSeoArticles: JournalPost[] = [
           "Two televisions with the same diagonal can have different weights and feet positions. Ask for the exact stand's tested top-load rating, whether the rating assumes a centred load, and whether the top itself or only the carcass was tested. A long span in thin particle board is more vulnerable to sagging than a properly engineered frame, but “hardwood” by itself is not a load rating: joints, board thickness, support rails and construction all matter.",
           "If the television is wall-mounted, the wall fixing must match the wall substrate and the TV manufacturer's bracket requirements. If it sits on furniture, keep every foot inside the supported area and do not place a heavy screen on a concept design with no approved load figure. Ask the seller to confirm in writing before putting a 65-inch or larger screen on any unit.",
         ],
-        links: [{ href: "/tv-stands/", label: "Review the current TV console concepts before requesting a specification" }],
+        links: [{ href: "/tv-stands-nairobi/", label: "Review the current TV console concepts before requesting a specification" }],
       },
       {
         heading: "Plan concealed cables without trapping heat",
@@ -80,7 +80,7 @@ export const localSeoArticles: JournalPost[] = [
           "Mark the sofa, proposed table and walkway on the floor with masking tape. Include the open balcony door, drawers, side chairs and the path to the kitchen. If a 90 cm table blocks the only route, do not solve it by pretending the route is optional. Send the measurements and a phone photo to the business for a human layout check.",
         ],
         table: { headers: ["Planning point", "Starting guide", "Check at home"], rows: [["Sofa to table", "40–45 cm", "Can you sit, stand and reach a drink?"], ["Main walkway", "70–80 cm where possible", "Include door swings and daily traffic"], ["Table height", "Near the sofa seat height or slightly lower", "Compare with the cushion top, not the frame"], ["Room access", "Measure the narrowest passage", "Check lift, corridor and doorway turns"]] },
-        links: [{ href: "/coffee-tables/", label: "Compare the listed coffee-table shapes and concepts" }, { href: "/sofas/", label: "Check sofa footprints before settling on a table size" }],
+        links: [{ href: "/coffee-tables-nairobi/", label: "Compare the listed coffee-table shapes and concepts" }, { href: "/sofas-nairobi/", label: "Check sofa footprints before settling on a table size" }],
       },
       {
         heading: "Why nesting tables can work better than one large rectangle",
@@ -101,7 +101,7 @@ export const localSeoArticles: JournalPost[] = [
         body: [
           "Confirm top and base materials, finish, the dimensions of every nesting piece, weight, care instructions, price and availability. A product name such as “solid wood” should be confirmed for the actual tabletop and base, and finish names should not be mistaken for timber construction. Ask whether samples can be inspected before making a colour decision.",
         ],
-        links: [{ href: "/custom-design/", label: "Send room measurements for a personal coffee-table recommendation" }],
+        links: [{ href: "/custom-furniture-design-nairobi/", label: "Send room measurements for a personal coffee-table recommendation" }],
       },
     ],
     faq: [
@@ -134,7 +134,7 @@ export const localSeoArticles: JournalPost[] = [
           "For a quick test, use tape to mark a 170 × 90 cm six-seat table and add the chair depth in the positions people actually use. Compare that with a four-seat 110 cm round top or the four-seat arrangement you are considering. Then check the lift, lobby, corridor and entrance: a table that fits the nook still has to get there.",
         ],
         table: { headers: ["Choice", "Listed table footprint example", "Best question to answer"], rows: [["Compact four-seat round", "110 cm diameter listed for The Orbit", "Does a round edge keep the route open?"], ["Four-seat rectangular", "160 × 90 cm listed for The Ivory", "Will chairs and the kitchen route coexist?"], ["Six-seat rectangular", "170 × 90 cm listed for The Fluted", "Will all six chairs pull out without blocking passage?"]] },
-        links: [{ href: "/dining-sets/4-seater-round-dining-tables/", label: "Compare compact four-seat round dining sets" }, { href: "/dining-sets/6-seater-dining-tables/", label: "Review the listed six-seat dining table footprint" }],
+        links: [{ href: "/dining-sets-nairobi/4-seater-round-dining-tables-nairobi/", label: "Compare compact four-seat round dining sets" }, { href: "/dining-sets-nairobi/6-seater-dining-tables-nairobi/", label: "Review the listed six-seat dining table footprint" }],
       },
       {
         heading: "Round tables suit some square nooks; rectangles suit some long rooms",
@@ -149,7 +149,7 @@ export const localSeoArticles: JournalPost[] = [
           "A hardwood bench can slide under one side of a table when no one is sitting there, which may clear a narrow walkway. Confirm its length, seat height, support and finish, and remember that a bench may be less comfortable for a long meal if several people share it. Upholstered chairs give each person a defined seat and back support, but need enough room to pull out and may need fabric care suited to spills.",
           "Ask which chairs are included in the set, whether alternate chairs change the seat count or price, and what cleaning instructions apply. “Hardwood” and “easy-clean” should be verified for the actual parts and upholstery rather than assumed from a finish name.",
         ],
-        links: [{ href: "/custom-design/", label: "Discuss a custom dining table or seating arrangement" }],
+        links: [{ href: "/custom-furniture-design-nairobi/", label: "Discuss a custom dining table or seating arrangement" }],
       },
       {
         heading: "Coordinate wood tone with cream tiles without guessing",
@@ -189,7 +189,7 @@ export const localSeoArticles: JournalPost[] = [
           "If your cat scratches fabric, bring that fact into the product conversation rather than choosing from a swatch name. Ask about snagging test results for the exact fabric, removable covers if offered, and repair options. Keep a scratching post near the sofa; furniture upholstery is not a substitute for pet behaviour support.",
         ],
         table: { headers: ["Fabric name", "What to inspect", "Question to ask"], rows: [["Bouclé", "Loop size, yarn security, backing", "Can the exact fabric snag, and what test evidence exists?"], ["Performance velvet", "Fiber content, pile direction, finish", "What does “performance” mean for this exact colour?"], ["Chenille", "Yarn blend, surface wear, care label", "Which cleaner and routine care are approved?"], ["Linen blend", "Composition, weave, removable-cover status", "How should spills and everyday dust be handled?"]] },
-        links: [{ href: "/fabrics-and-colours/", label: "Explore the fabric names and colour options currently listed" }, { href: "/sofas/", label: "Compare sofa footprints and upholstery options" }],
+        links: [{ href: "/furniture-fabrics-colours-nairobi/", label: "Explore the fabric names and colour options currently listed" }, { href: "/sofas-nairobi/", label: "Compare sofa footprints and upholstery options" }],
       },
       {
         heading: "Treat water resistance as a testable claim",
@@ -197,7 +197,7 @@ export const localSeoArticles: JournalPost[] = [
           "A label such as water-resistant or performance does not tell you how much liquid the fabric repels, how long it can sit, what happens at a seam, or whether cleaning damages the finish. Ask for the test method, the result, the exact tested fabric and colour, and the limits of the claim. If no evidence is available, treat resistance as unconfirmed and blot a spill promptly rather than relying on the label.",
           "For a fresh spill, follow the supplier's care instructions: lift solids gently, blot liquid with a clean absorbent cloth without rubbing, and use only an approved cleaner. Test any permitted cleaner on a hidden area first. Do not soak the cushion, apply bleach or use a hairdryer unless the maker explicitly directs it; heat and aggressive rubbing can set a stain or alter the pile.",
         ],
-        links: [{ href: "/fabrics/", label: "Review the current upholstery selection and ask for care details" }],
+        links: [{ href: "/furniture-fabrics-colours-nairobi/", label: "Review the current upholstery selection and ask for care details" }],
       },
       {
         heading: "Plan for dust, muddy shoes and daily cleaning",
@@ -212,7 +212,7 @@ export const localSeoArticles: JournalPost[] = [
           "Compare swatches near the sofa's window in daylight and under your evening bulbs. Check the color against the floor, curtains and timber instead of relying on a screen rendering. Ask whether a physical sample can be inspected or taken home, whether the swatch represents current production, and whether shade variation between batches is expected.",
           "Send Home Update your room photo, sofa model, children/pet use and the exact fabric names you are comparing. Ask the team to confirm composition, care, test evidence, sample availability, price difference and lead time for your chosen colour before placing an order.",
         ],
-        links: [{ href: "/custom-design/", label: "Send your room details and fabric questions to the design team" }],
+        links: [{ href: "/custom-furniture-design-nairobi/", label: "Send your room details and fabric questions to the design team" }],
       },
     ],
     faq: [

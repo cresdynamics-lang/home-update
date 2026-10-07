@@ -128,7 +128,7 @@ const gallery = useMemo(() => resolveGallery(product, combo), [combo, product]);
             <li aria-hidden>/</li>
             <li>
               <Link
-                href={product.category === "dining" ? "/dining-sets/" : product.category === "sofa" ? "/sofas/" : product.category === "tv-stands" ? "/tv-stands/" : "/coffee-tables/"}
+                href={product.category === "dining" ? "/dining-sets-nairobi/" : product.category === "sofa" ? "/sofas-nairobi/" : product.category === "tv-stands" ? "/tv-stands-nairobi/" : "/coffee-tables-nairobi/"}
                 className="hover:text-champagne"
               >
                 {product.category === "dining" ? "Dining sets" : product.category === "sofa" ? "Sofas" : product.category === "tv-stands" ? "TV Stands" : "Coffee Tables"}

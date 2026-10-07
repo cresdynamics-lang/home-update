@@ -32,7 +32,7 @@ export async function CatalogPage({
       <p className="mt-3 max-w-2xl text-muted">{blurb}</p>
 
       <nav aria-label="Shop by category" className="mt-6 flex flex-wrap gap-2">
-        {[["All", "/shop/"], ["Dining Sets", "/dining-sets/"], ["Sofas", "/sofas/"], ["TV Stands", "/tv-stands/"], ["Coffee Tables", "/coffee-tables/"]].map(([label, href]) => (
+        {[["All", "/furniture-shop-nairobi-kenya/"], ["Dining Sets", "/dining-sets-nairobi/"], ["Sofas", "/sofas-nairobi/"], ["TV Stands", "/tv-stands-nairobi/"], ["Coffee Tables", "/coffee-tables-nairobi/"]].map(([label, href]) => (
           <Link key={href} href={href} className="rounded-full border border-white/15 px-4 py-2 text-sm text-ivory/85 hover:border-champagne hover:text-champagne">{label}</Link>
         ))}
       </nav>

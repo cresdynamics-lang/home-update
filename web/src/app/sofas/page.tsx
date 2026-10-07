@@ -40,7 +40,7 @@ export default function SofasPage() {
   };
   return (
     <>
-      <BreadcrumbSchema items={[{ name: "Home", path: "/" }, { name: "Sofas", path: "/sofas/" }]} />
+      <BreadcrumbSchema items={[{ name: "Home", path: "/" }, { name: "Sofas", path: "/sofas-nairobi/" }]} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }} />
     <CatalogPage
       eyebrow="Sofas"
